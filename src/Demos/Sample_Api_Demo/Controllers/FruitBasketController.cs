@@ -18,8 +18,8 @@ namespace Sample_Api_Demo.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetThreeFruits/{customerId}")]
-        public IEnumerable<string> Get(int customerId)
+        [HttpGet("GetThreeFruits/{customerId}/things")]
+        public IEnumerable<string> GetThings(int customerId)
         {
             return Enumerable.Range(1, 3).Select(index => Summaries[Random.Shared.Next(Summaries.Length)]).ToArray();
         }
