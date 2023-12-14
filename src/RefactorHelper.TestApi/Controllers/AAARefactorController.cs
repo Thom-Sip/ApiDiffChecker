@@ -36,7 +36,7 @@ namespace TestApi.Controllers
                 p.Start();
             }
 
-            return new List<string>();
+            return new List<string> { "Thank you", "for using", "RefactorHelper" };
         }
     }
 }

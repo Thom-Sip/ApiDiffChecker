@@ -30,7 +30,8 @@ namespace RefactorHelper.UIGenerator
         public List<string> GenerateUI(List<CompareResult> results)
         {
             SetupRunfolder();
-            var sidebarHtml = GetSidebarContent(results, _runfolder);
+            var requestsFailedListHtml = GetSidebarContent(results.Where(x => x.Changed), _runfolder);
+            var requestsSuccessListHtml = GetSidebarContent(results.Where(x => !x.Changed), _runfolder);
             var urls = new List<string>();
 
             foreach (var result in results)
@@ -40,7 +41,8 @@ namespace RefactorHelper.UIGenerator
 
                 var html = _template.Replace("[CONTENT_ORIGINAL]", original);
                 html = html.Replace("[CONTENT_CHANGED]", changed);
-                html = html.Replace("[REQUESTS]", sidebarHtml);
+                html = html.Replace("[REQUESTS_FAILED]", requestsFailedListHtml);
+                html = html.Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
 
                 var filename = $"{result.Path.Replace("/", "_")}.html";
                 var outputFileName = $"{_runfolder}/{filename}";
@@ -54,7 +56,7 @@ namespace RefactorHelper.UIGenerator
             return urls;
         }
 
-        private string GetSidebarContent(List<CompareResult> results, string runFolder)
+        private string GetSidebarContent(IEnumerable<CompareResult> results, string runFolder)
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");

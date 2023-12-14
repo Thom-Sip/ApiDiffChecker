@@ -30,10 +30,10 @@ namespace RefactorHelper.Comparer
                 {
                     Result1 = response.Response1,
                     Result2 = response.Response2,
-                    Changed = diffs1.Count == 0,
+                    Changed = response.Response1 != response.Response2,
                     Diffs1 = diffs1,
                     Diffs2 = diffs2,
-                    Path = response.Path
+                    Path = response.Path,
                 });
             }
 
