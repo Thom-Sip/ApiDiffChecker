@@ -7,6 +7,7 @@ namespace RefactorHelper.UIGenerator
     public class UIGeneratorService
     {
         protected string _outputFolder { get; set; }
+        protected string _runfolder { get; set; }
         protected string _template { get; set; }
 
         public UIGeneratorService(string contentFolder, string outputFolder)
@@ -18,8 +19,18 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
+        private void SetupRunfolder()
+        {
+            _runfolder = $"{_outputFolder}/{DateTime.Now:yyyy-MM-dd_HH.mm.ss}";
+
+            if (!Directory.Exists(_runfolder))
+                Directory.CreateDirectory(_runfolder);
+        }
+
         public List<string> GenerateUI(List<CompareResult> results)
         {
+            SetupRunfolder();
+            var sidebarHtml = GetSidebarContent(results, _runfolder);
             var urls = new List<string>();
 
             foreach (var result in results)
@@ -29,9 +40,10 @@ namespace RefactorHelper.UIGenerator
 
                 var html = _template.Replace("[CONTENT_ORIGINAL]", original);
                 html = html.Replace("[CONTENT_CHANGED]", changed);
+                html = html.Replace("[REQUESTS]", sidebarHtml);
 
-                var filename = $"{DateTime.Now:yyyy-MM-ddTHH_mm_ss}_{result.Path.Replace("/", "_")}.html";
-                var outputFileName = $"{_outputFolder}/{filename}";
+                var filename = $"{result.Path.Replace("/", "_")}.html";
+                var outputFileName = $"{_runfolder}/{filename}";
 
                 // save to Disk
                 File.WriteAllText(outputFileName, html);
@@ -40,6 +52,22 @@ namespace RefactorHelper.UIGenerator
             }
 
             return urls;
+        }
+
+        private string GetSidebarContent(List<CompareResult> results, string runFolder)
+        {
+            var sb = new StringBuilder();
+            sb.Append("<ul>");
+
+            foreach (var item in results)
+            {
+                sb.Append($"<li>" +
+                    $"<a href=\"{runFolder}/{item.Path.Replace("/", "_")}.html\">{item.Path}</a>" +
+                    $"</li>");
+            }
+
+            sb.Append("</ul>");
+            return sb.ToString();
         }
 
         private string diff_prettyHtml_thom(List<Diff> diffs)
