@@ -14,10 +14,21 @@ namespace RefactorHelper.SwaggerProcessor
 
         private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path)
         {
-
-
+            if(path.Value.get != null)
+            {
+                return new RequestDetails 
+                { 
+                    Path = path.Key,
+                    UrlVariables = GetUrlVariables(path.Value.get)
+                };
+            }
 
             return new RequestDetails { Path = path.Key };
+        }
+
+        private List<string> GetUrlVariables(Operation operation)
+        {
+            return operation.parameters?.Select(x => x.name).ToList() ?? new List<string>();
         }
     }
 }

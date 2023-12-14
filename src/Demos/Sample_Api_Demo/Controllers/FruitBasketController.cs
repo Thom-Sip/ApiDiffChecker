@@ -18,7 +18,7 @@ namespace Sample_Api_Demo.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetThreeFruits/{customerId}/things")]
+        [HttpGet("{customerId}")]
         public IEnumerable<string> GetThings(int customerId)
         {
             return Enumerable.Range(1, 3).Select(index => Summaries[Random.Shared.Next(Summaries.Length)]).ToArray();
