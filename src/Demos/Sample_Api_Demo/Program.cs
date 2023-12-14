@@ -1,3 +1,5 @@
+using RefactorHelper.App;
+using RefactorHelper.Models;
 
 namespace Sample_Api_Demo
 {
@@ -7,16 +9,25 @@ namespace Sample_Api_Demo
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Refactor Helper Settings
+            var settings = new RefactorHelperSettings
+            {
+                OutputFolder = $"{GetBinPath()}/RefactorHelper/Output/",
+                ContentFolder = $"{Environment.CurrentDirectory}/RefactorHelper/Content/",
+                swaggerUrl = "https://localhost:7138/swagger/v1/swagger.json",
+                BaseUrl1 = "https://localhost:7138",
+                BaseUrl2 = "https://localhost:7138"
+            };
+
+            // Setup Dependency Injection
+            builder.Services.AddRefactorHelper(settings);
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -32,5 +43,8 @@ namespace Sample_Api_Demo
 
             app.Run();
         }
+
+        private static string GetBinPath() =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
     }
 }

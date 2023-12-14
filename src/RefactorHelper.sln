@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.TestApi", "RefactorHelper.TestApi\RefactorHelper.TestApi.csproj", "{9A679EA0-BCC9-40D8-A040-6CBCA1BEF3C1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.SwaggerProcessor", "RefactorHelper.SwaggerProcessor\RefactorHelper.SwaggerProcessor.csproj", "{EAB1F0B1-4F12-4ACE-9FDB-DBDEFE744D74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.Models", "RefactorHelper.Models\RefactorHelper.Models.csproj", "{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}"
@@ -17,16 +15,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.UIGenerator"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.App", "RefactorHelper.App\RefactorHelper.App.csproj", "{10F5C212-8C07-46C3-83A3-0CECDA9471EE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B-097E-481D-9BF7-CC87F03A79F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample_Api_Demo", "Demos\Sample_Api_Demo\Sample_Api_Demo.csproj", "{BD34B761-A215-4ADD-BC84-8171970EB6C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A679EA0-BCC9-40D8-A040-6CBCA1BEF3C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A679EA0-BCC9-40D8-A040-6CBCA1BEF3C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A679EA0-BCC9-40D8-A040-6CBCA1BEF3C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A679EA0-BCC9-40D8-A040-6CBCA1BEF3C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAB1F0B1-4F12-4ACE-9FDB-DBDEFE744D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EAB1F0B1-4F12-4ACE-9FDB-DBDEFE744D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAB1F0B1-4F12-4ACE-9FDB-DBDEFE744D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,9 +49,16 @@ Global
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD34B761-A215-4ADD-BC84-8171970EB6C0} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61113866-D81D-46DA-862C-5B84B0671527}
