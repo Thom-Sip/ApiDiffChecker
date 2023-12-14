@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RefactorHelper.Comparer\RefactorHelper.Comparer.csproj" />
+    <ProjectReference Include="..\RefactorHelper.RequestHandler\RefactorHelper.RequestHandler.csproj" />
+    <ProjectReference Include="..\RefactorHelper.SwaggerProcessor\RefactorHelper.SwaggerProcessor.csproj" />
+    <ProjectReference Include="..\RefactorHelper.UIGenerator\RefactorHelper.UIGenerator.csproj" />
+  </ItemGroup>
+
+</Project>
