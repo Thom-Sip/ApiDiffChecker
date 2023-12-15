@@ -23,18 +23,18 @@ namespace Sample_Api_Demo
                 BaseUrl2 = "https://localhost:44308",
                 DefaultParameters =
                 [
-                    new("message", "Hello_world"),
+                    new("orderId", "AA072"),
                     new("key", "Qwerty1234"),
                 ],
                 Runs =
                 [
                     [
                         new("customerId", "12"),
-                        new("orderId", "AA072"),
+                        new("message", "Hello_world"),
                     ],
                     [
                         new("customerId", "69"),
-                        new("orderId", "FFhis"),
+                        new("message", "Bye_world"),
                     ],
                 ]
             };
