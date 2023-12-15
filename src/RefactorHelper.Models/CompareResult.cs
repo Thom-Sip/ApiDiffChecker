@@ -15,5 +15,7 @@ namespace RefactorHelper.Models
         public List<Diff> Diffs2 { get; init; }
 
         public string Path { get; init; }
+
+        public string FilePath { get; init; }
     }
 }

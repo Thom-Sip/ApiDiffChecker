@@ -34,10 +34,16 @@ namespace RefactorHelper.Comparer
                     Diffs1 = diffs1,
                     Diffs2 = diffs2,
                     Path = response.Path,
+                    FilePath = $"{MakePathSafe(response.Path)}.html"
                 });
             }
 
             return result;
+        }
+
+        private string MakePathSafe(string url)
+        {
+            return url.Replace(" ", "").Replace("&", "_").Replace("?", "_").Replace("/", "_");
         }
     }
 }

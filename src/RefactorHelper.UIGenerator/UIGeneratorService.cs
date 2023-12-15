@@ -44,8 +44,7 @@ namespace RefactorHelper.UIGenerator
                 html = html.Replace("[REQUESTS_FAILED]", requestsFailedListHtml);
                 html = html.Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
 
-                var filename = $"{result.Path.Replace("/", "_")}.html";
-                var outputFileName = $"{_runfolder}/{filename}";
+                var outputFileName = $"{_runfolder}/{result.FilePath}";
 
                 // save to Disk
                 File.WriteAllText(outputFileName, html);
@@ -64,7 +63,7 @@ namespace RefactorHelper.UIGenerator
             foreach (var item in results)
             {
                 sb.Append($"<li>" +
-                    $"<a href=\"{runFolder}/{item.Path.Replace("/", "_")}.html\">{item.Path}</a>" +
+                    $"<a href=\"{runFolder}/{item.FilePath}\">{item.Path}</a>" +
                     $"</li>");
             }
 

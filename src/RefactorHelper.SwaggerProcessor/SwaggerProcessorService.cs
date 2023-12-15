@@ -10,7 +10,8 @@ namespace RefactorHelper.SwaggerProcessor
         private Dictionary<string, string> Variables = new Dictionary<string, string>
         {
             { "customerid", "1" },
-            { "orderid", "AGSY001" }
+            { "orderid", "AGSY001" },
+            { "message", "Hello World" }
         };
 
         public List<RequestDetails> ProcessSwagger(string swaggerJson)
@@ -36,6 +37,8 @@ namespace RefactorHelper.SwaggerProcessor
 
         private string GetPath(string template, Operation operation)
         {
+            var queryParams = new List<string>();
+
             foreach(var param in operation?.parameters ?? new List<Parameter>())
             {
                 if(param.@in == "path")
@@ -43,7 +46,19 @@ namespace RefactorHelper.SwaggerProcessor
                     if(TryGetValue(param.name, out var result))
                         template = template.Replace($"{{{param.name.ToLower()}}}", result);
                 }
+                if(param.@in == "query")
+                {
+                    var value = param.name;
+
+                    if (TryGetValue(param.name, out var result))
+                        value = result;
+
+                    queryParams.Add($"{param.name}={value}");
+                }
             }
+
+            if(queryParams.Any())
+                template = $"{template}?{string.Join('&', queryParams)}";
 
             return template;
         }

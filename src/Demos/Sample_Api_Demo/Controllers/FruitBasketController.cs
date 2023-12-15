@@ -19,7 +19,7 @@ namespace Sample_Api_Demo.Controllers
         }
 
         [HttpGet("{customerId}/orders/{orderId}")]
-        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message)
+        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message = "")
         {
             return new List<string>
             {
