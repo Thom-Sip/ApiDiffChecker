@@ -14,17 +14,10 @@ namespace RefactorHelper.UIGenerator
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
             _outputFolder = outputFolder;
+            _runfolder = outputFolder;
 
             if (!Directory.Exists(_outputFolder))
                 Directory.CreateDirectory(_outputFolder);
-        }
-
-        private void SetupRunfolder()
-        {
-            _runfolder = $"{_outputFolder}/{DateTime.Now:yyyy-MM-dd_HH.mm.ss}";
-
-            if (!Directory.Exists(_runfolder))
-                Directory.CreateDirectory(_runfolder);
         }
 
         public List<string> GenerateUI(List<CompareResult> results)
@@ -53,6 +46,14 @@ namespace RefactorHelper.UIGenerator
             }
 
             return urls;
+        }
+
+        private void SetupRunfolder()
+        {
+            _runfolder = $"{_outputFolder}/{DateTime.Now:yyyy-MM-dd_HH.mm.ss}";
+
+            if (!Directory.Exists(_runfolder))
+                Directory.CreateDirectory(_runfolder);
         }
 
         private string GetSidebarContent(IEnumerable<CompareResult> results, string runFolder)

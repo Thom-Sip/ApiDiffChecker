@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Rewrite;
 using RefactorHelper.App;
 using RefactorHelper.Models;
 
@@ -21,7 +20,23 @@ namespace Sample_Api_Demo
                 ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
                 swaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44308",
-                BaseUrl2 = "https://localhost:44308"
+                BaseUrl2 = "https://localhost:44308",
+                DefaultParameters =
+                [
+                    new("message", "Hello_world"),
+                    new("key", "Qwerty1234"),
+                ],
+                Runs =
+                [
+                    [
+                        new("customerId", "12"),
+                        new("orderId", "AA072"),
+                    ],
+                    [
+                        new("customerId", "69"),
+                        new("orderId", "FFhis"),
+                    ],
+                ]
             };
 
             // Setup Dependency Injection
@@ -41,22 +56,7 @@ namespace Sample_Api_Demo
 
             app.UseAuthorization();
 
-
             app.MapControllers();
-
-            //"D:/git/RefactorHelper/src/Demos/Sample_Api_Demo/bin/Debug/net8.0/Output/2023-12-14_21.12.22/_AAARefactor.html"
-
-            //RewriteOptions rewriteOptions = new RewriteOptions()
-                //.AddRewrite("test", "index.html", true);
-
-            //_ = app.UseRewriter(rewriteOptions);
-
-            //app.Map()
-
-
-            //app.MapFallbackToFile("/2023-12-14_21.12.22/_AAARefactor.html");
-
-            //app.MapGet()
 
             app.Run();
         }

@@ -27,7 +27,7 @@ namespace RefactorHelper.RequestHandler
 
             await Task.WhenAll(tasks);
 
-            return tasks.Select(x => x.Result).ToList();
+            return tasks.Select(x => x.Result).OrderBy(x => x.Path).ToList();
         }
 
         public async Task<RefactorTestResponse> GetResponses(string path)

@@ -25,7 +25,7 @@ namespace RefactorHelper.App
             Settings = settings;
 
             // Setup Swagger Processor
-            SwaggerProcessor = new SwaggerProcessorService();
+            SwaggerProcessor = new SwaggerProcessorService(Settings);
 
             // Setup Request Handler
             RequestHandler = new RequestHandlerService(

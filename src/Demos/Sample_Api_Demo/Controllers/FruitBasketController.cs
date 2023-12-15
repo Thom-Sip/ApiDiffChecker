@@ -19,13 +19,14 @@ namespace Sample_Api_Demo.Controllers
         }
 
         [HttpGet("{customerId}/orders/{orderId}")]
-        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message = "")
+        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message = "", [FromQuery] string key = "")
         {
             return new List<string>
             {
                 $"Customer_{customerId}",
                 $"Order_{orderId}",
                 $"Message_{message}",
+                $"Key_{key}",
                 Summaries[Random.Shared.Next(Summaries.Length)],
                 Summaries[Random.Shared.Next(Summaries.Length)],
                 Summaries[Random.Shared.Next(Summaries.Length)]
