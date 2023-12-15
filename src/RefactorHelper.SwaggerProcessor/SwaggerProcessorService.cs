@@ -8,7 +8,7 @@ namespace RefactorHelper.SwaggerProcessor
     {
         public List<RequestDetails> ProcessSwagger(string swaggerJson)
         {
-            var doc = JsonConvert.DeserializeObject<Swashbuckle.Swagger.SwaggerDocument>(swaggerJson);
+            var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
             return doc.paths.Select(p => GetRequestDetails(p)).ToList();
         }
 
@@ -19,16 +19,11 @@ namespace RefactorHelper.SwaggerProcessor
                 return new RequestDetails 
                 { 
                     Path = path.Key,
-                    UrlVariables = GetUrlVariables(path.Value.get)
+                    Operation = path.Value.get,
                 };
             }
 
-            return new RequestDetails { Path = path.Key };
-        }
-
-        private List<string> GetUrlVariables(Operation operation)
-        {
-            return operation.parameters?.Select(x => x.name).ToList() ?? new List<string>();
+            throw new NotImplementedException();
         }
     }
 }

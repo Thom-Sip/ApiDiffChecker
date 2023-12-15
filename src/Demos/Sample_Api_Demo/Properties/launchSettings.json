@@ -40,7 +40,7 @@
     "RefactorUI": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "RefactorHelper",
+      "launchUrl": "AAARefactor",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
