@@ -9,7 +9,8 @@ namespace RefactorHelper.SwaggerProcessor
     {
         private Dictionary<string, string> Variables = new Dictionary<string, string>
         {
-            { "customerid", "1" }
+            { "customerid", "1" },
+            { "orderid", "AGSY001" }
         };
 
         public List<RequestDetails> ProcessSwagger(string swaggerJson)
@@ -35,20 +36,28 @@ namespace RefactorHelper.SwaggerProcessor
 
         private string GetPath(string template, Operation operation)
         {
-            Match match = Regex.Match(template, @"\{(.+?)\}");
-
-            if(match.Success)
+            foreach(var param in operation?.parameters ?? new List<Parameter>())
             {
-                if (Variables.ContainsKey(GetParam(match.Value)))
-                    template = template.Replace(match.Value, Variables[GetParam(match.Value)]);
+                if(param.@in == "path")
+                {
+                    if(TryGetValue(param.name, out var result))
+                        template = template.Replace($"{{{param.name.ToLower()}}}", result);
+                }
             }
 
             return template;
         }
 
-        private string GetParam(string urlPart)
+        private bool TryGetValue(string key, out string? value)
         {
-            return urlPart.Replace("{", "").Replace("}", "");
+            if(Variables.ContainsKey(key.ToLower()))
+            {
+                value = Variables[key.ToLower()];
+                return true;
+            }
+
+            value = null;
+            return false;
         }
     }
 }

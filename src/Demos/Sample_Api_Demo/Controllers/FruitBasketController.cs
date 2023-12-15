@@ -18,10 +18,18 @@ namespace Sample_Api_Demo.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{customerId}")]
-        public IEnumerable<string> GetThings(int customerId)
+        [HttpGet("{customerId}/orders/{orderId}")]
+        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message)
         {
-            return Enumerable.Range(1, 3).Select(index => Summaries[Random.Shared.Next(Summaries.Length)]).ToArray();
+            return new List<string>
+            {
+                $"Customer_{customerId}",
+                $"Order_{orderId}",
+                $"Message_{message}",
+                Summaries[Random.Shared.Next(Summaries.Length)],
+                Summaries[Random.Shared.Next(Summaries.Length)],
+                Summaries[Random.Shared.Next(Summaries.Length)]
+            };
         }
     }
 }
