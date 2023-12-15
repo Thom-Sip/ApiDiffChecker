@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Rewrite;
 using RefactorHelper.App;
 using RefactorHelper.Models;
 
@@ -16,11 +17,11 @@ namespace Sample_Api_Demo
             // Refactor Helper Settings
             var settings = new RefactorHelperSettings
             {
-                OutputFolder = $"{GetBinPath()}/RefactorHelper/Output/",
-                ContentFolder = $"{Environment.CurrentDirectory}/RefactorHelper/Content/",
-                swaggerUrl = "https://localhost:7138/swagger/v1/swagger.json",
-                BaseUrl1 = "https://localhost:7138",
-                BaseUrl2 = "https://localhost:7138"
+                OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
+                ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
+                swaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
+                BaseUrl1 = "https://localhost:44308",
+                BaseUrl2 = "https://localhost:44308"
             };
 
             // Setup Dependency Injection
@@ -34,12 +35,28 @@ namespace Sample_Api_Demo
                 app.UseSwaggerUI();
             }
 
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            //"D:/git/RefactorHelper/src/Demos/Sample_Api_Demo/bin/Debug/net8.0/Output/2023-12-14_21.12.22/_AAARefactor.html"
+
+            //RewriteOptions rewriteOptions = new RewriteOptions()
+                //.AddRewrite("test", "index.html", true);
+
+            //_ = app.UseRewriter(rewriteOptions);
+
+            //app.Map()
+
+
+            //app.MapFallbackToFile("/2023-12-14_21.12.22/_AAARefactor.html");
+
+            //app.MapGet()
 
             app.Run();
         }

@@ -36,6 +36,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "RefactorUI": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "RefactorHelper",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

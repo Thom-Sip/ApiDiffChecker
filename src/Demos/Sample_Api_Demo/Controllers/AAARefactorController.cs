@@ -23,7 +23,7 @@ namespace Sample_Api_Demo.Controllers
         {
             var outputfilenames = await App.Run();
 
-            if(outputfilenames.Any())
+            if (outputfilenames.Any())
             {
                 var p = new Process
                 {

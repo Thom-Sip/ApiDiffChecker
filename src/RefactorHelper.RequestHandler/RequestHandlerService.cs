@@ -40,11 +40,8 @@ namespace RefactorHelper.RequestHandler
             var response1 = await request1.Result.Content.ReadAsStringAsync();
             var response2 = await request2.Result.Content.ReadAsStringAsync();
 
-            var responseObj1 = JsonConvert.DeserializeObject<object>(response1);
-            response1 = JsonConvert.SerializeObject(responseObj1, Formatting.Indented);
-
-            var responseObj2 = JsonConvert.DeserializeObject<object>(response2);
-            response2 = JsonConvert.SerializeObject(responseObj2, Formatting.Indented);
+            response1 = TryFormatResponse(response1);
+            response2 = TryFormatResponse(response2);
 
             return new RefactorTestResponse
             {
@@ -54,6 +51,20 @@ namespace RefactorHelper.RequestHandler
                 ResultCode2 = request2.Result.StatusCode,
                 Path = path
             };
+        }
+
+        public string TryFormatResponse(string response)
+        {
+            try
+            {
+                var responseObj1 = JsonConvert.DeserializeObject<object>(response);
+                response = JsonConvert.SerializeObject(responseObj1, Formatting.Indented);
+            }
+            catch
+            {
+
+            }
+            return response;
         }
     }
 }

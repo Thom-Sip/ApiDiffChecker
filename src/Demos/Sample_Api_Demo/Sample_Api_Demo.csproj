@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="RefactorHelper\Input\file1.json" />
-    <Content Remove="RefactorHelper\Input\file2.json" />
-    <Content Remove="RefactorHelper\Input\swagger.json" />
+    <Content Remove="wwwroot\RefactorHelper\Input\file1.json" />
+    <Content Remove="wwwroot\RefactorHelper\Input\file2.json" />
+    <Content Remove="wwwroot\RefactorHelper\Input\swagger.json" />
     <Content Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
@@ -19,19 +19,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="RefactorHelper\Input\file1.json">
+    <None Include="wwwroot\RefactorHelper\Input\file1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="RefactorHelper\Input\file2.json">
+    <None Include="wwwroot\RefactorHelper\Input\file2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="RefactorHelper\Input\swagger.json">
+    <None Include="wwwroot\RefactorHelper\Input\swagger.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\launchSettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Include="wwwroot\RefactorHelper\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\RefactorHelper\Content\Template.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\RefactorHelper\Output\styles.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
@@ -41,15 +50,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RefactorHelper.App\RefactorHelper.App.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="RefactorHelper\Content\Template.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="RefactorHelper\Output\styles.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
