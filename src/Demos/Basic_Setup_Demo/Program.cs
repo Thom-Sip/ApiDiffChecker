@@ -7,14 +7,8 @@ namespace Basic_Setup_Demo
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            // ==================== Setup Dependency Injection ====================
-            builder.Services.AddRefactorHelper(new RefactorHelperSettings
+            // Settings
+            var settings = new RefactorHelperSettings
             {
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
@@ -22,12 +16,19 @@ namespace Basic_Setup_Demo
                 DefaultParameters = [new("customerId", "4007")],
                 Runs =
                 [
-                    [ new("message", "Foo") ],
-                    [ new("message", "Bar") ],
+                    [new("message", "Foo")],
+                    [new("message", "Bar")],
                 ]
-            });
-            // ===================== End Dependency Injection =====================
+            };
 
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Setup DI
+            builder.Services.AddRefactorHelper(settings);
+
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
             WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -35,17 +36,13 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // ==================== Setup Trigger Endpoint ====================
+                // Setup Trigger endpoint
                 app.AddRefactorHelperEndpoint();
-                // ===================== End Trigger Endpoint =====================
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
-
             app.Run();
         }
     }
