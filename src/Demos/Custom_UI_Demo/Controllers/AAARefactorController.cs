@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using RefactorHelper.App;
 using System.Diagnostics;
 
-namespace Sample_Api_Demo.Controllers
+namespace Custom_UI_Demo.Controllers
 {
     [ApiController]
     [Route("[controller]")]

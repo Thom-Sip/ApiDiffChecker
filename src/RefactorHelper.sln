@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.App", "Refac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B-097E-481D-9BF7-CC87F03A79F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample_Api_Demo", "Demos\Sample_Api_Demo\Sample_Api_Demo.csproj", "{BD34B761-A215-4ADD-BC84-8171970EB6C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Custom_UI_Demo", "Demos\Custom_UI_Demo\Custom_UI_Demo.csproj", "{BD34B761-A215-4ADD-BC84-8171970EB6C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

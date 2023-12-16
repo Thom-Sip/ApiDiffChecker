@@ -1,7 +1,7 @@
 using RefactorHelper.App;
 using RefactorHelper.Models;
 
-namespace Sample_Api_Demo
+namespace Custom_UI_Demo
 {
     public class Program
     {
