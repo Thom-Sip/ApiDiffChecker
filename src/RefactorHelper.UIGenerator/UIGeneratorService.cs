@@ -78,6 +78,8 @@ namespace RefactorHelper.UIGenerator
 
             html.Append($"<h3>{compare.Path}</h3>");
 
+            //html.Append($"<div>{compare.}</div>");
+
             foreach (Diff aDiff in diffs)
             {
                 string text = aDiff.text

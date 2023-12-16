@@ -7,5 +7,7 @@ namespace RefactorHelper.Models.Comparer
         public string Result { get; set; }
 
         public List<Diff> Diffs { get; init; }
+
+        public required HttpResponseMessage Response { get; init; }
     }
 }
