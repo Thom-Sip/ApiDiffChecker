@@ -1,7 +1,7 @@
 using RefactorHelper.App;
-using RefactorHelper.Models;
+using RefactorHelper.Models.Config;
 
-namespace Sample_Api_Demo
+namespace Custom_UI_Demo
 {
     public class Program
     {
@@ -18,7 +18,7 @@ namespace Sample_Api_Demo
             {
                 OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
                 ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
-                swaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
+                SwaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44308",
                 BaseUrl2 = "https://localhost:44308",
                 DefaultParameters =

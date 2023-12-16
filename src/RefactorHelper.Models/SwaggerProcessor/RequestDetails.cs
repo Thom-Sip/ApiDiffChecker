@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.Swagger;
 
-namespace RefactorHelper.Models
+namespace RefactorHelper.Models.SwaggerProcessor
 {
     public class RequestDetails
     {

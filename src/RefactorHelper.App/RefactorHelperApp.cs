@@ -1,8 +1,8 @@
 ﻿using RefactorHelper.Comparer;
-using RefactorHelper.Models;
 using RefactorHelper.RequestHandler;
 using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
+using RefactorHelper.Models.Config;
 
 namespace RefactorHelper.App
 {
@@ -23,6 +23,12 @@ namespace RefactorHelper.App
         public RefactorHelperApp(RefactorHelperSettings settings)
         {
             Settings = settings;
+
+            if (string.IsNullOrWhiteSpace(Settings.OutputFolder))
+                Settings.OutputFolder = $"{GetBinPath()}/Files/Output/";
+
+            if (string.IsNullOrWhiteSpace(Settings.ContentFolder))
+                Settings.ContentFolder = $"{GetBinPath()}/Files/Content/";
 
             // Setup Swagger Processor
             SwaggerProcessor = new SwaggerProcessorService(Settings);
@@ -46,6 +52,9 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
+        private static string GetBinPath() =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
         public async Task<List<string>> Run()
         {
             if (!string.IsNullOrWhiteSpace(SwaggerJson))
@@ -54,21 +63,21 @@ namespace RefactorHelper.App
             if(string.IsNullOrWhiteSpace(SwaggerJson))
             {
                 var client = new HttpClient();
-                var result = await client.GetAsync(Settings.swaggerUrl);
+                var result = await client.GetAsync(Settings.SwaggerUrl);
                 SwaggerJson = await result.Content.ReadAsStringAsync();
             }     
 
             // Get requests from swagger
-            var requestDetails = SwaggerProcessor.ProcessSwagger(SwaggerJson);
+            var swaggerProcessorOuput = SwaggerProcessor.ProcessSwagger(SwaggerJson);
 
             // Perform api Requests
-            var responses = await RequestHandler.QueryApis(requestDetails);
+            var requestHandlerOutput = await RequestHandler.QueryApis(swaggerProcessorOuput);
 
             // Get diffs on responses
-            var results = CompareService.CompareResponses(responses);
+            var ComparerOutput = CompareService.CompareResponses(requestHandlerOutput);
 
             // Generate output
-            var outputFileNames = UIGeneratorService.GenerateUI(results);
+            var outputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
 
             return outputFileNames;
         }

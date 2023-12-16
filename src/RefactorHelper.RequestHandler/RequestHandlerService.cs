@@ -1,6 +1,7 @@
 ﻿using RefactorHelper.Models;
 using Newtonsoft.Json;
 using RefactorHelper.Models.RequestHandler;
+using RefactorHelper.Models.SwaggerProcessor;
 
 namespace RefactorHelper.RequestHandler
 {
@@ -22,19 +23,19 @@ namespace RefactorHelper.RequestHandler
             _client2 = client2;
         }
 
-        public async Task<RequestHandlerResponse> QueryApis(List<RequestDetails> requests)
+        public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
         {
-            var tasks = requests.Select(x => GetResponses(x.Path)).ToList();
+            var tasks = requests.Requests.Select(x => GetResponses(x.Path)).ToList();
 
             await Task.WhenAll(tasks);
 
-            return new RequestHandlerResponse
+            return new RequestHandlerOutput
             {
                 Results = [.. tasks.Select(x => x.Result).OrderBy(x => x.Path)]
             };
         }
 
-        public async Task<RefactorTestResult> GetResponses(string path)
+        public async Task<RefactorTestResultPair> GetResponses(string path)
         {
             var request1 = _client1.GetAsync(path);
             var request2 = _client2.GetAsync(path);
@@ -47,15 +48,20 @@ namespace RefactorHelper.RequestHandler
             response1 = TryFormatResponse(response1);
             response2 = TryFormatResponse(response2);
 
+            return new RefactorTestResultPair
+            {
+                Path = path,
+                Result1 = GetRefactorTestResult(response1, request1.Result),
+                Result2 = GetRefactorTestResult(response2, request2.Result),
+            };
+        }
+
+        private RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
+        {
             return new RefactorTestResult
             {
-                Response1Object = request1.Result,
-                Response1 = response1,
-                ResultCode1 = request1.Result.StatusCode,
-                Response2Object = request2.Result,
-                Response2 = response2,
-                ResultCode2 = request2.Result.StatusCode,
-                Path = path
+                Response = result,
+                ResponseObject = response
             };
         }
 

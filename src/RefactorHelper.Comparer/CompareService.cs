@@ -1,6 +1,8 @@
-﻿using DiffMatchPatch;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models;
+using RefactorHelper.Models.Comparer;
+using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
+using Swashbuckle.Swagger;
 
 namespace RefactorHelper.Comparer
 {
@@ -13,33 +15,41 @@ namespace RefactorHelper.Comparer
             _dmp = new diff_match_patch();
         }
 
-        public List<CompareResult> CompareResponses(RequestHandlerResponse responseData)
+        public ComparerOutput CompareResponses(RequestHandlerOutput responseData)
         {
-            var result = new List<CompareResult>();
+            var result = new ComparerOutput();
 
-            foreach(var response in responseData.Results)
+            foreach(var testresultPair in responseData.Results)
             {
                 // Get diffs
-                var diffs1 = _dmp.diff_main(response.Response1, response.Response2);
-                var diffs2 = _dmp.diff_main(response.Response2, response.Response1);
+                var diffs1 = _dmp.diff_main(testresultPair.Result1.Response, testresultPair.Result2.Response);
+                var diffs2 = _dmp.diff_main(testresultPair.Result2.Response, testresultPair.Result1.Response);
 
                 // Only show relevant differences
                 _dmp.diff_cleanupSemantic(diffs1);
                 _dmp.diff_cleanupSemantic(diffs2);
 
-                result.Add(new CompareResult
+                result.Results.Add(new CompareResultPair
                 {
-                    Result1 = response.Response1,
-                    Result2 = response.Response2,
-                    Changed = response.Response1 != response.Response2,
-                    Diffs1 = diffs1,
-                    Diffs2 = diffs2,
-                    Path = response.Path,
-                    FilePath = $"{MakePathSafe(response.Path)}.html"
+                    Changed = testresultPair.Result1.Response != testresultPair.Result2.Response,
+                    Path = testresultPair.Path,
+                    FilePath = $"{MakePathSafe(testresultPair.Path)}.html",
+                    Result1 = GetCompareResult(testresultPair.Result1, diffs1),
+                    Result2 = GetCompareResult(testresultPair.Result1, diffs2)
                 });
             }
 
             return result;
+        }
+
+        private CompareResult GetCompareResult(RefactorTestResult result, List<Diff> diffs)
+        {
+            return new CompareResult
+            {
+                Diffs = diffs,
+                Result = result.Response,
+                Response = result.ResponseObject
+            };
         }
 
         private string MakePathSafe(string url)

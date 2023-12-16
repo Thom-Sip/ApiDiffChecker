@@ -10,4 +10,10 @@
     <ProjectReference Include="..\RefactorHelper.Models\RefactorHelper.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Files\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

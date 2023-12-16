@@ -1,12 +1,12 @@
-﻿namespace RefactorHelper.Models
+﻿namespace RefactorHelper.Models.Config
 {
     public class RefactorHelperSettings
     {
-        public required string OutputFolder { get; set; }
+        public string OutputFolder { get; set; } = string.Empty;
 
-        public required string ContentFolder { get; set; }
+        public string ContentFolder { get; set; } = string.Empty;
 
-        public required string swaggerUrl { get; set; }
+        public required string SwaggerUrl { get; set; }
 
         public required string BaseUrl1 { get; set; }
 

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Sample_Api_Demo.Models;
+using Custom_UI_Demo.Models;
 
-namespace Sample_Api_Demo.Controllers
+namespace Custom_UI_Demo.Controllers
 {
     [ApiController]
     [Route("[controller]")]
