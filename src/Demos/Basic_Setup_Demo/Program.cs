@@ -39,7 +39,7 @@ namespace Basic_Setup_Demo
             });
             // ===================== End Dependency Injection =====================
 
-            var app = builder.Build();
+            WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
@@ -53,25 +53,8 @@ namespace Basic_Setup_Demo
 
             app.MapControllers();
 
-            app.MapGet("/run-refactor-helper", async context => {
-                context.Response.Headers["content-type"] = "text/html";
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.Run();
-
-                if (result.Any())
-                {
-                    var p = new Process
-                    {
-                        StartInfo = new ProcessStartInfo(result.First())
-                        {
-                            UseShellExecute = true
-                        }
-                    };
-                    p.Start();
-                }
-
-                await context.Response.WriteAsync("Thank you for using RefactorHelper");
-            });
+            // Setup Di
+            app.AddRefactorHelperEndpoint();
 
             app.Run();
         }
