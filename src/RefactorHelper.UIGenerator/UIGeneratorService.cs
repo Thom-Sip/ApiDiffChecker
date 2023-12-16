@@ -31,8 +31,8 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var result in results.Results)
             {
-                var original = diff_prettyHtml_custom(result.Diffs1, result);
-                var changed = diff_prettyHtml_custom(result.Diffs2, result);
+                var original = diff_prettyHtml_custom(result.Result1, result);
+                var changed = diff_prettyHtml_custom(result.Result2, result);
 
                 var html = _template
                     .Replace("[CONTENT_ORIGINAL]", original)
