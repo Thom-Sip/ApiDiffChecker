@@ -18,9 +18,9 @@ namespace Basic_Setup_Demo
             {
                 OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
                 ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
-                swaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
-                BaseUrl1 = "https://localhost:44308",
-                BaseUrl2 = "https://localhost:44308",
+                swaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
+                BaseUrl1 = "https://localhost:44371",
+                BaseUrl2 = "https://localhost:44371",
                 DefaultParameters =
                 [
                     new("orderId", "AA072"),
@@ -49,8 +49,6 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
