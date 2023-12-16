@@ -18,15 +18,13 @@ namespace Basic_Setup_Demo.Controllers
             _logger = logger;
         }
 
-        [HttpGet("{customerId}/orders/{orderId}")]
-        public IEnumerable<string> GetThings(int customerId, string orderId, [FromQuery]string message = "", [FromQuery] string key = "")
+        [HttpGet("{customerId}")]
+        public IEnumerable<string> GetThings(int customerId, [FromQuery]string message = "")
         {
             return new List<string>
             {
                 $"Customer_{customerId}",
-                $"Order_{orderId}",
                 $"Message_{message}",
-                $"Key_{key}",
                 Summaries[Random.Shared.Next(Summaries.Length)],
                 Summaries[Random.Shared.Next(Summaries.Length)],
                 Summaries[Random.Shared.Next(Summaries.Length)]

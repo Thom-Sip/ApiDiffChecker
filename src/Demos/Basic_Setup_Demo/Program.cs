@@ -19,11 +19,6 @@ namespace Basic_Setup_Demo
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
-                DefaultParameters =
-                [
-                    new("orderId", "AA072"),
-                    new("key", "Qwerty1234"),
-                ],
                 Runs =
                 [
                     [
