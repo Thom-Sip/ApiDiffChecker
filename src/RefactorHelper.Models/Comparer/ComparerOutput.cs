@@ -2,6 +2,6 @@
 {
     public class ComparerOutput
     {
-        public required List<CompareResult> Results { get; init; }
+        public List<CompareResultPair> Results { get; init; } = [];
     }
 }

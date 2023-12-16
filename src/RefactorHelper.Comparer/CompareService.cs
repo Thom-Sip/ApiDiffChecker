@@ -16,7 +16,7 @@ namespace RefactorHelper.Comparer
 
         public ComparerOutput CompareResponses(RequestHandlerOutput responseData)
         {
-            var result = new List<CompareResult>();
+            var result = new ComparerOutput();
 
             foreach(var response in responseData.Results)
             {
@@ -28,19 +28,25 @@ namespace RefactorHelper.Comparer
                 _dmp.diff_cleanupSemantic(diffs1);
                 _dmp.diff_cleanupSemantic(diffs2);
 
-                result.Add(new CompareResult
+                result.Results.Add(new CompareResultPair
                 {
-                    Result1 = response.Response1,
-                    Result2 = response.Response2,
                     Changed = response.Response1 != response.Response2,
-                    Diffs1 = diffs1,
-                    Diffs2 = diffs2,
                     Path = response.Path,
-                    FilePath = $"{MakePathSafe(response.Path)}.html"
+                    FilePath = $"{MakePathSafe(response.Path)}.html",
+                    Result1 = new CompareResult
+                    {
+                        Diffs = diffs1,
+                        Result = response.Response1
+                    },
+                    Result2 = new CompareResult
+                    {
+                        Diffs = diffs2,
+                        Result = response.Response2
+                    }
                 });
             }
 
-            return new ComparerOutput { Results = result };
+            return result;
         }
 
         private string MakePathSafe(string url)
