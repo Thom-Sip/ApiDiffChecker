@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
 using RefactorHelper.App;
 using RefactorHelper.Models.Config;
 using System.Diagnostics;
@@ -61,22 +58,20 @@ namespace Basic_Setup_Demo
                 var service = app.Services.GetRequiredService<RefactorHelperApp>();
                 var result = await service.Run();
 
-                var output = "<html>" +
-                    "<head><title></title></head>" +
-                    "<body>" +
-                    $"<a href=\"{result[0]}\">{result[0]}</a>" +
-                    "</body></html>";
+                if (result.Any())
+                {
+                    var p = new Process
+                    {
+                        StartInfo = new ProcessStartInfo(result.First())
+                        {
+                            UseShellExecute = true
+                        }
+                    };
+                    p.Start();
+                }
 
-                await context.Response.WriteAsync(output);
+                await context.Response.WriteAsync("Thank you for using RefactorHelper");
             });
-
-            
-
-            // Build the service provider
-            //var serviceProvider = builder.Services
-
-            // Get the service from the service provider
-            //var myService = serviceProvider.GetRequiredService<IMyService>();
 
             app.Run();
         }
