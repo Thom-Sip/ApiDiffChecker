@@ -22,12 +22,8 @@ namespace Basic_Setup_Demo
                 DefaultParameters = [new("customerId", "4007")],
                 Runs =
                 [
-                    [
-                        new("message", "Foo"),
-                    ],
-                    [
-                        new("message", "Bar"),
-                    ],
+                    [ new("message", "Foo") ],
+                    [ new("message", "Bar") ],
                 ]
             });
             // ===================== End Dependency Injection =====================
