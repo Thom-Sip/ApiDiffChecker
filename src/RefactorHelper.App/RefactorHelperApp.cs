@@ -59,16 +59,16 @@ namespace RefactorHelper.App
             }     
 
             // Get requests from swagger
-            var requestDetails = SwaggerProcessor.ProcessSwagger(SwaggerJson);
+            var swaggerProcessorOuput = SwaggerProcessor.ProcessSwagger(SwaggerJson);
 
             // Perform api Requests
-            var responses = await RequestHandler.QueryApis(requestDetails);
+            var requestHandlerOutput = await RequestHandler.QueryApis(swaggerProcessorOuput);
 
             // Get diffs on responses
-            var results = CompareService.CompareResponses(responses);
+            var ComparerOutput = CompareService.CompareResponses(requestHandlerOutput);
 
             // Generate output
-            var outputFileNames = UIGeneratorService.GenerateUI(results);
+            var outputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
 
             return outputFileNames;
         }
