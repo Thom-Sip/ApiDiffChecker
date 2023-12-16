@@ -23,13 +23,13 @@ namespace RefactorHelper.RequestHandler
             _client2 = client2;
         }
 
-        public async Task<RequestHandlerResponse> QueryApis(SwaggerProcessorResult requests)
+        public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
         {
             var tasks = requests.Requests.Select(x => GetResponses(x.Path)).ToList();
 
             await Task.WhenAll(tasks);
 
-            return new RequestHandlerResponse
+            return new RequestHandlerOutput
             {
                 Results = [.. tasks.Select(x => x.Result).OrderBy(x => x.Path)]
             };

@@ -1,5 +1,6 @@
-﻿using DiffMatchPatch;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models;
+using RefactorHelper.Models.Comparer;
+using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
 
 namespace RefactorHelper.Comparer
@@ -13,7 +14,7 @@ namespace RefactorHelper.Comparer
             _dmp = new diff_match_patch();
         }
 
-        public List<CompareResult> CompareResponses(RequestHandlerResponse responseData)
+        public ComparerOutput CompareResponses(RequestHandlerOutput responseData)
         {
             var result = new List<CompareResult>();
 
@@ -39,7 +40,7 @@ namespace RefactorHelper.Comparer
                 });
             }
 
-            return result;
+            return new ComparerOutput { Results = result };
         }
 
         private string MakePathSafe(string url)

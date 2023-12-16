@@ -1,6 +1,6 @@
-﻿using DiffMatchPatch;
+﻿using RefactorHelper.Models.External;
 
-namespace RefactorHelper.Models
+namespace RefactorHelper.Models.Comparer
 {
     public class CompareResult
     {

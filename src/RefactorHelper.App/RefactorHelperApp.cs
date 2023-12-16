@@ -1,8 +1,8 @@
 ﻿using RefactorHelper.Comparer;
-using RefactorHelper.Models;
 using RefactorHelper.RequestHandler;
 using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
+using RefactorHelper.Models.Config;
 
 namespace RefactorHelper.App
 {

@@ -1,5 +1,5 @@
-﻿using DiffMatchPatch;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models.Comparer;
+using RefactorHelper.Models.External;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -20,14 +20,14 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
-        public List<string> GenerateUI(List<CompareResult> results)
+        public List<string> GenerateUI(ComparerOutput results)
         {
             SetupRunfolder();
-            var requestsFailedListHtml = GetSidebarContent(results.Where(x => x.Changed), _runfolder);
-            var requestsSuccessListHtml = GetSidebarContent(results.Where(x => !x.Changed), _runfolder);
+            var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
+            var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed), _runfolder);
             var urls = new List<string>();
 
-            foreach (var result in results)
+            foreach (var result in results.Results)
             {
                 var original = diff_prettyHtml_thom(result.Diffs1, result);
                 var changed = diff_prettyHtml_thom(result.Diffs2, result);

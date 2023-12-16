@@ -1,4 +1,4 @@
-﻿namespace RefactorHelper.Models
+﻿namespace RefactorHelper.Models.Config
 {
     public class RefactorHelperSettings
     {

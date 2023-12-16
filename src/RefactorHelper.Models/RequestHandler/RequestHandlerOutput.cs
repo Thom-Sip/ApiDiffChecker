@@ -2,7 +2,7 @@
 
 namespace RefactorHelper.Models
 {
-    public class RequestHandlerResponse
+    public class RequestHandlerOutput
     {
         public required List<RefactorTestResult> Results { get; init; }
     }
