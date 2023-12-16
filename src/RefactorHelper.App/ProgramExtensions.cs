@@ -18,11 +18,11 @@ namespace RefactorHelper.App
         public static void AddRefactorHelperEndpoint(this WebApplication app)
         {
             app.MapGet("/run-refactor-helper", async context => {
-                context.Response.Headers["content-type"] = "text/html";
+                context.Response.Headers.ContentType = "text/html";
                 var service = app.Services.GetRequiredService<RefactorHelperApp>();
                 var result = await service.Run();
 
-                if (result.Any())
+                if (result.Count > 0)
                 {
                     var p = new Process
                     {
