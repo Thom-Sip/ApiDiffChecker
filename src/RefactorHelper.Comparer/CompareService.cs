@@ -1,5 +1,6 @@
 ﻿using DiffMatchPatch;
 using RefactorHelper.Models;
+using RefactorHelper.Models.RequestHandler;
 
 namespace RefactorHelper.Comparer
 {
@@ -12,11 +13,11 @@ namespace RefactorHelper.Comparer
             _dmp = new diff_match_patch();
         }
 
-        public List<CompareResult> CompareResponses(List<RefactorTestResponse> responseData)
+        public List<CompareResult> CompareResponses(RequestHandlerResponse responseData)
         {
             var result = new List<CompareResult>();
 
-            foreach(var response in responseData)
+            foreach(var response in responseData.Results)
             {
                 // Get diffs
                 var diffs1 = _dmp.diff_main(response.Response1, response.Response2);

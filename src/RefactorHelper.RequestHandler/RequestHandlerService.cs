@@ -1,5 +1,6 @@
 ﻿using RefactorHelper.Models;
 using Newtonsoft.Json;
+using RefactorHelper.Models.RequestHandler;
 
 namespace RefactorHelper.RequestHandler
 {
@@ -21,16 +22,19 @@ namespace RefactorHelper.RequestHandler
             _client2 = client2;
         }
 
-        public async Task<List<RefactorTestResponse>> QueryApis(List<RequestDetails> requests)
+        public async Task<RequestHandlerResponse> QueryApis(List<RequestDetails> requests)
         {
             var tasks = requests.Select(x => GetResponses(x.Path)).ToList();
 
             await Task.WhenAll(tasks);
 
-            return tasks.Select(x => x.Result).OrderBy(x => x.Path).ToList();
+            return new RequestHandlerResponse
+            {
+                Results = [.. tasks.Select(x => x.Result).OrderBy(x => x.Path)]
+            };
         }
 
-        public async Task<RefactorTestResponse> GetResponses(string path)
+        public async Task<RefactorTestResult> GetResponses(string path)
         {
             var request1 = _client1.GetAsync(path);
             var request2 = _client2.GetAsync(path);
@@ -43,10 +47,12 @@ namespace RefactorHelper.RequestHandler
             response1 = TryFormatResponse(response1);
             response2 = TryFormatResponse(response2);
 
-            return new RefactorTestResponse
+            return new RefactorTestResult
             {
+                Response1Object = request1.Result,
                 Response1 = response1,
                 ResultCode1 = request1.Result.StatusCode,
+                Response2Object = request2.Result,
                 Response2 = response2,
                 ResultCode2 = request2.Result.StatusCode,
                 Path = path
