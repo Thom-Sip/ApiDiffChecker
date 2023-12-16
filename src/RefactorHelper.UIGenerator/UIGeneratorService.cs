@@ -1,6 +1,7 @@
 ﻿using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using System.Text;
+using System.Threading.Channels;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -9,10 +10,12 @@ namespace RefactorHelper.UIGenerator
         protected string _outputFolder { get; set; }
         protected string _runfolder { get; set; }
         protected string _template { get; set; }
+        protected string _diffBoxTemplate { get; set; }
 
         public UIGeneratorService(string contentFolder, string outputFolder)
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
+            _diffBoxTemplate = File.ReadAllText($"{contentFolder}/DiffBoxTemplate.html");
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
 
@@ -29,13 +32,14 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var result in results.Results)
             {
-                var original = diff_prettyHtml_thom(result.Result1.Diffs, result);
-                var changed = diff_prettyHtml_thom(result.Result2.Diffs, result);
+                var original = diff_prettyHtml_thom(result.Result1, result);
+                var changed = diff_prettyHtml_thom(result.Result2, result);
 
-                var html = _template.Replace("[CONTENT_ORIGINAL]", original);
-                html = html.Replace("[CONTENT_CHANGED]", changed);
-                html = html.Replace("[REQUESTS_FAILED]", requestsFailedListHtml);
-                html = html.Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
+                var html = _template
+                    .Replace("[CONTENT_ORIGINAL]", original)
+                    .Replace("[CONTENT_CHANGED]", changed)
+                    .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
+                    .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
 
                 var outputFileName = $"{_runfolder}/{result.FilePath}";
 
@@ -72,15 +76,11 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_thom(List<Diff> diffs, CompareResultPair compare)
+        private string diff_prettyHtml_thom(CompareResult result, CompareResultPair compare)
         {
-            StringBuilder html = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            html.Append($"<h3>{compare.Path}</h3>");
-
-            //html.Append($"<div>{compare.}</div>");
-
-            foreach (Diff aDiff in diffs)
+            foreach (Diff aDiff in result.Diffs)
             {
                 string text = aDiff.text
                     .Replace("&", "&amp;")
@@ -90,19 +90,25 @@ namespace RefactorHelper.UIGenerator
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
-                        html.Append("<ins style=\"background:#0f8009;\">").Append(text)
+                        sb.Append("<ins style=\"background:#0f8009;\">").Append(text)
                             .Append("</ins>");
                         break;
                     case Operation.DELETE:
-                        html.Append("<del style=\"background:#ab1b11;\">").Append(text)
+                        sb.Append("<del style=\"background:#ab1b11;\">").Append(text)
                             .Append("</del>");
                         break;
                     case Operation.EQUAL:
-                        html.Append("<span>").Append(text).Append("</span>");
+                        sb.Append("<span>").Append(text).Append("</span>");
                         break;
                 }
             }
-            return html.ToString();
+
+            var html = _diffBoxTemplate
+                  .Replace("[TITLE]", compare.Path)
+                  .Replace("[URL]", $"{result.Response?.RequestMessage?.RequestUri}")
+                  .Replace("[CONTENT]", sb.ToString());
+
+            return html;
         }
     }
 }
