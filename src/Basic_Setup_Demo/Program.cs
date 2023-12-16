@@ -13,8 +13,8 @@ namespace Basic_Setup_Demo
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Refactor Helper Settings
-            var settings = new RefactorHelperSettings
+            // ==================== Setup Dependency Injection ====================
+            builder.Services.AddRefactorHelper(new RefactorHelperSettings
             {
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
@@ -35,10 +35,8 @@ namespace Basic_Setup_Demo
                         new("message", "Bye_world"),
                     ],
                 ]
-            };
-
-            // Setup Dependency Injection
-            builder.Services.AddRefactorHelper(settings);
+            });
+            // ===================== End Dependency Injection =====================
 
             var app = builder.Build();
 
