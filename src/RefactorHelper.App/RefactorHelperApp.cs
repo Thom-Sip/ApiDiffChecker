@@ -1,8 +1,8 @@
 ﻿using RefactorHelper.Comparer;
-using RefactorHelper.Models;
 using RefactorHelper.RequestHandler;
 using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
+using RefactorHelper.Models.Config;
 
 namespace RefactorHelper.App
 {
@@ -68,16 +68,16 @@ namespace RefactorHelper.App
             }     
 
             // Get requests from swagger
-            var requestDetails = SwaggerProcessor.ProcessSwagger(SwaggerJson);
+            var swaggerProcessorOuput = SwaggerProcessor.ProcessSwagger(SwaggerJson);
 
             // Perform api Requests
-            var responses = await RequestHandler.QueryApis(requestDetails);
+            var requestHandlerOutput = await RequestHandler.QueryApis(swaggerProcessorOuput);
 
             // Get diffs on responses
-            var results = CompareService.CompareResponses(responses);
+            var ComparerOutput = CompareService.CompareResponses(requestHandlerOutput);
 
             // Generate output
-            var outputFileNames = UIGeneratorService.GenerateUI(results);
+            var outputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
 
             return outputFileNames;
         }

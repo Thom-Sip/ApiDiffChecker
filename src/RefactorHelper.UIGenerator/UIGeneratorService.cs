@@ -1,5 +1,5 @@
-﻿using DiffMatchPatch;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models.Comparer;
+using RefactorHelper.Models.External;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -9,10 +9,12 @@ namespace RefactorHelper.UIGenerator
         protected string _outputFolder { get; set; }
         protected string _runfolder { get; set; }
         protected string _template { get; set; }
+        protected string _diffBoxTemplate { get; set; }
 
         public UIGeneratorService(string contentFolder, string outputFolder)
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
+            _diffBoxTemplate = File.ReadAllText($"{contentFolder}/DiffBoxTemplate.html");
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
 
@@ -20,22 +22,23 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
-        public List<string> GenerateUI(List<CompareResult> results)
+        public List<string> GenerateUI(ComparerOutput results)
         {
             SetupRunfolder();
-            var requestsFailedListHtml = GetSidebarContent(results.Where(x => x.Changed), _runfolder);
-            var requestsSuccessListHtml = GetSidebarContent(results.Where(x => !x.Changed), _runfolder);
+            var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
+            var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed), _runfolder);
             var urls = new List<string>();
 
-            foreach (var result in results)
+            foreach (var result in results.Results)
             {
                 var original = diff_prettyHtml_custom(result.Diffs1, result);
                 var changed = diff_prettyHtml_custom(result.Diffs2, result);
 
-                var html = _template.Replace("[CONTENT_ORIGINAL]", original);
-                html = html.Replace("[CONTENT_CHANGED]", changed);
-                html = html.Replace("[REQUESTS_FAILED]", requestsFailedListHtml);
-                html = html.Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
+                var html = _template
+                    .Replace("[CONTENT_ORIGINAL]", original)
+                    .Replace("[CONTENT_CHANGED]", changed)
+                    .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
+                    .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
 
                 var outputFileName = $"{_runfolder}/{result.FilePath}";
 
@@ -56,12 +59,12 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_runfolder);
         }
 
-        private string GetSidebarContent(IEnumerable<CompareResult> results, string runFolder)
+        private string GetSidebarContent(IEnumerable<CompareResultPair> resultPairs, string runFolder)
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
 
-            foreach (var item in results)
+            foreach (var item in resultPairs)
             {
                 sb.Append($"<li>" +
                     $"<a href=\"{runFolder}/{item.FilePath}\">{item.Path}</a>" +
@@ -72,13 +75,11 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_custom(List<Diff> diffs, CompareResult compare)
+        private string diff_prettyHtml_custom(CompareResult result, CompareResultPair compare)
         {
-            StringBuilder html = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
-            html.Append($"<h3>{compare.Path}</h3>");
-
-            foreach (Diff aDiff in diffs)
+            foreach (Diff aDiff in result.Diffs)
             {
                 string text = aDiff.text
                     .Replace("&", "&amp;")
@@ -88,19 +89,26 @@ namespace RefactorHelper.UIGenerator
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
-                        html.Append("<ins style=\"background:#0f8009;\">").Append(text)
+                        sb.Append("<ins style=\"background:#0f8009;\">").Append(text)
                             .Append("</ins>");
                         break;
                     case Operation.DELETE:
-                        html.Append("<del style=\"background:#ab1b11;\">").Append(text)
+                        sb.Append("<del style=\"background:#ab1b11;\">").Append(text)
                             .Append("</del>");
                         break;
                     case Operation.EQUAL:
-                        html.Append("<span>").Append(text).Append("</span>");
+                        sb.Append("<span>").Append(text).Append("</span>");
                         break;
                 }
             }
-            return html.ToString();
+
+            var html = _diffBoxTemplate
+                  .Replace("[TITLE]", compare.Path)
+                  .Replace("[URL]", $"{result.Response?.RequestMessage?.RequestUri}")
+                  .Replace("[RESULTCODE]", $"{result.Response?.StatusCode.ToString() ?? "N/A"}")
+                  .Replace("[CONTENT]", sb.ToString());
+
+            return html;
         }
     }
 }

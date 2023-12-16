@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RefactorHelper.Models;
+using RefactorHelper.Models.Config;
 
 namespace RefactorHelper.App
 {
