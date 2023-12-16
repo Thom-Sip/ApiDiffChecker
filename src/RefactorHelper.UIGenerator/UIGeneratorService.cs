@@ -1,7 +1,6 @@
 ﻿using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using System.Text;
-using System.Threading.Channels;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -32,8 +31,8 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var result in results.Results)
             {
-                var original = diff_prettyHtml_thom(result.Result1, result);
-                var changed = diff_prettyHtml_thom(result.Result2, result);
+                var original = diff_prettyHtml_custom(result.Result1, result);
+                var changed = diff_prettyHtml_custom(result.Result2, result);
 
                 var html = _template
                     .Replace("[CONTENT_ORIGINAL]", original)
@@ -76,7 +75,7 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_thom(CompareResult result, CompareResultPair compare)
+        private string diff_prettyHtml_custom(CompareResult result, CompareResultPair compare)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -106,6 +105,7 @@ namespace RefactorHelper.UIGenerator
             var html = _diffBoxTemplate
                   .Replace("[TITLE]", compare.Path)
                   .Replace("[URL]", $"{result.Response?.RequestMessage?.RequestUri}")
+                  .Replace("[RESULTCODE]", $"{result.Response?.StatusCode.ToString() ?? "N/A"}")
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
