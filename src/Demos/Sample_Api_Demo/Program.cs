@@ -1,5 +1,5 @@
 using RefactorHelper.App;
-using RefactorHelper.Models;
+using RefactorHelper.Models.Config;
 
 namespace Sample_Api_Demo
 {
