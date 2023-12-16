@@ -29,8 +29,8 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var result in results)
             {
-                var original = diff_prettyHtml_thom(result.Diffs1, result);
-                var changed = diff_prettyHtml_thom(result.Diffs2, result);
+                var original = diff_prettyHtml_custom(result.Diffs1, result);
+                var changed = diff_prettyHtml_custom(result.Diffs2, result);
 
                 var html = _template.Replace("[CONTENT_ORIGINAL]", original);
                 html = html.Replace("[CONTENT_CHANGED]", changed);
@@ -72,7 +72,7 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_thom(List<Diff> diffs, CompareResult compare)
+        private string diff_prettyHtml_custom(List<Diff> diffs, CompareResult compare)
         {
             StringBuilder html = new StringBuilder();
 
