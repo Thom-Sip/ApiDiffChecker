@@ -19,6 +19,7 @@ namespace Basic_Setup_Demo.Controllers
         }
 
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IEnumerable<string>> Get()
         {
             var outputfilenames = await App.Run();
