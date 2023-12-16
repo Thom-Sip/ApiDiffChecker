@@ -23,7 +23,7 @@ namespace RefactorHelper.SwaggerProcessor
 
             foreach (var run in Settings.Runs)
             {
-                result.AddRange(doc.paths.Select(p => GetRequestDetails(p, run)).ToList());
+                result.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
             }
 
             return new SwaggerProcessorOutput
@@ -34,17 +34,12 @@ namespace RefactorHelper.SwaggerProcessor
 
         private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, List<Parameter> parameters)
         {
-            if(path.Value.get != null)
+            return new RequestDetails 
             {
-                return new RequestDetails 
-                {
-                    Template = path.Key.ToLower(),
-                    Path = GetPath(path.Key.ToLower(), path.Value.get, parameters),
-                    Operation = path.Value.get,
-                };
-            }
-
-            throw new NotImplementedException();
+                Template = path.Key.ToLower(),
+                Path = GetPath(path.Key.ToLower(), path.Value.get, parameters),
+                Operation = path.Value.get,
+            };
         }
 
         private string GetPath(string template, Operation operation, List<Parameter> parameters)
@@ -57,11 +52,11 @@ namespace RefactorHelper.SwaggerProcessor
                 {
                     if(TryGetValue(param.name, out var result, parameters))
                     {
-                        template = template.Replace($"{{{param.name.ToLower()}}}", result);
+                        template = ReplaceUrlParam(template, param, result);
                     }
                     else if (TryGetValue(param.name, out var result2, Settings.DefaultParameters))
                     {
-                        template = template.Replace($"{{{param.name.ToLower()}}}", result2);
+                        template = ReplaceUrlParam(template, param, result2);
                     }
 
                 }
@@ -92,6 +87,11 @@ namespace RefactorHelper.SwaggerProcessor
         {
             value = Params.FirstOrDefault(x => x.Key.Equals(key, StringComparison.OrdinalIgnoreCase))?.Value;
             return value != null;
+        }
+
+        private static string ReplaceUrlParam(string template, Swashbuckle.Swagger.Parameter param, string? result)
+        {
+            return template.Replace($"{{{param.name.ToLower()}}}", result);
         }
     }
 }

@@ -19,15 +19,14 @@ namespace Basic_Setup_Demo
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
+                DefaultParameters = [new("customerId", "4007")],
                 Runs =
                 [
                     [
-                        new("customerId", "12"),
-                        new("message", "Hello_world"),
+                        new("message", "Foo"),
                     ],
                     [
-                        new("customerId", "69"),
-                        new("message", "Bye_world"),
+                        new("message", "Bar"),
                     ],
                 ]
             });
