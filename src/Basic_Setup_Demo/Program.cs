@@ -16,9 +16,7 @@ namespace Basic_Setup_Demo
             // Refactor Helper Settings
             var settings = new RefactorHelperSettings
             {
-                OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
-                ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
-                swaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
+                SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
                 DefaultParameters =
@@ -58,8 +56,5 @@ namespace Basic_Setup_Demo
 
             app.Run();
         }
-
-        private static string GetBinPath() =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
     }
 }

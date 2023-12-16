@@ -24,6 +24,12 @@ namespace RefactorHelper.App
         {
             Settings = settings;
 
+            if (string.IsNullOrWhiteSpace(Settings.OutputFolder))
+                Settings.OutputFolder = $"{GetBinPath()}/Files/Output/";
+
+            if (string.IsNullOrWhiteSpace(Settings.ContentFolder))
+                Settings.ContentFolder = $"{GetBinPath()}/Files/Content/";
+
             // Setup Swagger Processor
             SwaggerProcessor = new SwaggerProcessorService(Settings);
 
@@ -46,6 +52,9 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
+        private static string GetBinPath() =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
         public async Task<List<string>> Run()
         {
             if (!string.IsNullOrWhiteSpace(SwaggerJson))
@@ -54,7 +63,7 @@ namespace RefactorHelper.App
             if(string.IsNullOrWhiteSpace(SwaggerJson))
             {
                 var client = new HttpClient();
-                var result = await client.GetAsync(Settings.swaggerUrl);
+                var result = await client.GetAsync(Settings.SwaggerUrl);
                 SwaggerJson = await result.Content.ReadAsStringAsync();
             }     
 

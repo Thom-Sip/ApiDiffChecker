@@ -18,7 +18,7 @@ namespace Custom_UI_Demo
             {
                 OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
                 ContentFolder = $"{Environment.CurrentDirectory}/wwwroot/RefactorHelper/Content/",
-                swaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
+                SwaggerUrl = "https://localhost:44308/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44308",
                 BaseUrl2 = "https://localhost:44308",
                 DefaultParameters =
