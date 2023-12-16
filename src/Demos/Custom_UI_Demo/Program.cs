@@ -48,6 +48,10 @@ namespace Custom_UI_Demo
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                // ==================== Setup Trigger Endpoint ====================
+                app.AddRefactorHelperEndpoint();
+                // ===================== End Trigger Endpoint =====================
             }
 
             app.UseStaticFiles();

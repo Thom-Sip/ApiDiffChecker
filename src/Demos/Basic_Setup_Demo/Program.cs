@@ -1,6 +1,5 @@
 using RefactorHelper.App;
 using RefactorHelper.Models.Config;
-using System.Diagnostics;
 
 namespace Basic_Setup_Demo
 {
@@ -45,6 +44,10 @@ namespace Basic_Setup_Demo
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                // ==================== Setup Trigger Endpoint ====================
+                app.AddRefactorHelperEndpoint();
+                // ===================== End Trigger Endpoint =====================
             }
 
             app.UseHttpsRedirection();
@@ -52,9 +55,6 @@ namespace Basic_Setup_Demo
             app.UseAuthorization();
 
             app.MapControllers();
-
-            // Setup Di
-            app.AddRefactorHelperEndpoint();
 
             app.Run();
         }

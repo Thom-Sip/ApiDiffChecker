@@ -48,9 +48,6 @@ namespace RefactorHelper.App
 
         public async Task<List<string>> Run()
         {
-            if (!string.IsNullOrWhiteSpace(SwaggerJson))
-                return [];
-
             if(string.IsNullOrWhiteSpace(SwaggerJson))
             {
                 var client = new HttpClient();
