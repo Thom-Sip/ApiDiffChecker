@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Custom_UI_Demo", "Demos\Custom_UI_Demo\Custom_UI_Demo.csproj", "{BD34B761-A215-4ADD-BC84-8171970EB6C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic_Setup_Demo", "Basic_Setup_Demo\Basic_Setup_Demo.csproj", "{5887A155-758C-4916-84DC-9D69FB33BFD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic_Setup_Demo", "demos\Basic_Setup_Demo\Basic_Setup_Demo.csproj", "{5887A155-758C-4916-84DC-9D69FB33BFD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
