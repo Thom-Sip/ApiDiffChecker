@@ -8,9 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\RefactorHelper\Input\file1.json" />
-    <Content Remove="wwwroot\RefactorHelper\Input\file2.json" />
-    <Content Remove="wwwroot\RefactorHelper\Input\swagger.json" />
     <Content Remove="Properties\launchSettings.json" />
   </ItemGroup>
 
@@ -19,15 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\RefactorHelper\Input\file1.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="wwwroot\RefactorHelper\Input\file2.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="wwwroot\RefactorHelper\Input\swagger.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Properties\launchSettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
