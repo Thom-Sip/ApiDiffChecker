@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RefactorHelper.Models;
+using RefactorHelper.Models.SwaggerProcessor;
 using Swashbuckle.Swagger;
 using Parameter = RefactorHelper.Models.Parameter;
 
@@ -14,7 +15,7 @@ namespace RefactorHelper.SwaggerProcessor
             Settings = settings;
         }
 
-        public List<RequestDetails> ProcessSwagger(string swaggerJson)
+        public SwaggerProcessorResult ProcessSwagger(string swaggerJson)
         {
             var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
 
@@ -25,7 +26,10 @@ namespace RefactorHelper.SwaggerProcessor
                 result.AddRange(doc.paths.Select(p => GetRequestDetails(p, run)).ToList());
             }
 
-            return result.DistinctBy(x => x.Path).ToList();
+            return new SwaggerProcessorResult
+            {
+                Requests = result.DistinctBy(x => x.Path).ToList()
+            };
         }
 
         private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, List<Parameter> parameters)

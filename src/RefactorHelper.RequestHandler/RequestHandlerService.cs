@@ -1,6 +1,7 @@
 ﻿using RefactorHelper.Models;
 using Newtonsoft.Json;
 using RefactorHelper.Models.RequestHandler;
+using RefactorHelper.Models.SwaggerProcessor;
 
 namespace RefactorHelper.RequestHandler
 {
@@ -22,9 +23,9 @@ namespace RefactorHelper.RequestHandler
             _client2 = client2;
         }
 
-        public async Task<RequestHandlerResponse> QueryApis(List<RequestDetails> requests)
+        public async Task<RequestHandlerResponse> QueryApis(SwaggerProcessorResult requests)
         {
-            var tasks = requests.Select(x => GetResponses(x.Path)).ToList();
+            var tasks = requests.Requests.Select(x => GetResponses(x.Path)).ToList();
 
             await Task.WhenAll(tasks);
 
