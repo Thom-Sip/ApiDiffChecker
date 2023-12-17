@@ -36,7 +36,8 @@ namespace RefactorHelper.App
                 new HttpClient
                 {
                     BaseAddress = new Uri(Settings.BaseUrl2)
-                }
+                }, 
+                Settings
             );
 
             // Compare Service

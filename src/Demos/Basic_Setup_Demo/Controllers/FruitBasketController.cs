@@ -19,7 +19,7 @@ namespace Basic_Setup_Demo.Controllers
         }
 
         [HttpGet("{customerId}")]
-        public IEnumerable<string> GetThings(int customerId, [FromQuery]string message = "")
+        public IEnumerable<string> GetThings(int customerId, [FromQuery] string message = "")
         {
             return new List<string>
             {

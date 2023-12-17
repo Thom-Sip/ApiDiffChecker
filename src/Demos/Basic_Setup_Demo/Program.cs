@@ -18,7 +18,8 @@ namespace Basic_Setup_Demo
                 [
                     [new("message", "Foo")],
                     [new("message", "Bar")],
-                ]
+                ],
+                PropertiesToReplace = [new("Timestamp", "[REPLACED_TIMESTAMP]")]
             };
 
             var builder = WebApplication.CreateBuilder(args);
