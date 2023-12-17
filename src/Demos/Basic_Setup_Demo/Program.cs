@@ -22,7 +22,7 @@ namespace Basic_Setup_Demo
                 PropertiesToReplace = 
                 [
                     new("Timestamp", "[REPLACED_TIMESTAMP]"),
-                    new("requestId", $"[{Guid.Empty}]"),
+                    new("requestId", $"{Guid.Empty}"),
                 ]
             };
 
