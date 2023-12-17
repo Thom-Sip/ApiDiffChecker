@@ -7,13 +7,7 @@ namespace Custom_UI_Demo
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            // Refactor Helper Settings
+            // Settings
             var settings = new RefactorHelperSettings
             {
                 OutputFolder = $"{GetBinPath()}/wwwroot/RefactorHelper/Output/",
@@ -39,9 +33,14 @@ namespace Custom_UI_Demo
                 ]
             };
 
-            // Setup Dependency Injection
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Setup DI
             builder.Services.AddRefactorHelper(settings);
 
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -49,19 +48,14 @@ namespace Custom_UI_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // ==================== Setup Trigger Endpoint ====================
+                // Setup Trigger endpoint
                 app.AddRefactorHelperEndpoint();
-                // ===================== End Trigger Endpoint =====================
             }
 
             app.UseStaticFiles();
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
-
             app.Run();
         }
 
