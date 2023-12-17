@@ -36,7 +36,8 @@ namespace RefactorHelper.App
                 new HttpClient
                 {
                     BaseAddress = new Uri(Settings.BaseUrl2)
-                }
+                }, 
+                Settings
             );
 
             // Compare Service
@@ -48,9 +49,6 @@ namespace RefactorHelper.App
 
         public async Task<List<string>> Run()
         {
-            if (!string.IsNullOrWhiteSpace(SwaggerJson))
-                return [];
-
             if(string.IsNullOrWhiteSpace(SwaggerJson))
             {
                 var client = new HttpClient();

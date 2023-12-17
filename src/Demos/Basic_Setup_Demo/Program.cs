@@ -7,51 +7,43 @@ namespace Basic_Setup_Demo
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
-            // ==================== Setup Dependency Injection ====================
-            builder.Services.AddRefactorHelper(new RefactorHelperSettings
+            // Settings
+            var settings = new RefactorHelperSettings
             {
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
-                DefaultParameters =
-                [
-                    new("orderId", "AA072"),
-                    new("key", "Qwerty1234"),
-                ],
+                DefaultParameters = [new("customerId", "4007")],
                 Runs =
                 [
-                    [
-                        new("customerId", "12"),
-                        new("message", "Hello_world"),
-                    ],
-                    [
-                        new("customerId", "69"),
-                        new("message", "Bye_world"),
-                    ],
-                ]
-            });
-            // ===================== End Dependency Injection =====================
+                    [new("message", "Foo")],
+                    [new("message", "Bar")],
+                ],
+                PropertiesToReplace = [new("Timestamp", "[REPLACED_TIMESTAMP]")]
+            };
 
-            var app = builder.Build();
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Setup DI
+            builder.Services.AddRefactorHelper(settings);
+
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+            WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                // Setup Trigger endpoint
+                app.AddRefactorHelperEndpoint();
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
             app.MapControllers();
-
             app.Run();
         }
     }

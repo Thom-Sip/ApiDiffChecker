@@ -15,6 +15,8 @@
         public List<Parameter> DefaultParameters { get; set; } = [];
 
         public List<List<Parameter>> Runs { get; set; } = [[]];
+
+        public List<Parameter> PropertiesToReplace { get; set; } = [];
     }
 
     public class Parameter

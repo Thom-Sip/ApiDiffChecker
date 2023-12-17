@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using RefactorHelper.Models.RequestHandler;
 using RefactorHelper.Models.SwaggerProcessor;
+using RefactorHelper.Models.Config;
+using Newtonsoft.Json.Linq;
 
 namespace RefactorHelper.RequestHandler
 {
@@ -11,16 +13,13 @@ namespace RefactorHelper.RequestHandler
 
         private HttpClient _client2 { get; }
 
-        public RequestHandlerService(HttpClient client)
-        {
-            _client1 = client;
-            _client2 = client;
-        }
+        private RefactorHelperSettings _settings { get; }
 
-        public RequestHandlerService(HttpClient client1, HttpClient client2)
+        public RequestHandlerService(HttpClient client1, HttpClient client2, RefactorHelperSettings settings)
         {
             _client1 = client1;
             _client2 = client2;
+            _settings = settings;
         }
 
         public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
@@ -70,6 +69,28 @@ namespace RefactorHelper.RequestHandler
             try
             {
                 var responseObj1 = JsonConvert.DeserializeObject<object>(response);
+
+                if (_settings.PropertiesToReplace.Count > 0)
+                {
+                    if(responseObj1 is JArray arr)
+                    {
+                        foreach (var item in arr)
+                        {
+                            foreach (JProperty attributeProperty in item.Cast<JProperty>())
+                            {
+                                var replaceProp = _settings.PropertiesToReplace.FirstOrDefault(x => 
+                                    x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
+
+                                if (replaceProp != null)
+                                {
+                                    var attribute = item[attributeProperty.Name];
+                                    attributeProperty.Value = replaceProp.Value;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 response = JsonConvert.SerializeObject(responseObj1, Formatting.Indented);
             }
             catch
