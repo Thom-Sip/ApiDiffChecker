@@ -11,5 +11,7 @@ namespace Custom_UI_Demo.Models
         public string? Summary { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public Guid RequestId { get; set; }
     }
 }

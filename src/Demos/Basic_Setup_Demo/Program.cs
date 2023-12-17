@@ -19,7 +19,11 @@ namespace Basic_Setup_Demo
                     [new("message", "Foo")],
                     [new("message", "Bar")],
                 ],
-                PropertiesToReplace = [new("Timestamp", "[REPLACED_TIMESTAMP]")]
+                PropertiesToReplace = 
+                [
+                    new("Timestamp", "[REPLACED_TIMESTAMP]"),
+                    new("requestId", $"[{Guid.Empty}]"),
+                ]
             };
 
             var builder = WebApplication.CreateBuilder(args);

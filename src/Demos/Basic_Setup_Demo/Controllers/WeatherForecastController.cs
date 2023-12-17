@@ -27,7 +27,8 @@ namespace Basic_Setup_Demo.Controllers
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)],
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.Now,
+                RequestId = Guid.NewGuid()
             })
             .ToArray();
         }
