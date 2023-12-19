@@ -36,7 +36,7 @@ namespace RefactorHelper.UIGenerator
         {
             SetupRunfolder();
 
-            _requestListHtml = GenerateRequestListHtml(results.Results[0], results, httpContext);
+            GenerateRequestListHtml(results.Results[0], results, httpContext);
 
             var urls = new List<string>();
 
@@ -84,12 +84,12 @@ namespace RefactorHelper.UIGenerator
 
         private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
 
-        private string GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
+        private void GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
         {
             var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
             var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed), _runfolder);
 
-            return _requestListTemplate
+            _requestListHtml = _requestListTemplate
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
                 .Replace("[REFRESH_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");

@@ -30,5 +30,14 @@ namespace Basic_Setup_Demo.Controllers
                 Summaries[Random.Shared.Next(Summaries.Length)]
             };
         }
+
+        [HttpGet("random")]
+        public IEnumerable<string> RandomResult()
+        {
+            return new List<string>
+            {
+                $"Random_{Random.Shared.Next(2)}",
+            };
+        }
     }
 }
