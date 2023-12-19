@@ -87,6 +87,8 @@ namespace RefactorHelper.App
             return result;
         }
 
+        public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
+
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
             if (string.IsNullOrWhiteSpace(settings.OutputFolder))

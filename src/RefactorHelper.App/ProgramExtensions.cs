@@ -42,10 +42,20 @@ namespace RefactorHelper.App
             // Run single requst and return html to replace result in page
             app.MapGet("/run-refactor-helper/{runId}", async (int runId, HttpContext context) => 
             {
-                context.Response.Headers.ContentType = "text/html";
                 var service = app.Services.GetRequiredService<RefactorHelperApp>();
                 var result = await service.PerformSingleCall(runId);
 
+                context.Response.Headers.ContentType = "text/html";
+                await context.Response.WriteAsync(result);
+            }).ExcludeFromDescription();
+
+            // Run single requst and return html to replace result in page
+            app.MapGet("/run-refactor-helper/request-list", async (HttpContext context) =>
+            {
+                var service = app.Services.GetRequiredService<RefactorHelperApp>();
+                var result = service.GetRequestListHtml();
+
+                context.Response.Headers.ContentType = "text/html";
                 await context.Response.WriteAsync(result);
             }).ExcludeFromDescription();
         }

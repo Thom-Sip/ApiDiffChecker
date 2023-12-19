@@ -18,13 +18,10 @@
                 Retry current Request
             </button>
         </div>
-        <div>
-            <h1>Requests Failed</h1>
-            [REQUESTS_FAILED]
-        </div>
-        <div>
-            <h1>Requests Success</h1>
-            [REQUESTS_SUCCESS]
+
+        <div hx-get="[REQUEST_LIST_URL]"
+             hx-swap="innerHTML"
+             hx-trigger="load" >
         </div>
     </div>
 
