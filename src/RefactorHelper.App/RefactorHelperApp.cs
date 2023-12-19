@@ -73,7 +73,7 @@ namespace RefactorHelper.App
             return State.OutputFileNames;
         }
 
-        public async Task<string> PerformSingleCall(int requestId)
+        public async Task<string> PerformSingleCall(HttpContext context, int requestId)
         {
             // Perform single api request and update result
             State.RequestHandlerOutput.Results[requestId] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[requestId]);
@@ -82,7 +82,7 @@ namespace RefactorHelper.App
             State.ComparerOutput.Results[requestId] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[requestId]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput);
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
 
             return result;
         }

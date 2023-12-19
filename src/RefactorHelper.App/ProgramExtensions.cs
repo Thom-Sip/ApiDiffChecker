@@ -40,10 +40,10 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
 
             // Run single requst and return html to replace result in page
-            app.MapGet("/run-refactor-helper/{runId}", async (int runId, HttpContext context) => 
+            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) => 
             {
                 var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.PerformSingleCall(runId);
+                var result = await service.PerformSingleCall(context, requestId);
 
                 context.Response.Headers.ContentType = "text/html";
                 await context.Response.WriteAsync(result);

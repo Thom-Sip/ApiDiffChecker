@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
+using System.Net.Http;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -33,7 +36,7 @@ namespace RefactorHelper.UIGenerator
         {
             SetupRunfolder();
 
-            _requestListHtml = GenerateRequestListHtml(results);
+            _requestListHtml = GenerateRequestListHtml(results.Results[0], results, httpContext);
 
             var urls = new List<string>();
 
@@ -47,7 +50,7 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[CONTENT_CHANGED]", changed);
 
                 var html = _template
-                    .Replace("[REFRESH_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{results.Results.IndexOf(result)}")
+                    .Replace("[REFRESH_URL]", GetRefreshUrl(httpContext, results.Results.IndexOf(result)))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", content);
 
@@ -62,7 +65,7 @@ namespace RefactorHelper.UIGenerator
             return urls;
         }
 
-        public string GetSinglePageContent(CompareResultPair result, ComparerOutput results)
+        public string GetSinglePageContent(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
         {
             var original = diff_prettyHtml_custom(result.Result1, result);
             var changed = diff_prettyHtml_custom(result.Result2, result);
@@ -70,23 +73,26 @@ namespace RefactorHelper.UIGenerator
             var content = _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
+                
 
             // TODO: Only run this when the result is different then before
-            GenerateRequestListHtml(results);
+            GenerateRequestListHtml(result, results, httpContext);
 
             return content;
         }
-
         public string GetRequestListHtml() => _requestListHtml;
 
-        private string GenerateRequestListHtml(ComparerOutput results)
+        private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
+
+        private string GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
         {
             var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
             var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed), _runfolder);
 
             return _requestListTemplate
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
-                .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
+                .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
+                .Replace("[REFRESH_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");
         }
 
         private string GetBaseUrl(HttpRequest request)
