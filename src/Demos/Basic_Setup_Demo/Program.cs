@@ -28,7 +28,7 @@ namespace Basic_Setup_Demo
 
             var builder = WebApplication.CreateBuilder(args);
 
-            // Setup DI
+            // Setup DI 
             builder.Services.AddRefactorHelper(settings);
 
             builder.Services.AddControllers();
@@ -44,6 +44,13 @@ namespace Basic_Setup_Demo
                 // Setup Trigger endpoint
                 app.AddRefactorHelperEndpoint();
             }
+
+            // Cors Hack to make htmx Requests work from disk
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .SetIsOriginAllowed(origin => true));
 
             app.UseHttpsRedirection();
             app.UseAuthorization();

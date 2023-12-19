@@ -9,11 +9,13 @@ namespace RefactorHelper.UIGenerator
         protected string _outputFolder { get; set; }
         protected string _runfolder { get; set; }
         protected string _template { get; set; }
+        protected string _contentTemplate { get; set; }
         protected string _diffBoxTemplate { get; set; }
 
         public UIGeneratorService(string contentFolder, string outputFolder)
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
+            _contentTemplate = File.ReadAllText($"{contentFolder}/ContentTemplate.html");
             _diffBoxTemplate = File.ReadAllText($"{contentFolder}/DiffBoxTemplate.html");
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
@@ -34,9 +36,12 @@ namespace RefactorHelper.UIGenerator
                 var original = diff_prettyHtml_custom(result.Result1, result);
                 var changed = diff_prettyHtml_custom(result.Result2, result);
 
-                var html = _template
+                var content = _contentTemplate
                     .Replace("[CONTENT_ORIGINAL]", original)
-                    .Replace("[CONTENT_CHANGED]", changed)
+                    .Replace("[CONTENT_CHANGED]", changed);
+
+                var html = _template
+                    .Replace("[CONTENT_BLOCK]", content)
                     .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                     .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
 
@@ -49,6 +54,18 @@ namespace RefactorHelper.UIGenerator
             }
 
             return urls;
+        }
+
+        public string GetSinglePageContent(CompareResultPair result)
+        {
+            var original = diff_prettyHtml_custom(result.Result1, result);
+            var changed = diff_prettyHtml_custom(result.Result2, result);
+
+            var content = _contentTemplate
+                .Replace("[CONTENT_ORIGINAL]", original)
+                .Replace("[CONTENT_CHANGED]", changed);
+
+            return content;
         }
 
         private void SetupRunfolder()

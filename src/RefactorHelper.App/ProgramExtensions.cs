@@ -35,7 +35,16 @@ namespace RefactorHelper.App
                 }
 
                 await context.Response.WriteAsync("Thank you for using RefactorHelper");
-            });
+            }).ExcludeFromDescription();
+
+            app.MapGet("/run-refactor-helper/{runId}", async (int runId, HttpContext context) => 
+            {
+                context.Response.Headers.ContentType = "text/html";
+                var service = app.Services.GetRequiredService<RefactorHelperApp>();
+                var result = await service.PerformSingleCall(runId);
+
+                await context.Response.WriteAsync(result);
+            }).ExcludeFromDescription();
         }
     }
 }

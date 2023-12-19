@@ -21,19 +21,19 @@
         </div>
     </div>
 
-    <div class="content">
-
-        <div class="item">
-            [CONTENT_ORIGINAL]
-        </div>
-
-        <div class="item">
-            [CONTENT_CHANGED]
-        </div>
-
+    <div class="content" id="result-container">
+        [CONTENT_BLOCK]
     </div>
 
+    <button hx-get="https://localhost:44371/run-refactor-helper/2" 
+            hx-swap="innerHTML" 
+            hx-target="#result-container">
+        Get Data
+    </button>
+
 </div>
+
+<script src="../htmx.min.js"></script>
 
 </body>
 </html>

@@ -3,6 +3,9 @@ using RefactorHelper.RequestHandler;
 using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
+using RefactorHelper.Models.SwaggerProcessor;
+using RefactorHelper.Models;
+using RefactorHelper.Models.Comparer;
 
 namespace RefactorHelper.App
 {
@@ -19,6 +22,14 @@ namespace RefactorHelper.App
         private UIGeneratorService UIGeneratorService { get; set; }
 
         private string SwaggerJson { get; set; } = string.Empty;
+
+        private SwaggerProcessorOutput SwaggerProcessorOutput { get; set; }
+
+        private RequestHandlerOutput RequestHandlerOutput { get; set; }
+
+        private ComparerOutput ComparerOutput { get; set; }
+
+        private List<string> OutputFileNames { get; set; }
 
         public RefactorHelperApp(RefactorHelperSettings settings)
         {
@@ -54,21 +65,35 @@ namespace RefactorHelper.App
                 var client = new HttpClient();
                 var result = await client.GetAsync(Settings.SwaggerUrl);
                 SwaggerJson = await result.Content.ReadAsStringAsync();
-            }     
+            }
 
             // Get requests from swagger
-            var swaggerProcessorOuput = SwaggerProcessorService.ProcessSwagger(SwaggerJson);
+            SwaggerProcessorOutput = SwaggerProcessorService.ProcessSwagger(SwaggerJson);
 
             // Perform api Requests
-            var requestHandlerOutput = await RequestHandlerService.QueryApis(swaggerProcessorOuput);
+            RequestHandlerOutput = await RequestHandlerService.QueryApis(SwaggerProcessorOutput);
 
             // Get diffs on responses
-            var ComparerOutput = CompareService.CompareResponses(requestHandlerOutput);
+            ComparerOutput = CompareService.CompareResponses(RequestHandlerOutput);
 
             // Generate output
-            var outputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
+            OutputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
 
-            return outputFileNames;
+            return OutputFileNames;
+        }
+
+        public async Task<string> PerformSingleCall(int runId)
+        {
+            // Perform single api request and update result
+            RequestHandlerOutput.Results[runId] = await RequestHandlerService.QueryEndpoint(SwaggerProcessorOutput.Requests[runId]);
+
+            // Update Compare Result
+            ComparerOutput.Results[runId] = CompareService.CompareResponse(RequestHandlerOutput.Results[runId]);
+
+            // Get Content Block to display in page
+            var result = UIGeneratorService.GetSinglePageContent(ComparerOutput.Results[runId]);
+
+            return result;
         }
 
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)

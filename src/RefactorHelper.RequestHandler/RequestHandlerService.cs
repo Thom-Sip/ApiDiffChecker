@@ -34,6 +34,11 @@ namespace RefactorHelper.RequestHandler
             };
         }
 
+        public async Task<RefactorTestResultPair> QueryEndpoint(RequestDetails request)
+        {
+            return await GetResponses(request.Path);
+        }
+
         public async Task<RefactorTestResultPair> GetResponses(string path)
         {
             var request1 = _client1.GetAsync(path);
