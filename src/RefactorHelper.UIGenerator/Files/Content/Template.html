@@ -12,6 +12,13 @@
 
     <div class="sidebar">
         <div>
+            <button hx-get="[REFRESH_URL]"
+                    hx-swap="innerHTML"
+                    hx-target="#result-container">
+                Retry current Request
+            </button>
+        </div>
+        <div>
             <h1>Requests Failed</h1>
             [REQUESTS_FAILED]
         </div>
@@ -24,12 +31,6 @@
     <div class="content" id="result-container">
         [CONTENT_BLOCK]
     </div>
-
-    <button hx-get="[REFRESH_URL]"
-            hx-swap="innerHTML" 
-            hx-target="#result-container">
-        Get Data
-    </button>
 
 </div>
 
