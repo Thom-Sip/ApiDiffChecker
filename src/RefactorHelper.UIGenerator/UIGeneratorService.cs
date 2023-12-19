@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
-using System.Net.Http;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -16,7 +14,7 @@ namespace RefactorHelper.UIGenerator
         protected string _diffBoxTemplate { get; set; }
         protected string _requestListTemplate { get; set; }
 
-        protected string _requestListHtml { get; set; }
+        protected string _requestListHtml { get; set; } = string.Empty;
 
         public UIGeneratorService(string contentFolder, string outputFolder)
         {
@@ -64,7 +62,7 @@ namespace RefactorHelper.UIGenerator
             return urls;
         }
 
-        public string GetSinglePageContent(CompareResultPair result)
+        public string GetSinglePageContent(CompareResultPair result, ComparerOutput results)
         {
             var original = diff_prettyHtml_custom(result.Result1, result);
             var changed = diff_prettyHtml_custom(result.Result2, result);
@@ -72,6 +70,9 @@ namespace RefactorHelper.UIGenerator
             var content = _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
+
+            // TODO: Only run this when the result is different then before
+            GenerateRequestListHtml(results);
 
             return content;
         }

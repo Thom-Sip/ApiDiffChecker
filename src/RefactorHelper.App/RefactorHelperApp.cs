@@ -82,7 +82,7 @@ namespace RefactorHelper.App
             State.ComparerOutput.Results[requestId] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[requestId]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId]);
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput);
 
             return result;
         }
