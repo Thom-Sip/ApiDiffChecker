@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
-using System.Net.Http;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -73,7 +70,6 @@ namespace RefactorHelper.UIGenerator
             var content = _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
-                
 
             // TODO: Only run this when the result is different then before
             GenerateRequestListHtml(result, results, httpContext);

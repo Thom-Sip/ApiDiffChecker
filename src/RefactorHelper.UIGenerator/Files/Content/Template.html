@@ -12,7 +12,8 @@
 
     <div class="sidebar">
         <div>
-            <button hx-get="[REFRESH_URL]"
+            <button id="refresh-button"
+                    hx-get="[REFRESH_URL]"
                     hx-swap="innerHTML"
                     hx-target="#result-container">
                 Retry current Request
@@ -21,7 +22,7 @@
 
         <div hx-get="[REQUEST_LIST_URL]"
              hx-swap="innerHTML"
-             hx-trigger="load" >
+             hx-trigger="load">
         </div>
     </div>
 
