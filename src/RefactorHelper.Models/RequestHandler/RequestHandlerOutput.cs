@@ -4,6 +4,6 @@ namespace RefactorHelper.Models
 {
     public class RequestHandlerOutput
     {
-        public required List<RefactorTestResultPair> Results { get; init; }
+        public List<RefactorTestResultPair> Results { get; init; } = [];
     }
 }

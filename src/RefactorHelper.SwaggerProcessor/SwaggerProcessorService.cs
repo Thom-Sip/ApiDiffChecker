@@ -28,7 +28,7 @@ namespace RefactorHelper.SwaggerProcessor
 
             return new SwaggerProcessorOutput
             {
-                Requests = result.DistinctBy(x => x.Path).ToList()
+                Requests = result.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList()
             };
         }
 

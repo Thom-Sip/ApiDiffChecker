@@ -1,5 +1,7 @@
-﻿using RefactorHelper.Models.Comparer;
+﻿using Microsoft.AspNetCore.Http;
+using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
+using System.Net.Http;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -24,7 +26,7 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
-        public List<string> GenerateUI(ComparerOutput results)
+        public List<string> GenerateUI(ComparerOutput results, HttpContext httpContext)
         {
             SetupRunfolder();
             var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
@@ -40,7 +42,10 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[CONTENT_ORIGINAL]", original)
                     .Replace("[CONTENT_CHANGED]", changed);
 
+
+
                 var html = _template
+                    .Replace("[REFRESH_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{results.Results.IndexOf(result)}")
                     .Replace("[CONTENT_BLOCK]", content)
                     .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                     .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml);
@@ -54,6 +59,12 @@ namespace RefactorHelper.UIGenerator
             }
 
             return urls;
+        }
+
+        private string GetBaseUrl(HttpRequest request)
+        {
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+            return baseUrl;
         }
 
         public string GetSinglePageContent(CompareResultPair result)

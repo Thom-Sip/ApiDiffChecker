@@ -3,15 +3,16 @@ using RefactorHelper.RequestHandler;
 using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
-using RefactorHelper.Models.SwaggerProcessor;
 using RefactorHelper.Models;
-using RefactorHelper.Models.Comparer;
+using Microsoft.AspNetCore.Http;
 
 namespace RefactorHelper.App
 {
     public class RefactorHelperApp
     {
         private RefactorHelperSettings Settings { get; set; }
+
+        private RefactorHelperState State { get; set; } = new();
 
         private SwaggerProcessorService SwaggerProcessorService { get; set; }
 
@@ -20,16 +21,6 @@ namespace RefactorHelper.App
         private CompareService CompareService { get; set; }
 
         private UIGeneratorService UIGeneratorService { get; set; }
-
-        private string SwaggerJson { get; set; } = string.Empty;
-
-        private SwaggerProcessorOutput SwaggerProcessorOutput { get; set; }
-
-        private RequestHandlerOutput RequestHandlerOutput { get; set; }
-
-        private ComparerOutput ComparerOutput { get; set; }
-
-        private List<string> OutputFileNames { get; set; }
 
         public RefactorHelperApp(RefactorHelperSettings settings)
         {
@@ -58,40 +49,40 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
-        public async Task<List<string>> Run()
+        public async Task<List<string>> Run(HttpContext httpContext)
         {
-            if(string.IsNullOrWhiteSpace(SwaggerJson))
+            if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
                 var client = new HttpClient();
                 var result = await client.GetAsync(Settings.SwaggerUrl);
-                SwaggerJson = await result.Content.ReadAsStringAsync();
+                State.SwaggerJson = await result.Content.ReadAsStringAsync();
             }
 
             // Get requests from swagger
-            SwaggerProcessorOutput = SwaggerProcessorService.ProcessSwagger(SwaggerJson);
+            State.SwaggerProcessorOutput = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Perform api Requests
-            RequestHandlerOutput = await RequestHandlerService.QueryApis(SwaggerProcessorOutput);
+            State.RequestHandlerOutput = await RequestHandlerService.QueryApis(State.SwaggerProcessorOutput);
 
             // Get diffs on responses
-            ComparerOutput = CompareService.CompareResponses(RequestHandlerOutput);
+            State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
 
             // Generate output
-            OutputFileNames = UIGeneratorService.GenerateUI(ComparerOutput);
+            State.OutputFileNames = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
 
-            return OutputFileNames;
+            return State.OutputFileNames;
         }
 
-        public async Task<string> PerformSingleCall(int runId)
+        public async Task<string> PerformSingleCall(int requestId)
         {
             // Perform single api request and update result
-            RequestHandlerOutput.Results[runId] = await RequestHandlerService.QueryEndpoint(SwaggerProcessorOutput.Requests[runId]);
+            State.RequestHandlerOutput.Results[requestId] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[requestId]);
 
             // Update Compare Result
-            ComparerOutput.Results[runId] = CompareService.CompareResponse(RequestHandlerOutput.Results[runId]);
+            State.ComparerOutput.Results[requestId] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[requestId]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(ComparerOutput.Results[runId]);
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId]);
 
             return result;
         }

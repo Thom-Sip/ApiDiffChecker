@@ -2,6 +2,6 @@
 {
     public class SwaggerProcessorOutput
     {
-        public required List<RequestDetails> Requests { get; init; }
+        public List<RequestDetails> Requests { get; init; } = [];
     }
 }

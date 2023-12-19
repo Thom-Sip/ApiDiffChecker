@@ -17,10 +17,12 @@ namespace RefactorHelper.App
 
         public static void AddRefactorHelperEndpoint(this WebApplication app)
         {
-            app.MapGet("/run-refactor-helper", async context => {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper", async (HttpContext context) =>
+            {
                 context.Response.Headers.ContentType = "text/html";
                 var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.Run();
+                var result = await service.Run(context);
 
                 if (result.Count > 0)
                 {
@@ -37,6 +39,7 @@ namespace RefactorHelper.App
                 await context.Response.WriteAsync("Thank you for using RefactorHelper");
             }).ExcludeFromDescription();
 
+            // Run single requst and return html to replace result in page
             app.MapGet("/run-refactor-helper/{runId}", async (int runId, HttpContext context) => 
             {
                 context.Response.Headers.ContentType = "text/html";
