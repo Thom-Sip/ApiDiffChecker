@@ -45,9 +45,6 @@ namespace Basic_Setup_Demo
                 app.AddRefactorHelperEndpoints();
             }
 
-            // Temporary hack to load in js and css files
-            app.UseStaticFiles();
-
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();

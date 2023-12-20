@@ -95,7 +95,7 @@ namespace RefactorHelper.App
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
 
-        public string GetCss() => File.ReadAllText(Path.Combine(Settings.ContentFolder, "styles.css"));
+        public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
