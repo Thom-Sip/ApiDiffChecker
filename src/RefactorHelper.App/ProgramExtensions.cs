@@ -29,8 +29,8 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .Run(context);
 
-                context.Response.Headers.ContentType = "text/html";
-                await context.Response.WriteAsync(result[0]);
+                await context.Response.SetHtmlHeader().WriteAsync(result[0]);
+
             }).ExcludeFromDescription();
         }
 
@@ -43,8 +43,8 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .PerformSingleCall(context, requestId);
 
-                context.Response.Headers.ContentType = "text/html";
-                await context.Response.WriteAsync(result);
+                await context.Response.SetHtmlHeader().WriteAsync(result);
+
             }).ExcludeFromDescription();
         }
 
@@ -57,9 +57,15 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .GetRequestListHtml();
 
-                context.Response.Headers.ContentType = "text/html";
-                await context.Response.WriteAsync(result);
+                await context.Response.SetHtmlHeader().WriteAsync(result);
+
             }).ExcludeFromDescription();
+        }
+
+        private static HttpResponse SetHtmlHeader(this HttpResponse response)
+        {
+            response.Headers.ContentType = "text/html";
+            return response;
         }
     }
 }
