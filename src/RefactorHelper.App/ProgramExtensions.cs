@@ -34,7 +34,7 @@ namespace RefactorHelper.App
 
                 await context.Response
                     .SetHtmlHeader()
-                    .WriteAsync(result[0]);
+                    .WriteAsync(result);
 
             }).ExcludeFromDescription();
         }

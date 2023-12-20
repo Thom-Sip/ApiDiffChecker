@@ -6,7 +6,9 @@ namespace RefactorHelper.Models
 {
     public class RequestWrapper
     {
-        public required int ID { get; set; }
+        public required int Id { get; set; }
+
+        public bool Changed { get; set; }
 
         public required RequestDetails Request { get; set; }
 

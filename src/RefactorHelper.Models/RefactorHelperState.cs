@@ -18,5 +18,7 @@ namespace RefactorHelper.Models
         public int CurrentRequest { get; set; }
 
         public List<RequestWrapper> Data { get; set; } = [];
+
+        public RequestWrapper GetCurrentRequest() => Data[CurrentRequest];
     }
 }

@@ -14,36 +14,28 @@ namespace RefactorHelper.Comparer
             _dmp = new diff_match_patch();
         }
 
-        public ComparerOutput CompareResponses(RequestHandlerOutput responseData)
+        public void CompareResponses(RefactorHelperState state)
         {
-            var result = new ComparerOutput();
-
-            foreach(var testresultPair in responseData.Results)
-            {
-                result.Results.Add(CompareResponse(testresultPair));
-            }
-
-            return result;
+            foreach(var testresultPair in state.Data)
+                CompareResponse(testresultPair);
         }
 
-        public CompareResultPair CompareResponse(RefactorTestResultPair testresultPair)
+        public void CompareResponse(RequestWrapper wrapper)
         {
             // Get diffs
-            var diffs1 = _dmp.diff_main(testresultPair.Result1.Response, testresultPair.Result2.Response);
-            var diffs2 = _dmp.diff_main(testresultPair.Result2.Response, testresultPair.Result1.Response);
+            var diffs1 = _dmp.diff_main(wrapper.TestResult.Result1.Response, wrapper.TestResult.Result2.Response);
+            var diffs2 = _dmp.diff_main(wrapper.TestResult.Result2.Response, wrapper.TestResult.Result1.Response);
 
             // Only show relevant differences
             _dmp.diff_cleanupSemantic(diffs1);
             _dmp.diff_cleanupSemantic(diffs2);
 
-            return new CompareResultPair
+            wrapper.CompareResultPair = new CompareResultPair
             {
-                Id = testresultPair.Id,
-                Changed = testresultPair.Result1.Response != testresultPair.Result2.Response,
-                Path = testresultPair.Path,
-                FilePath = $"{MakePathSafe(testresultPair.Path)}.html",
-                Result1 = GetCompareResult(testresultPair.Result1, diffs1),
-                Result2 = GetCompareResult(testresultPair.Result1, diffs2)
+                Path = wrapper.TestResult.Path,
+                FilePath = $"{MakePathSafe(wrapper.TestResult.Path)}.html",
+                Result1 = GetCompareResult(wrapper.TestResult.Result1, diffs1),
+                Result2 = GetCompareResult(wrapper.TestResult.Result1, diffs2)
             };
         }
 

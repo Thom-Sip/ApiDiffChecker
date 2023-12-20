@@ -45,7 +45,7 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
-        public async Task<List<string>> Run(HttpContext httpContext)
+        public async Task<string> Run(HttpContext httpContext)
         {
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
@@ -61,18 +61,18 @@ namespace RefactorHelper.App
             await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
-            State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
+            CompareService.CompareResponses(State);
 
             // Generate output
-            State.HtmlPages = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
+            UIGeneratorService.GenerateUI(State, httpContext);
 
-            return State.HtmlPages;
+            return State.GetCurrentRequest().ResultHtml;
         }
 
         public string GetResultPage(HttpContext context, int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
+            return UIGeneratorService.GetSinglePageContent(State.Data[requestId], State, context);
         }
 
         public async Task<string> RetryCurrentRequest(HttpContext context)
@@ -81,12 +81,12 @@ namespace RefactorHelper.App
             await RequestHandlerService.QueryEndpoint(State.Data[State.CurrentRequest]);
 
             // Update Compare Result
-            State.ComparerOutput.Results[State.CurrentRequest] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[State.CurrentRequest]);
+            CompareService.CompareResponse(State.Data[State.CurrentRequest]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[State.CurrentRequest], State.ComparerOutput, context);
+            UIGeneratorService.GetSinglePageContent(State.Data[State.CurrentRequest], State, context);
 
-            return result;
+            return State.Data[State.CurrentRequest].ResultHtml;
         }
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();

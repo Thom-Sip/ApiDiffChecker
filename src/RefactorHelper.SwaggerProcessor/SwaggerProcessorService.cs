@@ -33,7 +33,7 @@ namespace RefactorHelper.SwaggerProcessor
                 request[i].Id = i;
                 result.Add(new RequestWrapper
                 {
-                    ID = i,
+                    Id = i,
                     Request = request[i],
                 });
             }
