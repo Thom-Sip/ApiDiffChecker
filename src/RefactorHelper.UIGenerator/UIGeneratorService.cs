@@ -35,7 +35,7 @@ namespace RefactorHelper.UIGenerator
 
             GenerateRequestListHtml(results.Results[0], results, httpContext);
 
-            var urls = new List<string>();
+            var htmlPages = new List<string>();
 
             foreach (var result in results.Results)
             {
@@ -51,15 +51,10 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", content);
 
-                var outputFileName = $"{_runfolder}/{result.FilePath}";
-
-                // save to Disk
-                File.WriteAllText(outputFileName, html);
-
-                urls.Add(outputFileName);
+                htmlPages.Add(html);
             }
 
-            return urls;
+            return htmlPages;
         }
 
         public string GetSinglePageContent(CompareResultPair result, ComparerOutput results, HttpContext httpContext)

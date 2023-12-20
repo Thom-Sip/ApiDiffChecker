@@ -42,15 +42,11 @@ namespace Basic_Setup_Demo
                 app.UseSwaggerUI();
 
                 // Setup Trigger endpoint
-                app.AddRefactorHelperEndpoint();
+                app.AddRefactorHelperEndpoints();
             }
 
-            // Cors Hack to make htmx Requests work from disk
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
-                .SetIsOriginAllowed(origin => true));
+            // Temporary hack to load in js and css files
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();

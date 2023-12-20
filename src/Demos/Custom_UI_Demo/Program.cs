@@ -49,7 +49,7 @@ namespace Custom_UI_Demo
                 app.UseSwaggerUI();
 
                 // Setup Trigger endpoint
-                app.AddRefactorHelperEndpoint();
+                app.AddRefactorHelperEndpoints();
             }
 
             app.UseStaticFiles();

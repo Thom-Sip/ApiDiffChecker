@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using RefactorHelper.Models.Config;
-using System.Diagnostics;
 
 namespace RefactorHelper.App
 {
@@ -10,50 +9,53 @@ namespace RefactorHelper.App
     {
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
         {
-            services.AddSingleton<RefactorHelperApp>(new RefactorHelperApp(settings));
-
+            services.AddSingleton(new RefactorHelperApp(settings));
             return services;
         }
 
-        public static void AddRefactorHelperEndpoint(this WebApplication app)
+        public static void AddRefactorHelperEndpoints(this WebApplication app)
+        {
+            app.AddPrimaryEndpoint();
+            app.AddRetrySingleRequestEndpoint();
+            app.AddGetRequestListEndpoint();
+        }
+
+        private static void AddPrimaryEndpoint(this WebApplication app)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
+                var result = await app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .Run(context);
+
                 context.Response.Headers.ContentType = "text/html";
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.Run(context);
-
-                if (result.Count > 0)
-                {
-                    var p = new Process
-                    {
-                        StartInfo = new ProcessStartInfo(result.First())
-                        {
-                            UseShellExecute = true
-                        }
-                    };
-                    p.Start();
-                }
-
-                await context.Response.WriteAsync("Thank you for using RefactorHelper");
+                await context.Response.WriteAsync(result[0]);
             }).ExcludeFromDescription();
+        }
 
+        private static void AddRetrySingleRequestEndpoint(this WebApplication app)
+        {
             // Run single requst and return html to replace result in page
-            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) => 
+            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
             {
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.PerformSingleCall(context, requestId);
+                var result = await app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .PerformSingleCall(context, requestId);
 
                 context.Response.Headers.ContentType = "text/html";
                 await context.Response.WriteAsync(result);
             }).ExcludeFromDescription();
+        }
 
-            // Run single requst and return html to replace result in page
+        private static void AddGetRequestListEndpoint(this WebApplication app)
+        {
+            // Run single request and return html to replace result in page
             app.MapGet("/run-refactor-helper/request-list", async (HttpContext context) =>
             {
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = service.GetRequestListHtml();
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetRequestListHtml();
 
                 context.Response.Headers.ContentType = "text/html";
                 await context.Response.WriteAsync(result);

@@ -8,11 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\htmx.min.js" />
+    <Content Remove="wwwroot\styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\RefactorHelper.App\RefactorHelper.App.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
