@@ -31,7 +31,7 @@ namespace RefactorHelper.UIGenerator
 
         public List<string> GenerateUI(ComparerOutput results, HttpContext httpContext)
         {
-            GenerateRequestListHtml(results.Results[0], results, httpContext);
+            GenerateRequestListHtml(results, httpContext);
 
             var htmlPages = new List<string>();
 
@@ -65,7 +65,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[CONTENT_CHANGED]", changed);
 
             // TODO: Only run this when the result is different then before
-            GenerateRequestListHtml(result, results, httpContext);
+            GenerateRequestListHtml(results, httpContext);
 
             return content;
         }
@@ -74,7 +74,7 @@ namespace RefactorHelper.UIGenerator
 
         private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
 
-        private void GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
+        private void GenerateRequestListHtml(ComparerOutput results, HttpContext httpContext)
         {
             var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed).ToList(), httpContext);
             var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed).ToList(), httpContext);
@@ -83,7 +83,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
                 .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
-                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry/{results.Results.IndexOf(result)}");
+                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry");
         }
 
         private string GetBaseUrl(HttpRequest request)
@@ -97,11 +97,10 @@ namespace RefactorHelper.UIGenerator
             var sb = new StringBuilder();
             sb.Append("<ul>");
 
-            for(int i = 0; i < resultPairs.Count; i ++)
+            foreach(var item in resultPairs)
             {
-                var item = resultPairs[i];
                 sb.Append($"<li>" +
-                    $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{i}\" " +
+                    $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\" " +
                           $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.Path}</span>" +
                     $"</li>");
             }

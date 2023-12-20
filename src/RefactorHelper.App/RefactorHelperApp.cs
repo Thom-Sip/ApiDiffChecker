@@ -75,22 +75,20 @@ namespace RefactorHelper.App
 
         public string GetResultPage(HttpContext context, int requestId)
         {
-            // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
-
-            return result;
+            State.CurrentRequest = requestId;
+            return UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
         }
 
-        public async Task<string> PerformSingleCall(HttpContext context, int requestId)
+        public async Task<string> RetryCurrentRequest(HttpContext context)
         {
             // Perform single api request and update result
-            State.RequestHandlerOutput.Results[requestId] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[requestId]);
+            State.RequestHandlerOutput.Results[State.CurrentRequest] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[State.CurrentRequest]);
 
             // Update Compare Result
-            State.ComparerOutput.Results[requestId] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[requestId]);
+            State.ComparerOutput.Results[State.CurrentRequest] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[State.CurrentRequest]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[State.CurrentRequest], State.ComparerOutput, context);
 
             return result;
         }

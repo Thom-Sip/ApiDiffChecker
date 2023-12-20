@@ -2,6 +2,8 @@
 {
     public class RefactorTestResultPair
     {
+        public int Id { get; set; }
+
         public required string Path { get; init; }
 
         public required RefactorTestResult Result1 { get; init; }

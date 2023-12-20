@@ -26,9 +26,14 @@ namespace RefactorHelper.SwaggerProcessor
                 result.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
             }
 
+            result = result.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList();
+
+            for (int i = 0; i < result.Count; i++)
+                result[i].Id = i;
+
             return new SwaggerProcessorOutput
             {
-                Requests = result.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList()
+                Requests = result
             };
         }
 

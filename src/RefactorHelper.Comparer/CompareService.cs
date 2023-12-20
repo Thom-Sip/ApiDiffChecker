@@ -2,7 +2,6 @@
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
-using Swashbuckle.Swagger;
 
 namespace RefactorHelper.Comparer
 {
@@ -39,6 +38,7 @@ namespace RefactorHelper.Comparer
 
             return new CompareResultPair
             {
+                Id = testresultPair.Id,
                 Changed = testresultPair.Result1.Response != testresultPair.Result2.Response,
                 Path = testresultPair.Path,
                 FilePath = $"{MakePathSafe(testresultPair.Path)}.html",

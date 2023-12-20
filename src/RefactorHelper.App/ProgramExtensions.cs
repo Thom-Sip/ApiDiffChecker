@@ -48,7 +48,6 @@ namespace RefactorHelper.App
 
                 await context.Response
                     .SetHtmlHeader()
-                    .SetHxTriggerHeader("refresh-request-list")
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();
@@ -57,11 +56,11 @@ namespace RefactorHelper.App
         private static void AddRetrySingleRequestEndpoint(this WebApplication app)
         {
             // Run single requst and return html to replace result in page
-            app.MapGet("/run-refactor-helper/retry/{requestId}", async (int requestId, HttpContext context) =>
+            app.MapGet("/run-refactor-helper/retry", async (HttpContext context) =>
             {
                 var result = await app.Services
                     .GetRequiredService<RefactorHelperApp>()
-                    .PerformSingleCall(context, requestId);
+                    .RetryCurrentRequest(context);
 
                 await context.Response
                     .SetHtmlHeader()

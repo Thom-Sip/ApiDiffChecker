@@ -24,7 +24,7 @@ namespace RefactorHelper.RequestHandler
 
         public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
         {
-            var tasks = requests.Requests.Select(x => GetResponses(x.Path)).ToList();
+            var tasks = requests.Requests.Select(GetResponses).ToList();
 
             await Task.WhenAll(tasks);
 
@@ -34,15 +34,12 @@ namespace RefactorHelper.RequestHandler
             };
         }
 
-        public async Task<RefactorTestResultPair> QueryEndpoint(RequestDetails request)
-        {
-            return await GetResponses(request.Path);
-        }
+        public async Task<RefactorTestResultPair> QueryEndpoint(RequestDetails request) => await GetResponses(request);
 
-        public async Task<RefactorTestResultPair> GetResponses(string path)
+        public async Task<RefactorTestResultPair> GetResponses(RequestDetails request)
         {
-            var request1 = _client1.GetAsync(path);
-            var request2 = _client2.GetAsync(path);
+            var request1 = _client1.GetAsync(request.Path);
+            var request2 = _client2.GetAsync(request.Path);
 
             await Task.WhenAll(request1, request2);
 
@@ -54,7 +51,8 @@ namespace RefactorHelper.RequestHandler
 
             return new RefactorTestResultPair
             {
-                Path = path,
+                Id = request.Id,
+                Path = request.Path,
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
             };
