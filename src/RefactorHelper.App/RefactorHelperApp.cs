@@ -72,21 +72,21 @@ namespace RefactorHelper.App
         public string GetResultPage(HttpContext context, int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.Data[requestId], State, context);
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
         }
 
         public async Task<string> RetryCurrentRequest(HttpContext context)
         {
             // Perform single api request and update result
-            await RequestHandlerService.QueryEndpoint(State.Data[State.CurrentRequest]);
+            await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
 
             // Update Compare Result
-            CompareService.CompareResponse(State.Data[State.CurrentRequest]);
+            CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            UIGeneratorService.GetSinglePageContent(State.Data[State.CurrentRequest], State, context);
+            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
 
-            return State.Data[State.CurrentRequest].ResultHtml;
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
         }
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();

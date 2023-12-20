@@ -4,9 +4,9 @@ namespace RefactorHelper.Models.Comparer
 {
     public class CompareResult
     {
-        public string Result { get; set; }
+        public required string Result { get; set; }
 
-        public List<Diff> Diffs { get; init; }
+        public required List<Diff> Diffs { get; init; }
 
         public required HttpResponseMessage Response { get; init; }
     }

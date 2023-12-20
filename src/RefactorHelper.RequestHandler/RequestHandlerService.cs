@@ -43,6 +43,7 @@ namespace RefactorHelper.RequestHandler
             response1 = TryFormatResponse(response1);
             response2 = TryFormatResponse(response2);
 
+            requestWrapper.Changed = response1 != response2;
             requestWrapper.TestResult = new RefactorTestResultPair
             {
                 Result1 = GetRefactorTestResult(response1, request1.Result),
