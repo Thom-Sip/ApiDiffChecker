@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RefactorHelper.Models;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.SwaggerProcessor;
 using Swashbuckle.Swagger;
@@ -15,26 +16,29 @@ namespace RefactorHelper.SwaggerProcessor
             Settings = settings;
         }
 
-        public SwaggerProcessorOutput ProcessSwagger(string swaggerJson)
+        public List<RequestWrapper> ProcessSwagger(string swaggerJson)
         {
             var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
 
-            var result = new List<RequestDetails>();
+            var request = new List<RequestDetails>();
 
             foreach (var run in Settings.Runs)
+                request.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
+
+            request = request.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList();
+
+            var result = new List<RequestWrapper>();
+            for (int i = 0; i < request.Count; i++)
             {
-                result.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
+                request[i].Id = i;
+                result.Add(new RequestWrapper
+                {
+                    ID = i,
+                    Request = request[i],
+                });
             }
 
-            result = result.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList();
-
-            for (int i = 0; i < result.Count; i++)
-                result[i].Id = i;
-
-            return new SwaggerProcessorOutput
-            {
-                Requests = result
-            };
+            return result;
         }
 
         private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, List<Parameter> parameters)

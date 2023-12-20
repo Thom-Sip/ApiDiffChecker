@@ -16,5 +16,7 @@ namespace RefactorHelper.Models
         public List<string> HtmlPages { get; set; } = [];
 
         public int CurrentRequest { get; set; }
+
+        public List<RequestWrapper> Data { get; set; } = [];
     }
 }

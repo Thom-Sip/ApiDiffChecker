@@ -11,15 +11,11 @@ namespace RefactorHelper.App
     public class RefactorHelperApp
     {
         private RefactorHelperSettings Settings { get; set; }
-
         private RefactorHelperState State { get; set; } = new();
 
         private SwaggerProcessorService SwaggerProcessorService { get; set; }
-
         private RequestHandlerService RequestHandlerService { get; set; }
-
         private CompareService CompareService { get; set; }
-
         private UIGeneratorService UIGeneratorService { get; set; }
 
         public RefactorHelperApp(RefactorHelperSettings settings)
@@ -59,10 +55,10 @@ namespace RefactorHelper.App
             }
 
             // Get requests from swagger
-            State.SwaggerProcessorOutput = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
+            State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Perform api Requests
-            State.RequestHandlerOutput = await RequestHandlerService.QueryApis(State.SwaggerProcessorOutput);
+            await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
             State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
@@ -82,7 +78,7 @@ namespace RefactorHelper.App
         public async Task<string> RetryCurrentRequest(HttpContext context)
         {
             // Perform single api request and update result
-            State.RequestHandlerOutput.Results[State.CurrentRequest] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[State.CurrentRequest]);
+            await RequestHandlerService.QueryEndpoint(State.Data[State.CurrentRequest]);
 
             // Update Compare Result
             State.ComparerOutput.Results[State.CurrentRequest] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[State.CurrentRequest]);

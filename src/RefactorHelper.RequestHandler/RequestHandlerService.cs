@@ -22,24 +22,18 @@ namespace RefactorHelper.RequestHandler
             _settings = settings;
         }
 
-        public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
+        public async Task QueryApis(RefactorHelperState state)
         {
-            var tasks = requests.Requests.Select(GetResponses).ToList();
-
+            var tasks = state.Data.Select(SetResponses).ToList();
             await Task.WhenAll(tasks);
-
-            return new RequestHandlerOutput
-            {
-                Results = [.. tasks.Select(x => x.Result).OrderBy(x => x.Path)]
-            };
         }
 
-        public async Task<RefactorTestResultPair> QueryEndpoint(RequestDetails request) => await GetResponses(request);
+        public async Task QueryEndpoint(RequestWrapper requestWrapper) => await SetResponses(requestWrapper);
 
-        public async Task<RefactorTestResultPair> GetResponses(RequestDetails request)
+        public async Task SetResponses(RequestWrapper requestWrapper)
         {
-            var request1 = _client1.GetAsync(request.Path);
-            var request2 = _client2.GetAsync(request.Path);
+            var request1 = _client1.GetAsync(requestWrapper.Request.Path);
+            var request2 = _client2.GetAsync(requestWrapper.Request.Path);
 
             await Task.WhenAll(request1, request2);
 
@@ -49,10 +43,10 @@ namespace RefactorHelper.RequestHandler
             response1 = TryFormatResponse(response1);
             response2 = TryFormatResponse(response2);
 
-            return new RefactorTestResultPair
+            requestWrapper.TestResult = new RefactorTestResultPair
             {
-                Id = request.Id,
-                Path = request.Path,
+                Id = 0,
+                Path = "",
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
             };
