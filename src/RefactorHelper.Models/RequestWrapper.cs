@@ -10,6 +10,8 @@ namespace RefactorHelper.Models
 
         public bool Changed { get; set; }
 
+        public bool Executed => TestResult != null;
+
         public required RequestDetails Request { get; set; }
 
         public RefactorTestResultPair? TestResult { get; set; }
