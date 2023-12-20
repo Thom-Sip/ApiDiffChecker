@@ -132,7 +132,7 @@ namespace RefactorHelper.UIGenerator
             }
 
             var html = _diffBoxTemplate
-                  .Replace("[TITLE]", wrapper.CompareResultPair.Path)
+                  .Replace("[TITLE]", wrapper.Request.Path)
                   .Replace("[URL]", $"{result.Response?.RequestMessage?.RequestUri}")
                   .Replace("[RESULTCODE]", $"{result.Response?.StatusCode.ToString() ?? "N/A"}")
                   .Replace("[CONTENT]", sb.ToString());

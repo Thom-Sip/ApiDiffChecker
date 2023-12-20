@@ -46,8 +46,8 @@ namespace RefactorHelper.SwaggerProcessor
             return new RequestDetails 
             {
                 Template = path.Key.ToLower(),
-                Path = GetPath(path.Key.ToLower(), path.Value.get, parameters),
                 Operation = path.Value.get,
+                Path = GetPath(path.Key.ToLower(), path.Value.get, parameters)
             };
         }
 

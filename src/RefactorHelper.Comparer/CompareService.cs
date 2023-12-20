@@ -32,8 +32,6 @@ namespace RefactorHelper.Comparer
 
             wrapper.CompareResultPair = new CompareResultPair
             {
-                Path = wrapper.TestResult.Path,
-                FilePath = $"{MakePathSafe(wrapper.TestResult.Path)}.html",
                 Result1 = GetCompareResult(wrapper.TestResult.Result1, diffs1),
                 Result2 = GetCompareResult(wrapper.TestResult.Result1, diffs2)
             };
