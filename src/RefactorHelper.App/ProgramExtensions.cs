@@ -27,7 +27,7 @@ namespace RefactorHelper.App
             {
                 var result = await app.Services
                     .GetRequiredService<RefactorHelperApp>()
-                    .Run(context);
+                    .OpenUI(context);
 
                 await context.Response
                     .SetHtmlHeader()

@@ -10,6 +10,7 @@ namespace Basic_Setup_Demo
             // Settings
             var settings = new RefactorHelperSettings
             {
+                RunOnStart = false,
                 SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",

@@ -5,6 +5,7 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace RefactorHelper.App
 {
@@ -45,7 +46,7 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
-        public async Task<string> Run(HttpContext httpContext)
+        public async Task<string> OpenUI(HttpContext httpContext)
         {
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
@@ -57,16 +58,22 @@ namespace RefactorHelper.App
             // Get requests from swagger
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
+            if (Settings.RunOnStart)
+                await Run(httpContext);
+
+            // Generate output
+            UIGeneratorService.GenerateUI(State, httpContext);
+
+            return State.GetCurrentRequest()?.ResultHtml ?? "";
+        }
+
+        public async Task Run(HttpContext httpContext)
+        {
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
             CompareService.CompareResponses(State);
-
-            // Generate output
-            UIGeneratorService.GenerateUI(State, httpContext);
-
-            return State.GetCurrentRequest().ResultHtml;
         }
 
         public string GetResultPage(HttpContext context, int requestId)
