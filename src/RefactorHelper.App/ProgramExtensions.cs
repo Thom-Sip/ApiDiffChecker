@@ -7,11 +7,8 @@ namespace RefactorHelper.App
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
-        {
+        public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings) =>
             services.AddSingleton(new RefactorHelperApp(settings));
-            return services;
-        }
 
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
