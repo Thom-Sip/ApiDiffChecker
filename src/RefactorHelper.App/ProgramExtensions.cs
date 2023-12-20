@@ -19,8 +19,8 @@ namespace RefactorHelper.App
             app.AddOpenRequestEndpoint();
             app.AddRetrySingleRequestEndpoint();
             app.AddGetRequestListEndpoint();
-            app.AddGetCssEndpoint();
-            app.AddGetHtmxJsEndpoint();
+            app.AddStaticFileEndpoint("styles.css");
+            app.AddStaticFileEndpoint("htmx.min.js");
         }
 
         private static void AddPrimaryEndpoint(this WebApplication app)
@@ -88,28 +88,14 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddGetCssEndpoint(this WebApplication app)
+        private static void AddStaticFileEndpoint(this WebApplication app, string fileName)
         {
             // Get css so we don't need to service static files
-            app.MapGet("/run-refactor-helper/styles.css", async (HttpContext context) =>
+            app.MapGet($"/run-refactor-helper/{fileName}", async (HttpContext context) =>
             {
                 var result = app.Services
                     .GetRequiredService<RefactorHelperApp>()
-                    .GetContentFile("styles.css");
-
-                await context.Response.WriteAsync(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void AddGetHtmxJsEndpoint(this WebApplication app)
-        {
-            // Get css so we don't need to service static files
-            app.MapGet("/run-refactor-helper/htmx.min.js", async (HttpContext context) =>
-            {
-                var result = app.Services
-                    .GetRequiredService<RefactorHelperApp>()
-                    .GetContentFile("htmx.min.js");
+                    .GetContentFile(fileName);
 
                 await context.Response.WriteAsync(result);
 
