@@ -41,7 +41,7 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // Setup Trigger endpoint
+                // Setup all endpoints required for RefactorHelper to work
                 app.AddRefactorHelperEndpoints();
             }
 

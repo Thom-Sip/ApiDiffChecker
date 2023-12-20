@@ -1,45 +1,29 @@
 ﻿using RefactorHelper.Models;
 using Newtonsoft.Json;
 using RefactorHelper.Models.RequestHandler;
-using RefactorHelper.Models.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using Newtonsoft.Json.Linq;
 
 namespace RefactorHelper.RequestHandler
 {
-    public class RequestHandlerService
+    public class RequestHandlerService(HttpClient client1, HttpClient client2, RefactorHelperSettings settings)
     {
-        private HttpClient _client1 { get; }
+        private HttpClient _client1 { get; } = client1;
+        private HttpClient _client2 { get; } = client2;
+        private RefactorHelperSettings _settings { get; } = settings;
 
-        private HttpClient _client2 { get; }
-
-        private RefactorHelperSettings _settings { get; }
-
-        public RequestHandlerService(HttpClient client1, HttpClient client2, RefactorHelperSettings settings)
+        public async Task QueryApis(RefactorHelperState state)
         {
-            _client1 = client1;
-            _client2 = client2;
-            _settings = settings;
-        }
-
-        public async Task<RequestHandlerOutput> QueryApis(SwaggerProcessorOutput requests)
-        {
-            var tasks = requests.Requests.Select(GetResponses).ToList();
-
+            var tasks = state.Data.Select(SetResponses).ToList();
             await Task.WhenAll(tasks);
-
-            return new RequestHandlerOutput
-            {
-                Results = [.. tasks.Select(x => x.Result).OrderBy(x => x.Path)]
-            };
         }
 
-        public async Task<RefactorTestResultPair> QueryEndpoint(RequestDetails request) => await GetResponses(request);
+        public async Task QueryEndpoint(RequestWrapper requestWrapper) => await SetResponses(requestWrapper);
 
-        public async Task<RefactorTestResultPair> GetResponses(RequestDetails request)
+        public async Task SetResponses(RequestWrapper requestWrapper)
         {
-            var request1 = _client1.GetAsync(request.Path);
-            var request2 = _client2.GetAsync(request.Path);
+            var request1 = _client1.GetAsync(requestWrapper.Request.Path);
+            var request2 = _client2.GetAsync(requestWrapper.Request.Path);
 
             await Task.WhenAll(request1, request2);
 
@@ -49,10 +33,9 @@ namespace RefactorHelper.RequestHandler
             response1 = TryFormatResponse(response1);
             response2 = TryFormatResponse(response2);
 
-            return new RefactorTestResultPair
+            requestWrapper.Changed = response1 != response2;
+            requestWrapper.TestResult = new RefactorTestResultPair
             {
-                Id = request.Id,
-                Path = request.Path,
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
             };

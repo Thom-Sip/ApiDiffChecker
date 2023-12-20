@@ -11,15 +11,11 @@ namespace RefactorHelper.App
     public class RefactorHelperApp
     {
         private RefactorHelperSettings Settings { get; set; }
-
         private RefactorHelperState State { get; set; } = new();
 
         private SwaggerProcessorService SwaggerProcessorService { get; set; }
-
         private RequestHandlerService RequestHandlerService { get; set; }
-
         private CompareService CompareService { get; set; }
-
         private UIGeneratorService UIGeneratorService { get; set; }
 
         public RefactorHelperApp(RefactorHelperSettings settings)
@@ -49,7 +45,7 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
-        public async Task<List<string>> Run(HttpContext httpContext)
+        public async Task<string> Run(HttpContext httpContext)
         {
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
@@ -59,38 +55,38 @@ namespace RefactorHelper.App
             }
 
             // Get requests from swagger
-            State.SwaggerProcessorOutput = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
+            State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Perform api Requests
-            State.RequestHandlerOutput = await RequestHandlerService.QueryApis(State.SwaggerProcessorOutput);
+            await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
-            State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
+            CompareService.CompareResponses(State);
 
             // Generate output
-            State.HtmlPages = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
+            UIGeneratorService.GenerateUI(State, httpContext);
 
-            return State.HtmlPages;
+            return State.GetCurrentRequest().ResultHtml;
         }
 
         public string GetResultPage(HttpContext context, int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
         }
 
         public async Task<string> RetryCurrentRequest(HttpContext context)
         {
             // Perform single api request and update result
-            State.RequestHandlerOutput.Results[State.CurrentRequest] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[State.CurrentRequest]);
+            await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
 
             // Update Compare Result
-            State.ComparerOutput.Results[State.CurrentRequest] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[State.CurrentRequest]);
+            CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[State.CurrentRequest], State.ComparerOutput, context);
+            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
 
-            return result;
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
         }
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
@@ -100,10 +96,10 @@ namespace RefactorHelper.App
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
             if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = Path.Combine(GetBinPath(), "Files", "Output");
+                settings.OutputFolder = Path.Combine(GetBinPath(), "Output");
 
             if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = Path.Combine(GetBinPath(), "Files", "Content");
+                settings.ContentFolder = Path.Combine(GetBinPath(), "Content");
 
             return settings;
         }
