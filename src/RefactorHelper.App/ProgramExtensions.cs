@@ -19,6 +19,7 @@ namespace RefactorHelper.App
             app.AddOpenRequestEndpoint();
             app.AddRetrySingleRequestEndpoint();
             app.AddGetRequestListEndpoint();
+            app.AddGetCssEndpoint();
         }
 
         private static void AddPrimaryEndpoint(this WebApplication app)
@@ -82,6 +83,20 @@ namespace RefactorHelper.App
                 await context.Response
                     .SetHtmlHeader()
                     .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddGetCssEndpoint(this WebApplication app)
+        {
+            // Get css so we don't need to service static files
+            app.MapGet("/run-refactor-helper/styles.css", async (HttpContext context) =>
+            {
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetCss();
+
+                await context.Response.WriteAsync(result);
 
             }).ExcludeFromDescription();
         }

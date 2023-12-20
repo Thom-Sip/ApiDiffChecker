@@ -95,13 +95,15 @@ namespace RefactorHelper.App
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
 
+        public string GetCss() => File.ReadAllText(Path.Combine(Settings.ContentFolder, "styles.css"));
+
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
             if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = $"{GetBinPath()}/Files/Output/";
+                settings.OutputFolder = Path.Combine(GetBinPath(), "Files", "Output");
 
             if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = $"{GetBinPath()}/Files/Content/";
+                settings.ContentFolder = Path.Combine(GetBinPath(), "Files", "Content");
 
             return settings;
         }
