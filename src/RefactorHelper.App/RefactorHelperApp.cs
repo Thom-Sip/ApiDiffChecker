@@ -73,6 +73,14 @@ namespace RefactorHelper.App
             return State.OutputFileNames;
         }
 
+        public string GetResultPage(HttpContext context, int requestId)
+        {
+            // Get Content Block to display in page
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
+
+            return result;
+        }
+
         public async Task<string> PerformSingleCall(HttpContext context, int requestId)
         {
             // Perform single api request and update result

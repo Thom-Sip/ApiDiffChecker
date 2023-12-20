@@ -16,6 +16,7 @@ namespace RefactorHelper.App
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
             app.AddPrimaryEndpoint();
+            app.AddOpenRequestEndpoint();
             app.AddRetrySingleRequestEndpoint();
             app.AddGetRequestListEndpoint();
         }
@@ -36,10 +37,27 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
+        private static void AddOpenRequestEndpoint(this WebApplication app)
+        {
+            // Navigate to the results of a request based on its index
+            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
+            {
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetResultPage(context, requestId);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
         private static void AddRetrySingleRequestEndpoint(this WebApplication app)
         {
             // Run single requst and return html to replace result in page
-            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
+            app.MapGet("/run-refactor-helper/retry/{requestId}", async (int requestId, HttpContext context) =>
             {
                 var result = await app.Services
                     .GetRequiredService<RefactorHelperApp>()
