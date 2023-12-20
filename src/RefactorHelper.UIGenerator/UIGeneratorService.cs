@@ -31,9 +31,7 @@ namespace RefactorHelper.UIGenerator
 
         public List<string> GenerateUI(ComparerOutput results, HttpContext httpContext)
         {
-            SetupRunfolder();
-
-            GenerateRequestListHtml(results.Results[0], results, httpContext);
+            GenerateRequestListHtml(results, httpContext);
 
             var htmlPages = new List<string>();
 
@@ -67,7 +65,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[CONTENT_CHANGED]", changed);
 
             // TODO: Only run this when the result is different then before
-            GenerateRequestListHtml(result, results, httpContext);
+            GenerateRequestListHtml(results, httpContext);
 
             return content;
         }
@@ -75,10 +73,10 @@ namespace RefactorHelper.UIGenerator
 
         private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
 
-        private void GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
+        private void GenerateRequestListHtml(ComparerOutput results, HttpContext httpContext)
         {
-            var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed), _runfolder);
-            var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed), _runfolder);
+            var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed).ToList(), httpContext);
+            var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed).ToList(), httpContext);
 
             _requestListHtml = _requestListTemplate
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
@@ -92,23 +90,17 @@ namespace RefactorHelper.UIGenerator
             return baseUrl;
         }
 
-        private void SetupRunfolder()
-        {
-            _runfolder = $"{_outputFolder}/{DateTime.Now:yyyy-MM-dd_HH.mm.ss}";
-
-            if (!Directory.Exists(_runfolder))
-                Directory.CreateDirectory(_runfolder);
-        }
-
-        private string GetSidebarContent(IEnumerable<CompareResultPair> resultPairs, string runFolder)
+        private string GetSidebarContent(List<CompareResultPair> resultPairs, HttpContext httpContext)
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
 
-            foreach (var item in resultPairs)
+            for(int i = 0; i < resultPairs.Count; i ++)
             {
+                var item = resultPairs[i];
                 sb.Append($"<li>" +
-                    $"<a href=\"{runFolder}/{item.FilePath}\">{item.Path}</a>" +
+                    $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{i}\" " +
+                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.Path}</span>" +
                     $"</li>");
             }
 

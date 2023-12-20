@@ -34,3 +34,7 @@ span {
     margin: 10px; /* Optional: Add margin between content blocks */
     background-color: #eee;
 }
+
+.request-item {
+    cursor: pointer;
+}
