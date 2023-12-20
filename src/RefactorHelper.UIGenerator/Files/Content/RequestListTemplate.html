@@ -1,7 +1,7 @@
 <div id="request-list-box" 
      hx-get="[REFRESH_URL]"
      hx-swap="innerHTML"
-     hx-trigger="click delay:.1s from:#refresh-button">
+     hx-trigger="refresh-request-list from:body">
     <div>
         <h1>Requests Failed</h1>
         [REQUESTS_FAILED]

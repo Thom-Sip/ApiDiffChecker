@@ -29,7 +29,9 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .Run(context);
 
-                await context.Response.SetHtmlHeader().WriteAsync(result[0]);
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result[0]);
 
             }).ExcludeFromDescription();
         }
@@ -43,7 +45,10 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .PerformSingleCall(context, requestId);
 
-                await context.Response.SetHtmlHeader().WriteAsync(result);
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
 
             }).ExcludeFromDescription();
         }
@@ -57,14 +62,22 @@ namespace RefactorHelper.App
                     .GetRequiredService<RefactorHelperApp>()
                     .GetRequestListHtml();
 
-                await context.Response.SetHtmlHeader().WriteAsync(result);
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
 
             }).ExcludeFromDescription();
         }
 
-        private static HttpResponse SetHtmlHeader(this HttpResponse response)
+        private static HttpResponse SetHtmlHeader(this HttpResponse response) => 
+            response.SetResponseHeader("ContentType", "text/html");
+
+        private static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
+            response.SetResponseHeader("HX-Trigger", trigger);
+
+        private static HttpResponse SetResponseHeader(this HttpResponse response, string key, string value)
         {
-            response.Headers.ContentType = "text/html";
+            response.Headers[key] = value;
             return response;
         }
     }
