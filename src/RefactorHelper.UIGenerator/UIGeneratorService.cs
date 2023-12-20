@@ -96,7 +96,7 @@ namespace RefactorHelper.UIGenerator
             {
                 sb.Append($"<li>" +
                     $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\" " +
-                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.TestResult.Path}</span>" +
+                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.Request.Path}</span>" +
                     $"</li>");
             }
 

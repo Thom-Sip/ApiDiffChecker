@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Content\Output\**" />
     <Compile Remove="wwwroot\**" />
+    <EmbeddedResource Remove="Content\Output\**" />
     <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="Content\Output\**" />
     <None Remove="wwwroot\**" />
   </ItemGroup>
 	
@@ -21,13 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Files\**">
+    <None Update="Content\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Files\Output\" />
   </ItemGroup>
 
 </Project>

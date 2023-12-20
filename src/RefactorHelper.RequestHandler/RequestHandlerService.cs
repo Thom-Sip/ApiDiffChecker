@@ -45,8 +45,6 @@ namespace RefactorHelper.RequestHandler
 
             requestWrapper.TestResult = new RefactorTestResultPair
             {
-                Id = 0,
-                Path = "",
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
             };

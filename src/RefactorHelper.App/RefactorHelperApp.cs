@@ -96,10 +96,10 @@ namespace RefactorHelper.App
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
             if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = Path.Combine(GetBinPath(), "Files", "Output");
+                settings.OutputFolder = Path.Combine(GetBinPath(), "Output");
 
             if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = Path.Combine(GetBinPath(), "Files", "Content");
+                settings.ContentFolder = Path.Combine(GetBinPath(), "Content");
 
             return settings;
         }
