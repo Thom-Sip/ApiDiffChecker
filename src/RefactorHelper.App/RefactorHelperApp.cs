@@ -68,9 +68,9 @@ namespace RefactorHelper.App
             State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
 
             // Generate output
-            State.OutputFileNames = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
+            State.HtmlPages = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
 
-            return State.OutputFileNames;
+            return State.HtmlPages;
         }
 
         public string GetResultPage(HttpContext context, int requestId)
