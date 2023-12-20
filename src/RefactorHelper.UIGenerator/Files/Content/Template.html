@@ -3,28 +3,18 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="../styles.css" />
-    <title></title>
+    <link rel="stylesheet" type="text/css" href="/run-refactor-helper/styles.css" />
+    <script src="htmx.min.js"></script>
+    <title>RefactorHelper</title>
 </head>
 <body>
 
 <div class="container">
 
     <div class="sidebar">
-        <div>
-            <button hx-get="[REFRESH_URL]"
-                    hx-swap="innerHTML"
-                    hx-target="#result-container">
-                Retry current Request
-            </button>
-        </div>
-        <div>
-            <h1>Requests Failed</h1>
-            [REQUESTS_FAILED]
-        </div>
-        <div>
-            <h1>Requests Success</h1>
-            [REQUESTS_SUCCESS]
+        <div hx-get="[REQUEST_LIST_URL]"
+             hx-swap="innerHTML"
+             hx-trigger="load">
         </div>
     </div>
 
@@ -33,8 +23,6 @@
     </div>
 
 </div>
-
-<script src="../htmx.min.js"></script>
 
 </body>
 </html>

@@ -68,32 +68,42 @@ namespace RefactorHelper.App
             State.ComparerOutput = CompareService.CompareResponses(State.RequestHandlerOutput);
 
             // Generate output
-            State.OutputFileNames = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
+            State.HtmlPages = UIGeneratorService.GenerateUI(State.ComparerOutput, httpContext);
 
-            return State.OutputFileNames;
+            return State.HtmlPages;
         }
 
-        public async Task<string> PerformSingleCall(int requestId)
+        public string GetResultPage(HttpContext context, int requestId)
+        {
+            State.CurrentRequest = requestId;
+            return UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId], State.ComparerOutput, context);
+        }
+
+        public async Task<string> RetryCurrentRequest(HttpContext context)
         {
             // Perform single api request and update result
-            State.RequestHandlerOutput.Results[requestId] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[requestId]);
+            State.RequestHandlerOutput.Results[State.CurrentRequest] = await RequestHandlerService.QueryEndpoint(State.SwaggerProcessorOutput.Requests[State.CurrentRequest]);
 
             // Update Compare Result
-            State.ComparerOutput.Results[requestId] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[requestId]);
+            State.ComparerOutput.Results[State.CurrentRequest] = CompareService.CompareResponse(State.RequestHandlerOutput.Results[State.CurrentRequest]);
 
             // Get Content Block to display in page
-            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[requestId]);
+            var result = UIGeneratorService.GetSinglePageContent(State.ComparerOutput.Results[State.CurrentRequest], State.ComparerOutput, context);
 
             return result;
         }
 
+        public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
+
+        public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
+
         private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
         {
             if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = $"{GetBinPath()}/Files/Output/";
+                settings.OutputFolder = Path.Combine(GetBinPath(), "Files", "Output");
 
             if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = $"{GetBinPath()}/Files/Content/";
+                settings.ContentFolder = Path.Combine(GetBinPath(), "Files", "Content");
 
             return settings;
         }

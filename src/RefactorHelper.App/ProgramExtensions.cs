@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using RefactorHelper.Models.Config;
-using System.Diagnostics;
 
 namespace RefactorHelper.App
 {
@@ -10,44 +9,123 @@ namespace RefactorHelper.App
     {
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
         {
-            services.AddSingleton<RefactorHelperApp>(new RefactorHelperApp(settings));
-
+            services.AddSingleton(new RefactorHelperApp(settings));
             return services;
         }
 
-        public static void AddRefactorHelperEndpoint(this WebApplication app)
+        public static void AddRefactorHelperEndpoints(this WebApplication app)
+        {
+            app.AddPrimaryEndpoint();
+            app.AddOpenRequestEndpoint();
+            app.AddRetrySingleRequestEndpoint();
+            app.AddGetRequestListEndpoint();
+            app.AddGetCssEndpoint();
+            app.AddGetHtmxJsEndpoint();
+        }
+
+        private static void AddPrimaryEndpoint(this WebApplication app)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
-                context.Response.Headers.ContentType = "text/html";
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.Run(context);
+                var result = await app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .Run(context);
 
-                if (result.Count > 0)
-                {
-                    var p = new Process
-                    {
-                        StartInfo = new ProcessStartInfo(result.First())
-                        {
-                            UseShellExecute = true
-                        }
-                    };
-                    p.Start();
-                }
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result[0]);
 
-                await context.Response.WriteAsync("Thank you for using RefactorHelper");
             }).ExcludeFromDescription();
+        }
 
-            // Run single requst and return html to replace result in page
-            app.MapGet("/run-refactor-helper/{runId}", async (int runId, HttpContext context) => 
+        private static void AddOpenRequestEndpoint(this WebApplication app)
+        {
+            // Navigate to the results of a request based on its index
+            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
             {
-                context.Response.Headers.ContentType = "text/html";
-                var service = app.Services.GetRequiredService<RefactorHelperApp>();
-                var result = await service.PerformSingleCall(runId);
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetResultPage(context, requestId);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddRetrySingleRequestEndpoint(this WebApplication app)
+        {
+            // Run single requst and return html to replace result in page
+            app.MapGet("/run-refactor-helper/retry", async (HttpContext context) =>
+            {
+                var result = await app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .RetryCurrentRequest(context);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddGetRequestListEndpoint(this WebApplication app)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet("/run-refactor-helper/request-list", async (HttpContext context) =>
+            {
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetRequestListHtml();
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddGetCssEndpoint(this WebApplication app)
+        {
+            // Get css so we don't need to service static files
+            app.MapGet("/run-refactor-helper/styles.css", async (HttpContext context) =>
+            {
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetContentFile("styles.css");
 
                 await context.Response.WriteAsync(result);
+
             }).ExcludeFromDescription();
+        }
+
+        private static void AddGetHtmxJsEndpoint(this WebApplication app)
+        {
+            // Get css so we don't need to service static files
+            app.MapGet("/run-refactor-helper/htmx.min.js", async (HttpContext context) =>
+            {
+                var result = app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .GetContentFile("htmx.min.js");
+
+                await context.Response.WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static HttpResponse SetHtmlHeader(this HttpResponse response) => 
+            response.SetResponseHeader("ContentType", "text/html");
+
+        private static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
+            response.SetResponseHeader("HX-Trigger", trigger);
+
+        private static HttpResponse SetResponseHeader(this HttpResponse response, string key, string value)
+        {
+            response.Headers[key] = value;
+            return response;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace RefactorHelper.Models
 
         public ComparerOutput ComparerOutput { get; set; } = new();
 
-        public List<string> OutputFileNames { get; set; } = [];
+        public List<string> HtmlPages { get; set; } = [];
+
+        public int CurrentRequest { get; set; }
     }
 }

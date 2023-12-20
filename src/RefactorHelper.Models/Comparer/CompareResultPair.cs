@@ -2,6 +2,8 @@
 {
     public class CompareResultPair
     {
+        public required int Id { get; init; }
+
         public required bool Changed { get; init; }
 
         public required string Path { get; init; }
