@@ -2,6 +2,8 @@
 {
     public class RefactorHelperSettings
     {
+        public bool RunOnStart { get; set; }
+
         public string OutputFolder { get; set; } = string.Empty;
 
         public string ContentFolder { get; set; } = string.Empty;
