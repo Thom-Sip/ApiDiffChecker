@@ -31,7 +31,7 @@ namespace RefactorHelper.UIGenerator
 
         public List<string> GenerateUI(ComparerOutput results, HttpContext httpContext)
         {
-            GenerateRequestListHtml(results, httpContext);
+            GenerateRequestListHtml(results.Results[0], results, httpContext);
 
             var htmlPages = new List<string>();
 
@@ -45,7 +45,7 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[CONTENT_CHANGED]", changed);
 
                 var html = _template
-                    .Replace("[REFRESH_URL]", GetRefreshUrl(httpContext, results.Results.IndexOf(result)))
+                    .Replace("[REFRESH_SIDEBAR_URL]", GetRefreshUrl(httpContext, results.Results.IndexOf(result)))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", content);
 
@@ -65,15 +65,16 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[CONTENT_CHANGED]", changed);
 
             // TODO: Only run this when the result is different then before
-            GenerateRequestListHtml(results, httpContext);
+            GenerateRequestListHtml(result, results, httpContext);
 
             return content;
         }
+
         public string GetRequestListHtml() => _requestListHtml;
 
         private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
 
-        private void GenerateRequestListHtml(ComparerOutput results, HttpContext httpContext)
+        private void GenerateRequestListHtml(CompareResultPair result, ComparerOutput results, HttpContext httpContext)
         {
             var requestsFailedListHtml = GetSidebarContent(results.Results.Where(x => x.Changed).ToList(), httpContext);
             var requestsSuccessListHtml = GetSidebarContent(results.Results.Where(x => !x.Changed).ToList(), httpContext);
@@ -81,7 +82,8 @@ namespace RefactorHelper.UIGenerator
             _requestListHtml = _requestListTemplate
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
-                .Replace("[REFRESH_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");
+                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
+                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry/{results.Results.IndexOf(result)}");
         }
 
         private string GetBaseUrl(HttpRequest request)

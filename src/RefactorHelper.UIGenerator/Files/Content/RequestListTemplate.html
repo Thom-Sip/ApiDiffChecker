@@ -1,7 +1,17 @@
 <div id="request-list-box" 
-     hx-get="[REFRESH_URL]"
+     hx-get="[REFRESH_SIDEBAR_URL]"
      hx-swap="innerHTML"
      hx-trigger="refresh-request-list from:body">
+    <div>
+        <div>
+            <button id="refresh-button"
+                    hx-get="[RETRY_REQUEST_URL]"
+                    hx-swap="innerHTML"
+                    hx-target="#result-container">
+                Retry current Request
+            </button>
+        </div>
+    </div>
     <div>
         <h1>Requests Failed</h1>
         [REQUESTS_FAILED]
