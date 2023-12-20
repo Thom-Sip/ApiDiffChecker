@@ -5,7 +5,6 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
-using System.Text;
 
 namespace RefactorHelper.App
 {
@@ -59,7 +58,7 @@ namespace RefactorHelper.App
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             if (Settings.RunOnStart)
-                await Run(httpContext);
+                await Run();
 
             // Generate output
             UIGeneratorService.GenerateUI(State, httpContext);
@@ -67,7 +66,17 @@ namespace RefactorHelper.App
             return State.GetCurrentRequest()?.ResultHtml ?? "";
         }
 
-        public async Task Run(HttpContext httpContext)
+        public async Task<string> RunAll(HttpContext httpContext)
+        {
+            await Run();
+
+            // Generate output
+            UIGeneratorService.GenerateUI(State, httpContext);
+
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
+        }
+
+        private async Task Run()
         {
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
@@ -76,13 +85,13 @@ namespace RefactorHelper.App
             CompareService.CompareResponses(State);
         }
 
-        public string GetResultPage(HttpContext context, int requestId)
+        public string GetResultPage(HttpContext httpContext, int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
         }
 
-        public async Task<string> RetryCurrentRequest(HttpContext context)
+        public async Task<string> RetryCurrentRequest(HttpContext httpContext)
         {
             // Perform single api request and update result
             await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
@@ -91,9 +100,9 @@ namespace RefactorHelper.App
             CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
+            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
 
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, context);
+            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
         }
 
         public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();

@@ -11,6 +11,16 @@
                 Retry current Request
             </button>
         </div>
+
+        <div>
+            <button id="retry-all-button"
+                    hx-get="[RETRY_ALL_URL]"
+                    hx-swap="innerHTML"
+                    hx-target="#result-container">
+                Run All Requests
+            </button>
+        </div>
+
     </div>
     <div>
         <h1>Requests Failed</h1>

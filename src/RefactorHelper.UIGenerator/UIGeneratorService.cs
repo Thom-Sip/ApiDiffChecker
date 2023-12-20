@@ -78,7 +78,8 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
                 .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
-                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry");
+                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
+                .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all");
         }
 
         private string GetBaseUrl(HttpRequest request)

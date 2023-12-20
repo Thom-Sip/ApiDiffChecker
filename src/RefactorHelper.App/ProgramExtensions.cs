@@ -13,6 +13,7 @@ namespace RefactorHelper.App
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
             app.AddPrimaryEndpoint();
+            app.AddRunAllEndpoint();
             app.AddOpenRequestEndpoint();
             app.AddRetrySingleRequestEndpoint();
             app.AddGetRequestListEndpoint();
@@ -31,6 +32,23 @@ namespace RefactorHelper.App
 
                 await context.Response
                     .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddRunAllEndpoint(this WebApplication app)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/run-all", async (HttpContext context) =>
+            {
+                var result = await app.Services
+                    .GetRequiredService<RefactorHelperApp>()
+                    .RunAll(context);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();
