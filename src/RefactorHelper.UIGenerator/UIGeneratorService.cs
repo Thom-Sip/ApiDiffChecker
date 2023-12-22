@@ -48,7 +48,7 @@ namespace RefactorHelper.UIGenerator
             return _template
                 .Replace("[REFRESH_SIDEBAR_URL]", "/Does-not-exist")
                 .Replace("[REQUEST_LIST_URL]", "/Does-not-exist")
-                .Replace("[CONTENT_BLOCK]", GetContent(resultPair));
+                .Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs));
         }
 
         public string GetSinglePageContent(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
@@ -63,18 +63,18 @@ namespace RefactorHelper.UIGenerator
 
         private string GetContent(RequestWrapper wrapper)
         {
-            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper, [Operation.EQUAL, Operation.INSERT]);
-            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper, [Operation.EQUAL, Operation.DELETE]);
+            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.INSERT]);
+            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.DELETE]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
         }
 
-        private string GetContent(CompareResultPair compareResultPair)
+        private string GetContent(CompareResultPair compareResultPair, List<Diff> diffs)
         {
-            var original = diff_prettyHtml_custom(compareResultPair?.Result1, null, [Operation.EQUAL, Operation.DELETE]);
-            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, null, [Operation.EQUAL, Operation.INSERT]);
+            var original = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.DELETE]);
+            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.INSERT]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
@@ -123,11 +123,11 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper? wrapper, List<Operation> operations)
+        private string diff_prettyHtml_custom(CompareResult? result, List<Diff> diffs, RequestWrapper? wrapper, List<Operation> operations)
         {
             StringBuilder sb = new();
 
-            foreach (Diff aDiff in result?.Diffs ?? [])
+            foreach (Diff aDiff in diffs ?? [])
             {
                 string text = aDiff.text
                     .Replace("&", "&amp;")

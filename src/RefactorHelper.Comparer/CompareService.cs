@@ -32,24 +32,22 @@ namespace RefactorHelper.Comparer
         {
             // Get diffs
             var diffs1 = _dmp.diff_main(fileOne, fileTwo);
-            var diffs2 = _dmp.diff_main(fileTwo, fileOne);
 
             // Only show relevant differences
             _dmp.diff_cleanupSemantic(diffs1);
-            _dmp.diff_cleanupSemantic(diffs2);
 
             return new CompareResultPair
             {
-                Result1 = GetCompareResult(fileOne, diffs1, response1 ?? new()),
-                Result2 = GetCompareResult(fileTwo, diffs2, response2 ?? new())
+                Diffs = diffs1,
+                Result1 = GetCompareResult(fileOne, response1 ?? new()),
+                Result2 = GetCompareResult(fileTwo, response2 ?? new())
             };
         }
 
-        private CompareResult GetCompareResult(string result, List<Diff> diffs, HttpResponseMessage response)
+        private CompareResult GetCompareResult(string result, HttpResponseMessage response)
         {
             return new CompareResult
             {
-                Diffs = diffs,
                 Result = result,
                 Response = response
             };
