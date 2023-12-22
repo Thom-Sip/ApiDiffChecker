@@ -12,57 +12,34 @@ namespace Test_Diff_UI
             {
                 RunOnStart = false,
                 BaseUrl1 = "https://localhost:44371",
-                BaseUrl2 = "https://localhost:44371",
-                DefaultParameters = [new("customerId", "4007")],
-                Runs =
-                [
-                    [new("message", "Foo")],
-                    [new("message", "Bar")],
-                ],
-                PropertiesToReplace =
-                [
-                    new("Timestamp", "[REPLACED_TIMESTAMP]"),
-                    new("requestId", $"{Guid.Empty}"),
-                ]
+                BaseUrl2 = "https://localhost:44371"
             };
 
             var builder = WebApplication.CreateBuilder(args);
 
             // Setup DI
             builder.Services.AddRefactorHelper(settings);
-
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
             WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-
                 // Setup all endpoints required for RefactorHelper to work
                 app.AddRefactorHelperEndpoints();
-
-                string result = null;
 
                 // Run all request and open static html in browser
                 app.MapGet("/static-compare", async (HttpContext context) =>
                 {
-                    result ??= await app.Services
+                    var result = await app.Services
                         .GetRequiredService<RefactorHelperApp>()
                         .StaticCompare(context, "example1.json", "example2.json");
 
                     await context.Response
                         .SetHtmlHeader()
                         .WriteAsync(result);
-
-                }).ExcludeFromDescription();
+                });
             }
 
             app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.MapControllers();
             app.Run();
         }
     }
