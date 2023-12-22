@@ -4,18 +4,9 @@
 }
 
 span {
-    white-space: pre;
+    white-space: pre-wrap;
     font-family: 'Courier New', Courier, monospace;
-}
-
-ins {
-    white-space: pre;
-    font-family: 'Courier New', Courier, monospace;
-}
-
-del {
-    white-space: pre;
-    font-family: 'Courier New', Courier, monospace;
+    overflow-wrap: anywhere;
 }
 
 .container {
@@ -43,6 +34,7 @@ del {
     border: 1px solid #ccc; /* Optional: Add a border for clarity */
     margin: 10px; /* Optional: Add margin between content blocks */
     background-color: #eee;
+    overflow-y: scroll;
 }
 
 .request-item {
