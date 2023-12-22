@@ -8,6 +8,16 @@ span {
     font-family: 'Courier New', Courier, monospace;
 }
 
+ins {
+    white-space: pre;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+del {
+    white-space: pre;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .container {
     display: flex;
     height: 100%;

@@ -43,6 +43,14 @@ namespace RefactorHelper.UIGenerator
             }
         }
 
+        public string GenerateHtmlPage(CompareResultPair resultPair)
+        {
+            return _template
+                .Replace("[REFRESH_SIDEBAR_URL]", "/Does-not-exist")
+                .Replace("[REQUEST_LIST_URL]", "/Does-not-exist")
+                .Replace("[CONTENT_BLOCK]", GetContent(resultPair));
+        }
+
         public string GetSinglePageContent(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
         {
             var content = GetContent(wrapper);
@@ -57,6 +65,16 @@ namespace RefactorHelper.UIGenerator
         {
             var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper);
             var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result2, wrapper);
+
+            return _contentTemplate
+                .Replace("[CONTENT_ORIGINAL]", original)
+                .Replace("[CONTENT_CHANGED]", changed);
+        }
+
+        private string GetContent(CompareResultPair compareResultPair)
+        {
+            var original = diff_prettyHtml_custom(compareResultPair?.Result1, null);
+            var changed = diff_prettyHtml_custom(compareResultPair?.Result2, null);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
@@ -105,7 +123,7 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper wrapper)
+        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper? wrapper)
         {
             StringBuilder sb = new();
 
@@ -133,7 +151,7 @@ namespace RefactorHelper.UIGenerator
             }
 
             var html = _diffBoxTemplate
-                  .Replace("[TITLE]", wrapper.Request.Path)
+                  .Replace("[TITLE]", wrapper?.Request.Path)
                   .Replace("[URL]", $"{result?.Response?.RequestMessage?.RequestUri}")
                   .Replace("[RESULTCODE]", $"{result?.Response?.StatusCode.ToString() ?? "N/A"}")
                   .Replace("[CONTENT]", sb.ToString());

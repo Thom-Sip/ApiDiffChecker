@@ -117,13 +117,13 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static HttpResponse SetHtmlHeader(this HttpResponse response) => 
+        public static HttpResponse SetHtmlHeader(this HttpResponse response) => 
             response.SetResponseHeader("ContentType", "text/html");
 
-        private static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
+        public static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
             response.SetResponseHeader("HX-Trigger", trigger);
 
-        private static HttpResponse SetResponseHeader(this HttpResponse response, string key, string value)
+        public static HttpResponse SetResponseHeader(this HttpResponse response, string key, string value)
         {
             response.Headers[key] = value;
             return response;
