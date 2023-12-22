@@ -5,6 +5,7 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace RefactorHelper.App
 {
@@ -50,7 +51,7 @@ namespace RefactorHelper.App
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
                 var client = new HttpClient();
-                var result = await client.GetAsync(Settings.SwaggerUrl);
+                var result = await client.GetAsync(GetSwaggerUrl(httpContext));
                 State.SwaggerJson = await result.Content.ReadAsStringAsync();
             }
 
@@ -122,5 +123,13 @@ namespace RefactorHelper.App
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
+        private string GetSwaggerUrl(HttpContext httpContext)
+        {
+            if (!string.IsNullOrWhiteSpace(Settings.SwaggerUrl))
+                return Settings.SwaggerUrl;
+
+            return $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.PathBase}/swagger/v1/swagger.json";
+        }
     }
 }
