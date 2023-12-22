@@ -2,9 +2,7 @@
 using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
-using System;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -131,24 +129,20 @@ namespace RefactorHelper.UIGenerator
 
             foreach (Diff aDiff in result?.Diffs ?? [])
             {
-                string text = aDiff.text;
-                    //.Replace("&", "&amp;")
-                    //.Replace("<", "&lt;")
-                    //.Replace(">", "&gt;");
+                string text = aDiff.text
+                    .Replace("&", "&amp;")
+                    .Replace("<", "&lt;")
+                    .Replace(">", "&gt;");
 
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
                         if(operations.Contains(Operation.INSERT))
                             sb.Append("<span class=\"addition\">").Append(text).Append("</span>");
-                        else
-                            sb.Append("<span class=\"hidden-addition\">").Append(MakeInvisble(text, "hidden-addition")).Append("</span>");
                         break;
                     case Operation.DELETE:
                         if (operations.Contains(Operation.DELETE))
                             sb.Append("<span class=\"removal\">").Append(text).Append("</span>");
-                        else
-                            sb.Append("<span class=\"hidden-removal\">").Append(MakeInvisble(text, "hidden-removal")).Append("</span>");
                         break;
                     case Operation.EQUAL:
                         if (operations.Contains(Operation.EQUAL))
@@ -164,24 +158,6 @@ namespace RefactorHelper.UIGenerator
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
-        }
-
-        private string MakeInvisble(string input, string cssClas)
-        {
-            var newLines = Regex.Matches(input, Environment.NewLine).Count;
-
-            var result = "";
-            //for(int i = 0; i < newLines - 1; i ++)
-            //    result = $"{result}<span class=\"{cssClas}\" style=\"display:block\">&nbsp;</span>";
-
-            //if (newLines > 1)
-            //{ 
-            //    var charactersOnLastLine = input.Split(Environment.NewLine).Last().Length;
-            //    var lastLine = new StringBuilder().Insert(0, "&nbsp;", charactersOnLastLine).ToString();
-            //    result = $"{result}{lastLine}";
-            //}   
-
-            return result;
         }
     }
 }

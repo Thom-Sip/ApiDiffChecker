@@ -45,13 +45,13 @@ namespace RefactorHelper.Comparer
             };
         }
 
-        private CompareResult GetCompareResult(string result, List<Diff> diffs, HttpResponseMessage? response)
+        private CompareResult GetCompareResult(string result, List<Diff> diffs, HttpResponseMessage response)
         {
             return new CompareResult
             {
                 Diffs = diffs,
                 Result = result,
-                Response = new HttpResponseMessage()
+                Response = response
             };
         }
     }
