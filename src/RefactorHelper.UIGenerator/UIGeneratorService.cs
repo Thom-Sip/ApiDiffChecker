@@ -2,6 +2,8 @@
 using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
+using RefactorHelper.Models.RequestHandler;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -115,7 +117,7 @@ namespace RefactorHelper.UIGenerator
             {
                 sb.Append($"<li>" +
                     $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\" " +
-                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.Request.Path}</span>" +
+                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}</span>" +
                     $"</li>");
             }
 
@@ -153,11 +155,36 @@ namespace RefactorHelper.UIGenerator
 
             var html = _diffBoxTemplate
                   .Replace("[TITLE]", wrapper?.Request.Path)
-                  .Replace("[URL]", $"{result?.Response?.RequestMessage?.RequestUri}")
-                  .Replace("[RESULTCODE]", $"{result?.Response?.StatusCode.ToString() ?? "N/A"}")
+                  .Replace("[URL]", $"Url: {result?.Response?.RequestMessage?.RequestUri?.ToString() ?? "Pending"}")
+                  .Replace("[RESULTCODE]", GetResultCodeHeaderText(wrapper))
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
+        }
+
+        private string GetResultCodeHeaderText(RequestWrapper? wrapper)
+        {
+            if (wrapper?.TestResult?.Result1 != null)
+                return $"{GetResultCode(wrapper?.TestResult?.Result1)} {GetResultCodeString(wrapper?.TestResult?.Result1)}";
+
+            return "Pending";
+        }
+
+
+        private string GetResultCode(RefactorTestResult? result)
+        {
+            var statusCode = result?.ResponseObject?.StatusCode;
+            return statusCode != null
+                ? ((int)statusCode).ToString()
+                : "_";
+        }
+
+        private string GetResultCodeString(RefactorTestResult? result)
+        {
+            var statusCode = result?.ResponseObject?.StatusCode;
+            return statusCode != null
+                ? $"{statusCode}"
+                : "N/A";
         }
     }
 }
