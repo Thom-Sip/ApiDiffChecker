@@ -31,7 +31,7 @@ namespace Test_Diff_UI
                 {
                     var result = await app.Services
                         .GetRequiredService<RefactorHelperApp>()
-                        .StaticCompare(context, "example1.json", "example2.json");
+                        .StaticCompare("example3.json", "example4.json");
 
                     await context.Response
                         .SetHtmlHeader()

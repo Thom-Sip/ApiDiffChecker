@@ -49,3 +49,18 @@ del {
     cursor: pointer;
 }
 
+.addition {
+    background: #87d49c;
+}
+
+.removal {
+    background: #d49696;
+}
+
+.hidden-addition {
+    background: #d49696;
+}
+
+.hidden-removal {
+    background: #87d49c;
+}

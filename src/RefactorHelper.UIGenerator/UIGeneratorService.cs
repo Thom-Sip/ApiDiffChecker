@@ -2,7 +2,9 @@
 using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
+using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -63,8 +65,8 @@ namespace RefactorHelper.UIGenerator
 
         private string GetContent(RequestWrapper wrapper)
         {
-            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper);
-            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result2, wrapper);
+            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper, [Operation.EQUAL, Operation.INSERT]);
+            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper, [Operation.EQUAL, Operation.DELETE]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
@@ -73,8 +75,8 @@ namespace RefactorHelper.UIGenerator
 
         private string GetContent(CompareResultPair compareResultPair)
         {
-            var original = diff_prettyHtml_custom(compareResultPair?.Result1, null);
-            var changed = diff_prettyHtml_custom(compareResultPair?.Result2, null);
+            var original = diff_prettyHtml_custom(compareResultPair?.Result1, null, [Operation.EQUAL, Operation.DELETE]);
+            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, null, [Operation.EQUAL, Operation.INSERT]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
@@ -123,29 +125,34 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper? wrapper)
+        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper? wrapper, List<Operation> operations)
         {
             StringBuilder sb = new();
 
             foreach (Diff aDiff in result?.Diffs ?? [])
             {
-                string text = aDiff.text
-                    .Replace("&", "&amp;")
-                    .Replace("<", "&lt;")
-                    .Replace(">", "&gt;");
+                string text = aDiff.text;
+                    //.Replace("&", "&amp;")
+                    //.Replace("<", "&lt;")
+                    //.Replace(">", "&gt;");
 
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
-                        sb.Append("<ins style=\"background:#0f8009;\">").Append(text)
-                            .Append("</ins>");
+                        if(operations.Contains(Operation.INSERT))
+                            sb.Append("<span class=\"addition\">").Append(text).Append("</span>");
+                        else
+                            sb.Append("<span class=\"hidden-addition\">").Append(MakeInvisble(text, "hidden-addition")).Append("</span>");
                         break;
                     case Operation.DELETE:
-                        sb.Append("<del style=\"background:#ab1b11;\">").Append(text)
-                            .Append("</del>");
+                        if (operations.Contains(Operation.DELETE))
+                            sb.Append("<span class=\"removal\">").Append(text).Append("</span>");
+                        else
+                            sb.Append("<span class=\"hidden-removal\">").Append(MakeInvisble(text, "hidden-removal")).Append("</span>");
                         break;
                     case Operation.EQUAL:
-                        sb.Append("<span>").Append(text).Append("</span>");
+                        if (operations.Contains(Operation.EQUAL))
+                            sb.Append("<span>").Append(text).Append("</span>");
                         break;
                 }
             }
@@ -157,6 +164,24 @@ namespace RefactorHelper.UIGenerator
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
+        }
+
+        private string MakeInvisble(string input, string cssClas)
+        {
+            var newLines = Regex.Matches(input, Environment.NewLine).Count;
+
+            var result = "";
+            //for(int i = 0; i < newLines - 1; i ++)
+            //    result = $"{result}<span class=\"{cssClas}\" style=\"display:block\">&nbsp;</span>";
+
+            //if (newLines > 1)
+            //{ 
+            //    var charactersOnLastLine = input.Split(Environment.NewLine).Last().Length;
+            //    var lastLine = new StringBuilder().Insert(0, "&nbsp;", charactersOnLastLine).ToString();
+            //    result = $"{result}{lastLine}";
+            //}   
+
+            return result;
         }
     }
 }

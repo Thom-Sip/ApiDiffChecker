@@ -67,7 +67,7 @@ namespace RefactorHelper.App
             return State.GetCurrentRequest()?.ResultHtml ?? "";
         }
 
-        public async Task<string> StaticCompare(HttpContext httpContext, string fileOne, string fileTwo)
+        public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
             var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
             var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
