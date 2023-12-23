@@ -8,6 +8,9 @@ body, html {
     --text-color-light: #ddd;
 
     --border-color: #222;
+
+    --margin: 30px;
+    --margin-half: calc(var(--margin) * .5);
     
     height: 100%;
     margin: 0;
@@ -27,7 +30,8 @@ body, html {
 /* Side-Bar */
 .side-bar {
     width: 20%;
-    margin: 10px 5px 10px 10px;
+    margin: var(--margin);
+    margin-right: var(--margin-half);
     display: flex;
     flex-direction: column;
 }
@@ -64,9 +68,10 @@ body, html {
 }
 
 .side-bar-group-header {
+    margin-top: var(--margin);
     background-color: var(--main-color-dark);;
     color: var(--text-color-light);
-    padding: 5px;
+    padding: 10px;
     font-size: larger;
     border: 1px solid var(--border-color);
 }
@@ -87,7 +92,8 @@ body, html {
 .main-box {
     width: 80%; 
     border: 1px solid var(--border-color);
-    margin: 10px; 
+    margin: var(--margin);
+    margin-left: var(--margin-half);
     background-color: #eee;
 }
 
@@ -115,7 +121,7 @@ body, html {
 
 .header-item {
     flex: 1;
-    max-width:6em;
+    max-width:8em;
 }
 
 .content-box {
