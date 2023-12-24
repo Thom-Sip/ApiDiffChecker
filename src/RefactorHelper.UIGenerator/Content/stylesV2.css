@@ -25,11 +25,11 @@ body, html {
     background-color: var(--main-color-light);
     color: var(--text-color-dark);
 
-    border-color: var(--border-color)
+    border-color: var(--border-color);
 }
 
 .container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     display: flex;
 }
@@ -53,6 +53,7 @@ body, html {
 
 .side-bar-header-item {
     flex: 1;
+    height: var(--banner-height)
 }
 
 .side-bar-header-button {
@@ -70,7 +71,7 @@ body, html {
 .side-bar-content {
     background-color: var(--main-color-light);
     flex:1;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     display: flex;
     flex-direction: column;
 }
@@ -85,8 +86,7 @@ body, html {
 }
 
 .side-bar-group-content {
-    /* max-height: calc((100vh - var(--margin)- var(--margin)) / 3); */
-    overflow-y:auto;
+    /* overflow-y:auto; */
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -144,6 +144,7 @@ body, html {
     flex: 1;
     display: flex;
     gap: var(--margin);
+    align-items: flex-start;
 }
 
 .result-container {
@@ -154,8 +155,8 @@ body, html {
     margin-top: var(--margin);
     margin-bottom: var(--margin);
     background-color: var(--main-color-lightest);
-    overflow-y: auto;
-    max-height: calc(100vh - var(--banner-height) - calc(3 * var(--margin)));
+    /* overflow-y: auto; */
+    /* max-height: calc(100vh - var(--banner-height) - calc(3 * var(--margin))); */
 }
 
 .result-container-header {
@@ -169,7 +170,7 @@ body, html {
 }
 
 .result-container-body {
-    overflow-y: auto;
+    /* overflow-y: auto; */
     flex: 1;
     max-height:fit-content;
     padding: var(--padding);
@@ -197,7 +198,7 @@ span {
     border: 1px solid #ccc;
     margin: 10px 10px 10px 5px;
     background-color: #eee;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 .request-item {
