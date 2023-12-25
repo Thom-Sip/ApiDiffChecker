@@ -94,6 +94,7 @@ body, html {
   font-size: larger;
   border: var(--border);
   cursor: pointer;
+  text-align: left;
 }
 
 .item-hidden {
@@ -110,6 +111,9 @@ body, html {
   border-top: 0px;
   background-color: var(--main-color-lighter);
   padding: var(--padding-small);
+}
+.side-bar-group-content > ul > li:hover {
+  background-color: var(--main-color-lightest);
 }
 .side-bar-group-content > ul > li:last-child {
   border-radius: var(--border-radius-bottom);

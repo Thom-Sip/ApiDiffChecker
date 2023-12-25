@@ -70,16 +70,10 @@
 
     <script>
 
-        document.body.addEventListener('htmx:afterRequest', function (evt) {
-            var coll = document.getElementsByClassName("side-bar-group-header");
-            for (var i = 0; i < coll.length; i++) {
-                coll[i].addEventListener("click", function () {
-                    var content = this.nextElementSibling;
-                    console.log("toggle");
-                    content.classList.toggle("item-hidden");
-                });
-            }
-        });
+        function collapse(e) {
+            var content = e.nextElementSibling;
+            content.classList.toggle("item-hidden");
+        }
 
     </script>
 

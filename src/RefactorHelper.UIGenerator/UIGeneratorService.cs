@@ -3,8 +3,6 @@ using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
-using System.Net.Http;
-using System.Reflection.Metadata;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -123,9 +121,14 @@ namespace RefactorHelper.UIGenerator
 
             foreach(var item in resultPairs)
             {
-                sb.Append($"<li>" +
-                    $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\" " +
-                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}</span>" +
+                sb.Append(
+                    $"<li>" +
+                        $"<span class=\"request-item\" " +
+                              $"hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\"" +
+                              $"hx-swap=\"innerHTML\" " +
+                              $"hx-target=\"#result-container\">" +
+                              $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}" +
+                        $"</span>" +
                     $"</li>");
             }
 

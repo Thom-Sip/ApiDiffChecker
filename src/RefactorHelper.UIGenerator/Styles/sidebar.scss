@@ -60,6 +60,7 @@
     font-size: larger;
     border: var(--border);
     cursor: pointer;
+    text-align: left;
 }
 
 .item-hidden {
@@ -78,6 +79,10 @@
         border-top: 0px;
         background-color: var(--main-color-lighter);
         padding: var(--padding-small);
+
+        &:hover {
+            background-color: var(--main-color-lightest);
+        }
 
         &:last-child {
             border-radius: var(--border-radius-bottom);
