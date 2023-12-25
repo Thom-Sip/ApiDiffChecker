@@ -20,12 +20,11 @@
                 </div>
             </div>
 
-            <div class="side-bar-content">
-                <div id="request-list-box"
-                     hx-get="[REQUEST_LIST_URL]"
-                     hx-swap="innerHtml"
-                     hx-trigger="refresh-request-list from:body, load">
-                </div>
+            <div id="request-list-box"
+                 class="side-bar-content"
+                 hx-get="[REQUEST_LIST_URL]"
+                 hx-swap="innerHtml"
+                 hx-trigger="refresh-request-list from:body, load">
             </div>
         </div>
 
@@ -35,7 +34,7 @@
                     <div class="header-title">RefactorHelper</div>
                 </div>
                 <div class="header-item">
-                    <button class="header-button" 
+                    <button class="header-button"
                             onclick="window.location.href='[RESET_URL]';">
                         Reset
                     </button>
@@ -68,5 +67,21 @@
             </div>
         </div>
     </div>
+
+    <script>
+
+        document.body.addEventListener('htmx:afterRequest', function (evt) {
+            var coll = document.getElementsByClassName("side-bar-group-header");
+            for (var i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function () {
+                    var content = this.nextElementSibling;
+                    console.log("toggle");
+                    content.classList.toggle("item-hidden");
+                });
+            }
+        });
+
+    </script>
+
 </body>
 </html>
