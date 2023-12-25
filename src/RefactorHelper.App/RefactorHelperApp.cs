@@ -128,7 +128,7 @@ namespace RefactorHelper.App
                 settings.OutputFolder = Path.Combine(GetBinPath(), "Output");
 
             if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = Path.Combine(GetBinPath(), "ContentV2");
+                settings.ContentFolder = Path.Combine(GetBinPath(), "Content");
 
             return settings;
         }

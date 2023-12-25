@@ -27,9 +27,6 @@
     <None Update="Content\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-	  <None Update="ContentV2\**">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +41,7 @@
     </Target>
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	    <Exec Command="sass Styles/styles.scss ContentV2/styles.css" />
+	    <Exec Command="sass Styles/styles.scss Content/styles.css" />
     </Target>
 
 </Project>
