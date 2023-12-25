@@ -34,7 +34,7 @@
     font-size: large;
     font-weight: 600;
     cursor: pointer;
-    border: 1px solid var(--border-color);
+    border: var(--border);
     background-color: var(--main-color-dark);
     color: var(--text-color-light);
 }
@@ -47,13 +47,13 @@
 }
 
 .side-bar-group-header {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: var(--border-radius-top);
     margin-top: var(--margin);
     background-color: var(--main-color-dark);;
     color: var(--text-color-light);
     padding: var(--padding);
     font-size: larger;
-    border: 1px solid var(--border-color);
+    border: var(--border);
 }
 
 .side-bar-group-content {
@@ -64,7 +64,7 @@
 
     &> ul > li {
         display: block;
-        border: 1px solid;
+        border: var(--border);
         background-color: var(--main-color-lighter);
         padding: var(--padding-small);
 

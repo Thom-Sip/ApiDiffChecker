@@ -12,7 +12,10 @@ body, html {
   --padding-large: 20px;
   --padding: 8px;
   --padding-small: 3px;
-  --border-radius: 5px;
+  --border-color: black;
+  --border-width:1px;
+  --border: var(--border-width) solid var(--border-color);
+  --border-radius: 20px;
   --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
   --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
   --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
@@ -65,7 +68,7 @@ body, html {
   font-size: large;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid var(--border-color);
+  border: var(--border);
   background-color: var(--main-color-dark);
   color: var(--text-color-light);
 }
@@ -78,13 +81,13 @@ body, html {
 }
 
 .side-bar-group-header {
-  border-radius: 5px 5px 0px 0px;
+  border-radius: var(--border-radius-top);
   margin-top: var(--margin);
   background-color: var(--main-color-dark);
   color: var(--text-color-light);
   padding: var(--padding);
   font-size: larger;
-  border: 1px solid var(--border-color);
+  border: var(--border);
 }
 
 .side-bar-group-content > ul {
@@ -93,7 +96,7 @@ body, html {
 }
 .side-bar-group-content > ul > li {
   display: block;
-  border: 1px solid;
+  border: var(--border);
   background-color: var(--main-color-lighter);
   padding: var(--padding-small);
 }
@@ -110,10 +113,10 @@ body, html {
   flex-direction: column;
 }
 
+/* Header */
 .header {
   height: var(--banner-height);
   max-height: var(--banner-height);
-  background-color: var(--main-color-dark);
   display: flex;
   flex-direction: row;
 }
@@ -121,11 +124,13 @@ body, html {
 .header-title-container {
   flex: 1;
   display: flex;
-  border: 1px solid var(--border-color);
+  background-color: var(--main-color-dark);
   padding: var(--padding);
   flex-direction: column;
   justify-content: center;
   max-height: fit-content;
+  border: var(--border);
+  border-radius: var(--border-radius-left);
 }
 
 .header-title {
@@ -137,6 +142,9 @@ body, html {
 .header-item {
   flex: 1;
   max-width: 8em;
+}
+.header-item:last-child > button {
+  border-radius: var(--border-radius-right);
 }
 
 .content-box {

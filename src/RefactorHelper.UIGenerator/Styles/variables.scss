@@ -18,8 +18,12 @@ body, html {
     --padding: 8px;
     --padding-small: 3px;
 
+    --border-color: black;
+    --border-width:1px;
+    --border: var(--border-width) solid var(--border-color);
 
-    --border-radius: 5px;
+
+    --border-radius: 20px;
     --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
     --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
     --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
