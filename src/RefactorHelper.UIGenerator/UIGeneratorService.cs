@@ -3,6 +3,7 @@ using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
+using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text;
 
@@ -39,6 +40,8 @@ namespace RefactorHelper.UIGenerator
             foreach (var wrapper in state.Data)
             {
                 wrapper.ResultHtml = _template
+                    .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
+                    .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all")
                     .Replace("[REFRESH_SIDEBAR_URL]", GetRefreshUrl(httpContext, wrapper.Id))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", GetContent(wrapper));
@@ -97,9 +100,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[REQUESTS_PENDING]", requestsPendingListHtml)
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
-                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
-                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
-                .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all");
+                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");
         }
 
         private string GetBaseUrl(HttpRequest request)

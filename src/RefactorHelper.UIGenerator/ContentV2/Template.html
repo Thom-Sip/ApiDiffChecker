@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/run-refactor-helper/styles.css" />
+    <script src="/run-refactor-helper/htmx.min.js"></script>
+    <title>RefactorHelper</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="side-bar">
+            <div class="side-bar-header">
+                <div class="side-bar-header-item">
+                    <button class="header-button">Requests</button>
+                </div>
+                <div class="side-bar-header-item">
+                    <button class="header-button">Settings</button>
+                </div>
+            </div>
+            <div class="side-bar-content">
+
+                <div hx-get="[REQUEST_LIST_URL]"
+                     hx-swap="innerHTML"
+                     hx-trigger="load">
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="main-box">
+            <div class="header">
+                <div class="header-title-container">
+                    <div class="header-title">RefactorHelper</div>
+                </div>
+                <div class="header-item">
+                    <button class="header-button">Reset</button>
+                </div>
+                <div class="header-item">
+                    <button class="header-button"
+                            id="retry-all-button"
+                            hx-get="[RETRY_ALL_URL]"
+                            hx-swap="innerHTML"
+                            hx-target="#result-container">
+                        Run All Requests
+                    </button>
+                </div>
+                <div class="header-item">
+                    <button class="header-button"
+                            id="refresh-button"
+                            hx-get="[RETRY_REQUEST_URL]"
+                            hx-swap="innerHTML"
+                            hx-target="#result-container">
+                        Run
+                    </button>
+                </div>
+                <div class="header-item">
+                    <button class="header-button">Mode</button>
+                </div>
+            </div>
+
+            <div class="content-box">
+                <div class="content" id="result-container">
+                    [CONTENT_BLOCK]
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

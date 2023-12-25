@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ContentV2\" />
     <Folder Include="Styles\" />
   </ItemGroup>
 

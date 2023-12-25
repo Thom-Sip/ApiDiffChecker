@@ -15,7 +15,7 @@ body, html {
   --border-color: rgb(13, 17, 44);
   --border-width: 1px;
   --border: var(--border-width) solid var(--border-color);
-  --border-radius: 16px;
+  --border-radius: 6px;
   --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
   --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
   --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
