@@ -1,0 +1,92 @@
+/* Side-Bar */
+.side-bar {
+  max-width: 18vw;
+  margin: var(--margin);
+  margin-right: var(--margin-half);
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar-header {
+  flex: 1;
+  height: var(--banner-height);
+  max-height: var(--banner-height);
+  display: flex;
+  flex-direction: row;
+}
+
+.side-bar-header-item {
+  flex: 1;
+  height: var(--banner-height);
+}
+
+.side-bar-header-button {
+  width: 100%;
+  height: 100%;
+  font-size: large;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background-color: var(--main-color-dark);
+  color: var(--text-color-light);
+}
+
+/* Sidebar content*/
+.side-bar-content {
+  background-color: var(--main-color-light);
+  flex: 1;
+  /* overflow-y: auto; */
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar-group-header {
+  border-radius: 5px 5px 0px 0px;
+  margin-top: var(--margin);
+  background-color: var(--main-color-dark);
+  color: var(--text-color-light);
+  padding: var(--padding);
+  font-size: larger;
+  border: 1px solid var(--border-color);
+}
+
+.side-bar-group-content {
+  /* overflow-y:auto; */
+  border-bottom: 1px solid var(--border-color);
+}
+
+.side-bar-group-content > ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.side-bar-group-content > ul > li {
+  display: block;
+  border: 1px solid;
+  background-color: var(--main-color-lighter);
+  padding: var(--padding-small);
+}
+
+body, html {
+  --main-color-dark: #1b3b5c;
+  --main-color-light: #5982ab;
+  --main-color-lighter: #9db4cc;
+  --main-color-lightest: #bfd1e3;
+  --text-color-dark: #222;
+  --text-color-light: #ddd;
+  --border-color: #222;
+  --banner-height: 3.5em;
+  --margin: .4em;
+  --margin-half: calc(var(--margin) * .5);
+  --padding-large: 20px;
+  --padding: 8px;
+  --padding-small: 3px;
+  height: 100%;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--main-color-light);
+  color: var(--text-color-dark);
+  border-color: var(--border-color);
+}
+
+/*# sourceMappingURL=sass_output.css.map */

@@ -21,7 +21,7 @@ namespace Basic_Setup_Demo
                 ],
                 PropertiesToReplace = 
                 [
-                    new("Timestamp", "[REPLACED_TIMESTAMP]"),
+                    new("Timestamp", "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000"),
                     new("requestId", $"{Guid.Empty}"),
                 ]
             };

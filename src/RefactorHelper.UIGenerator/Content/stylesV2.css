@@ -12,7 +12,7 @@ body, html {
 
     --banner-height: 3.5em;
 
-    --margin: 10px;
+    --margin: .4em;
     --margin-half: calc(var(--margin) * .5);
 
     --padding-large: 20px;
@@ -77,6 +77,7 @@ body, html {
 }
 
 .side-bar-group-header {
+    border-radius: 5px 5px 0px 0px;
     margin-top: var(--margin);
     background-color: var(--main-color-dark);;
     color: var(--text-color-light);
@@ -151,10 +152,10 @@ body, html {
     flex: 1;
     display:flex;
     flex-direction: column;
-    border: 1px solid var(--border-color);
+    /* border: 1px solid var(--border-color); */
     margin-top: var(--margin);
     margin-bottom: var(--margin);
-    background-color: var(--main-color-lightest);
+    /* background-color: var(--main-color-lightest); */
     /* overflow-y: auto; */
     /* max-height: calc(100vh - var(--banner-height) - calc(3 * var(--margin))); */
 }
@@ -163,6 +164,7 @@ body, html {
     background-color: var(--main-color-dark);
     color: var(--text-color-light);
     padding: var(--padding-large);
+    border-radius: 5px 5px 0px 0px;
 }
 
 .result-container-header h1 {
@@ -171,9 +173,12 @@ body, html {
 
 .result-container-body {
     /* overflow-y: auto; */
+    border: 1px solid var(--border-color); 
     flex: 1;
     max-height:fit-content;
     padding: var(--padding);
+    background-color: var(--main-color-lightest);
+    border-radius: 0px 0px 5px 5px;
 }
 
 
