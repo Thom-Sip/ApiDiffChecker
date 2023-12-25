@@ -45,7 +45,7 @@ namespace RefactorHelper.App
             UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
         }
 
-        public async Task<string> OpenUI(HttpContext httpContext)
+        public async Task Initialize(HttpContext httpContext)
         {
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
@@ -62,7 +62,10 @@ namespace RefactorHelper.App
 
             // Generate output
             UIGeneratorService.GenerateBaseUI(State, httpContext);
+        }
 
+        public string GetDashboard()
+        {
             return State.BaseHtmlTemplate.SetContent("");
         }
 
