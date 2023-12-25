@@ -17,13 +17,19 @@ body, html {
     --padding-large: 20px;
     --padding: 8px;
     --padding-small: 3px;
+
+
+    --border-radius: 5px;
+    --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
+    --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
+    --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
+    --border-radius-right: 0 var(--border-radius) var(--border-radius) 0;
     
     height: 100%;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--main-color-light);
     color: var(--text-color-dark);
-
     border-color: var(--border-color);
 }
 
