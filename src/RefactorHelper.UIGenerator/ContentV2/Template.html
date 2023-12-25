@@ -8,7 +8,6 @@
     <title>RefactorHelper</title>
 </head>
 <body>
-
     <div class="container">
 
         <div class="side-bar">
@@ -20,17 +19,15 @@
                     <button class="header-button">Settings</button>
                 </div>
             </div>
-            <div class="side-bar-content">
 
+            <div class="side-bar-content">
                 <div id="request-list-box"
                      hx-get="[REQUEST_LIST_URL]"
                      hx-swap="innerHtml"
                      hx-trigger="refresh-request-list from:body, load">
                 </div>
-
-                </div>
             </div>
-
+        </div>
 
         <div class="main-box">
             <div class="header">
@@ -63,13 +60,10 @@
                 </div>
             </div>
 
-            <div class="content-box">
-                <div class="content" id="result-container">
-                    [CONTENT_BLOCK]
-                </div>
+            <div class="content-box" id="result-container">
+                [CONTENT_BLOCK]
             </div>
         </div>
-
     </div>
 </body>
 </html>
