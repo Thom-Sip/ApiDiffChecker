@@ -1,4 +1,5 @@
 body, html {
+  --main-color-darker: #0f2a46;
   --main-color-dark: #1b3b5c;
   --main-color-light: #5982ab;
   --main-color-lighter: #9db4cc;
@@ -73,6 +74,9 @@ body, html {
   background-color: var(--main-color-dark);
   color: var(--text-color-light);
 }
+.header-button:hover {
+  background-color: var(--main-color-darker);
+}
 
 /* Sidebar content*/
 .side-bar-content {
@@ -104,6 +108,10 @@ body, html {
 }
 .side-bar-group-content > ul > li:last-child {
   border-radius: var(--border-radius-bottom);
+}
+.side-bar-group-content .request-item {
+  display: block;
+  padding: var(--padding-small);
 }
 
 /* Main content*/

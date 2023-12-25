@@ -42,6 +42,7 @@ namespace RefactorHelper.UIGenerator
                 wrapper.ResultHtml = _template
                     .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
                     .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all")
+                    .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/")
                     .Replace("[REFRESH_SIDEBAR_URL]", GetRefreshUrl(httpContext, wrapper.Id))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", GetContent(wrapper));

@@ -35,7 +35,10 @@
                     <div class="header-title">RefactorHelper</div>
                 </div>
                 <div class="header-item">
-                    <button class="header-button">Reset</button>
+                    <button class="header-button" 
+                            onclick="window.location.href='[RESET_URL]';">
+                        Reset
+                    </button>
                 </div>
                 <div class="header-item">
                     <button class="header-button"
@@ -43,7 +46,7 @@
                             hx-get="[RETRY_ALL_URL]"
                             hx-swap="innerHTML"
                             hx-target="#result-container">
-                        Run All Requests
+                        Run All
                     </button>
                 </div>
                 <div class="header-item">
