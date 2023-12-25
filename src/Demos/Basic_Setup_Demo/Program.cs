@@ -11,7 +11,6 @@ namespace Basic_Setup_Demo
             var settings = new RefactorHelperSettings
             {
                 RunOnStart = false,
-                SwaggerUrl = "https://localhost:44371/swagger/v1/swagger.json",
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
                 DefaultParameters = [new("customerId", "4007")],
@@ -22,7 +21,7 @@ namespace Basic_Setup_Demo
                 ],
                 PropertiesToReplace = 
                 [
-                    new("Timestamp", "[REPLACED_TIMESTAMP]"),
+                    new("Timestamp", "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000"),
                     new("requestId", $"{Guid.Empty}"),
                 ]
             };

@@ -2,6 +2,9 @@
 using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
+using RefactorHelper.Models.RequestHandler;
+using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -37,10 +40,21 @@ namespace RefactorHelper.UIGenerator
             foreach (var wrapper in state.Data)
             {
                 wrapper.ResultHtml = _template
+                    .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
+                    .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all")
+                    .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/")
                     .Replace("[REFRESH_SIDEBAR_URL]", GetRefreshUrl(httpContext, wrapper.Id))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
                     .Replace("[CONTENT_BLOCK]", GetContent(wrapper));
             }
+        }
+
+        public string GenerateHtmlPage(CompareResultPair resultPair)
+        {
+            return _template
+                .Replace("[REFRESH_SIDEBAR_URL]", "/Does-not-exist")
+                .Replace("[REQUEST_LIST_URL]", "/Does-not-exist")
+                .Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs));
         }
 
         public string GetSinglePageContent(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
@@ -55,8 +69,18 @@ namespace RefactorHelper.UIGenerator
 
         private string GetContent(RequestWrapper wrapper)
         {
-            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper);
-            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result2, wrapper);
+            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.INSERT]);
+            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.DELETE]);
+
+            return _contentTemplate
+                .Replace("[CONTENT_ORIGINAL]", original)
+                .Replace("[CONTENT_CHANGED]", changed);
+        }
+
+        private string GetContent(CompareResultPair compareResultPair, List<Diff> diffs)
+        {
+            var original = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.DELETE]);
+            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.INSERT]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
@@ -77,9 +101,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[REQUESTS_PENDING]", requestsPendingListHtml)
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
-                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
-                .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
-                .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all");
+                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");
         }
 
         private string GetBaseUrl(HttpRequest request)
@@ -91,25 +113,23 @@ namespace RefactorHelper.UIGenerator
         private string GetSidebarContent(List<RequestWrapper> resultPairs, HttpContext httpContext)
         {
             var sb = new StringBuilder();
-            sb.Append("<ul>");
 
             foreach(var item in resultPairs)
             {
                 sb.Append($"<li>" +
                     $"<span class=\"request-item\" hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\" " +
-                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{item.Request.Path}</span>" +
+                          $"hx-swap=\"innerHTML\" hx-target=\"#result-container\">{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}</span>" +
                     $"</li>");
             }
 
-            sb.Append("</ul>");
             return sb.ToString();
         }
 
-        private string diff_prettyHtml_custom(CompareResult? result, RequestWrapper wrapper)
+        private string diff_prettyHtml_custom(CompareResult? result, List<Diff> diffs, RequestWrapper? wrapper, List<Operation> operations)
         {
             StringBuilder sb = new();
 
-            foreach (Diff aDiff in result?.Diffs ?? [])
+            foreach (Diff aDiff in diffs ?? [])
             {
                 string text = aDiff.text
                     .Replace("&", "&amp;")
@@ -119,26 +139,52 @@ namespace RefactorHelper.UIGenerator
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
-                        sb.Append("<ins style=\"background:#0f8009;\">").Append(text)
-                            .Append("</ins>");
+                        if(operations.Contains(Operation.INSERT))
+                            sb.Append("<span class=\"addition\">").Append(text).Append("</span>");
                         break;
                     case Operation.DELETE:
-                        sb.Append("<del style=\"background:#ab1b11;\">").Append(text)
-                            .Append("</del>");
+                        if (operations.Contains(Operation.DELETE))
+                            sb.Append("<span class=\"removal\">").Append(text).Append("</span>");
                         break;
                     case Operation.EQUAL:
-                        sb.Append("<span>").Append(text).Append("</span>");
+                        if (operations.Contains(Operation.EQUAL))
+                            sb.Append("<span>").Append(text).Append("</span>");
                         break;
                 }
             }
 
             var html = _diffBoxTemplate
-                  .Replace("[TITLE]", wrapper.Request.Path)
-                  .Replace("[URL]", $"{result?.Response?.RequestMessage?.RequestUri}")
-                  .Replace("[RESULTCODE]", $"{result?.Response?.StatusCode.ToString() ?? "N/A"}")
+                  .Replace("[TITLE]", wrapper?.Request.Path)
+                  .Replace("[URL]", $"Url: {result?.Response?.RequestMessage?.RequestUri?.ToString() ?? "Pending"}")
+                  .Replace("[RESULTCODE]", GetResultCodeHeaderText(wrapper))
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
+        }
+
+        private string GetResultCodeHeaderText(RequestWrapper? wrapper)
+        {
+            if (wrapper?.TestResult?.Result1 != null)
+                return $"{GetResultCode(wrapper?.TestResult?.Result1)} {GetResultCodeString(wrapper?.TestResult?.Result1)}";
+
+            return "Pending";
+        }
+
+
+        private string GetResultCode(RefactorTestResult? result)
+        {
+            var statusCode = result?.ResponseObject?.StatusCode;
+            return statusCode != null
+                ? ((int)statusCode).ToString()
+                : "_";
+        }
+
+        private string GetResultCodeString(RefactorTestResult? result)
+        {
+            var statusCode = result?.ResponseObject?.StatusCode;
+            return statusCode != null
+                ? $"{statusCode}"
+                : "N/A";
         }
     }
 }

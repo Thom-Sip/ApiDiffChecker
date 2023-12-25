@@ -29,4 +29,19 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Styles\" />
+  </ItemGroup>
+
+    <Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
+	    <Exec Command="sass --version" ContinueOnError="true">
+		    <Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
+	    </Exec>
+	    <Error Condition="'$(ErrorCodeSass)' != '0'" Text="Dart-sass is required for this project. Install globally with 'npm i -g sass' " />
+    </Target>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	    <Exec Command="sass Styles/styles.scss Content/styles.css" />
+    </Target>
+
 </Project>

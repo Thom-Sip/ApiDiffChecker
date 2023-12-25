@@ -8,7 +8,7 @@
 
         public string ContentFolder { get; set; } = string.Empty;
 
-        public required string SwaggerUrl { get; set; }
+        public string SwaggerUrl { get; set; }
 
         public required string BaseUrl1 { get; set; }
 

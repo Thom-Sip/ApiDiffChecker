@@ -50,7 +50,7 @@ namespace RefactorHelper.App
             if(string.IsNullOrWhiteSpace(State.SwaggerJson))
             {
                 var client = new HttpClient();
-                var result = await client.GetAsync(Settings.SwaggerUrl);
+                var result = await client.GetAsync(GetSwaggerUrl(httpContext));
                 State.SwaggerJson = await result.Content.ReadAsStringAsync();
             }
 
@@ -64,6 +64,18 @@ namespace RefactorHelper.App
             UIGeneratorService.GenerateUI(State, httpContext);
 
             return State.GetCurrentRequest()?.ResultHtml ?? "";
+        }
+
+        public async Task<string> StaticCompare(string fileOne, string fileTwo)
+        {
+            var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
+            var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
+
+            var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
+
+            var html = UIGeneratorService.GenerateHtmlPage(compareResultPair);
+
+            return html;
         }
 
         public async Task<string> RunAll(HttpContext httpContext)
@@ -122,5 +134,13 @@ namespace RefactorHelper.App
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
+        private string GetSwaggerUrl(HttpContext httpContext)
+        {
+            if (!string.IsNullOrWhiteSpace(Settings.SwaggerUrl))
+                return Settings.SwaggerUrl;
+
+            return $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.PathBase}/swagger/v1/swagger.json";
+        }
     }
 }
