@@ -11,19 +11,18 @@ body, html {
 
     --banner-height: 3.5em;
 
-    --margin: .4em;
+    --margin: .5em;
     --margin-half: calc(var(--margin) * .5);
 
     --padding-large: 20px;
     --padding: 8px;
     --padding-small: 3px;
 
-    --border-color: black;
-    --border-width:1px;
+    --border-color: rgb(13, 17, 44);
+    --border-width: 1px;
     --border: var(--border-width) solid var(--border-color);
 
-
-    --border-radius: 20px;
+    --border-radius: 6px;
     --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
     --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
     --border-radius-left: var(--border-radius) 0 0 var(--border-radius);

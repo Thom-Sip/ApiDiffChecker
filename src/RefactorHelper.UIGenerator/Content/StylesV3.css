@@ -7,15 +7,15 @@ body, html {
   --text-color-light: #ddd;
   --border-color: #222;
   --banner-height: 3.5em;
-  --margin: .4em;
+  --margin: .5em;
   --margin-half: calc(var(--margin) * .5);
   --padding-large: 20px;
   --padding: 8px;
   --padding-small: 3px;
-  --border-color: black;
-  --border-width:1px;
+  --border-color: rgb(13, 17, 44);
+  --border-width: 1px;
   --border: var(--border-width) solid var(--border-color);
-  --border-radius: 20px;
+  --border-radius: 6px;
   --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
   --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
   --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
@@ -69,6 +69,7 @@ body, html {
   font-weight: 600;
   cursor: pointer;
   border: var(--border);
+  border-left: 0px;
   background-color: var(--main-color-dark);
   color: var(--text-color-light);
 }
@@ -97,6 +98,7 @@ body, html {
 .side-bar-group-content > ul > li {
   display: block;
   border: var(--border);
+  border-top: 0px;
   background-color: var(--main-color-lighter);
   padding: var(--padding-small);
 }
@@ -158,19 +160,17 @@ body, html {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* border: 1px solid var(--border-color); */
   margin-top: var(--margin);
   margin-bottom: var(--margin);
-  /* background-color: var(--main-color-lightest); */
-  /* overflow-y: auto; */
-  /* max-height: calc(100vh - var(--banner-height) - calc(3 * var(--margin))); */
 }
 
 .result-container-header {
+  border: var(--border);
+  border-bottom: 0px;
   background-color: var(--main-color-dark);
   color: var(--text-color-light);
   padding: var(--padding-large);
-  border-radius: 5px 5px 0px 0px;
+  border-radius: var(--border-radius-top);
 }
 
 .result-container-header h1 {
@@ -178,13 +178,12 @@ body, html {
 }
 
 .result-container-body {
-  /* overflow-y: auto; */
-  border: 1px solid var(--border-color);
+  border: var(--border);
   flex: 1;
   max-height: fit-content;
   padding: var(--padding);
   background-color: var(--main-color-lightest);
-  border-radius: 0px 0px 5px 5px;
+  border-radius: var(--border-radius-bottom);
 }
 
 /* code display */

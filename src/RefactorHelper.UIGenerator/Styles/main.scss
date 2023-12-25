@@ -58,10 +58,12 @@
 }
 
 .result-container-header {
+    border: var(--border);
+    border-bottom: 0px;
     background-color: var(--main-color-dark);
     color: var(--text-color-light);
     padding: var(--padding-large);
-    border-radius: 5px 5px 0px 0px;
+    border-radius: var(--border-radius-top)
 }
 
 .result-container-header h1 {
@@ -69,10 +71,10 @@
 }
 
 .result-container-body {
-    border: 1px solid var(--border-color); 
+    border: var(--border); 
     flex: 1;
     max-height:fit-content;
     padding: var(--padding);
     background-color: var(--main-color-lightest);
-    border-radius: 0px 0px 5px 5px;
+    border-radius: var(--border-radius-bottom)
 }

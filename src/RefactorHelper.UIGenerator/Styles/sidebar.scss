@@ -35,6 +35,7 @@
     font-weight: 600;
     cursor: pointer;
     border: var(--border);
+    border-left: 0px; 
     background-color: var(--main-color-dark);
     color: var(--text-color-light);
 }
@@ -65,6 +66,7 @@
     &> ul > li {
         display: block;
         border: var(--border);
+        border-top: 0px;
         background-color: var(--main-color-lighter);
         padding: var(--padding-small);
 
