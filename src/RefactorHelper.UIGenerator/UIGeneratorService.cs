@@ -112,7 +112,6 @@ namespace RefactorHelper.UIGenerator
         private string GetSidebarContent(List<RequestWrapper> resultPairs, HttpContext httpContext)
         {
             var sb = new StringBuilder();
-            sb.Append("<ul>");
 
             foreach(var item in resultPairs)
             {
@@ -122,7 +121,6 @@ namespace RefactorHelper.UIGenerator
                     $"</li>");
             }
 
-            sb.Append("</ul>");
             return sb.ToString();
         }
 
