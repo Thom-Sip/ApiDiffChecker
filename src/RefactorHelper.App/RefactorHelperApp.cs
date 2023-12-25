@@ -100,13 +100,13 @@ namespace RefactorHelper.App
             CompareService.CompareResponses(State);
         }
 
-        public string GetResultPage(HttpContext httpContext, int requestId)
+        public string GetResultFragment(HttpContext httpContext, int requestId)
         {
             State.CurrentRequest = requestId;
             return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
-        public async Task<string> RetryCurrentRequest(HttpContext httpContext)
+        public async Task<string> RetryCurrentRequestFragment(HttpContext httpContext)
         {
             // Perform single api request and update result
             await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
@@ -118,7 +118,7 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
-        public string GetRequestListHtml() => UIGeneratorService.GetRequestListFragment();
+        public string GetRequestListFragment() => UIGeneratorService.GetRequestListFragment();
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 

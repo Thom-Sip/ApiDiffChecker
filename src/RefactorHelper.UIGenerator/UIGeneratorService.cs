@@ -39,10 +39,10 @@ namespace RefactorHelper.UIGenerator
             state.BaseHtmlTemplate = new HtmlTemplate
             {
                 Html = _template
-                    .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
-                    .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all")
+                    .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/retry")
+                    .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/run-all")
                     .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/")
-                    .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
+                    .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/request-list")
             };
         }
 
@@ -109,7 +109,7 @@ namespace RefactorHelper.UIGenerator
                 sb.Append(
                     $"<li>" +
                         $"<span class=\"request-item\" " +
-                              $"hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{item.Id}\"" +
+                              $"hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/{item.Id}\"" +
                               $"hx-swap=\"innerHTML\" " +
                               $"hx-target=\"#result-container\">" +
                               $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}" +
