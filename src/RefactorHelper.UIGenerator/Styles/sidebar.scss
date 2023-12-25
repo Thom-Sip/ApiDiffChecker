@@ -61,6 +61,10 @@
     border: var(--border);
     cursor: pointer;
     text-align: left;
+
+    &:hover {
+        background-color: var(--main-color-darker);
+    }
 }
 
 .item-hidden {

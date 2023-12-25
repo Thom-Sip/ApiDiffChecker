@@ -61,9 +61,9 @@ namespace RefactorHelper.App
                 await Run();
 
             // Generate output
-            UIGeneratorService.GenerateUI(State, httpContext);
+            UIGeneratorService.GenerateBaseUI(State, httpContext);
 
-            return State.GetCurrentRequest()?.ResultHtml ?? "";
+            return State.BaseHtmlTemplate.SetContent("");
         }
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
@@ -73,7 +73,7 @@ namespace RefactorHelper.App
 
             var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
 
-            var html = UIGeneratorService.GenerateHtmlPage(compareResultPair);
+            var html = UIGeneratorService.GetHtmlPage(compareResultPair);
 
             return html;
         }
@@ -83,9 +83,9 @@ namespace RefactorHelper.App
             await Run();
 
             // Generate output
-            UIGeneratorService.GenerateUI(State, httpContext);
+            UIGeneratorService.GenerateBaseUI(State, httpContext);
 
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
         private async Task Run()
@@ -100,7 +100,7 @@ namespace RefactorHelper.App
         public string GetResultPage(HttpContext httpContext, int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
         public async Task<string> RetryCurrentRequest(HttpContext httpContext)
@@ -112,12 +112,10 @@ namespace RefactorHelper.App
             CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
-
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
-        public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
+        public string GetRequestListHtml() => UIGeneratorService.GetRequestListFragment();
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 

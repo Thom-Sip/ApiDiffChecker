@@ -3,6 +3,7 @@ using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
+using RefactorHelper.Models.Uigenerator;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
@@ -31,63 +32,48 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
-        public void GenerateUI(RefactorHelperState state, HttpContext httpContext)
+        public void GenerateBaseUI(RefactorHelperState state, HttpContext httpContext)
         {
             GenerateRequestListHtml(state.Data, httpContext);
 
-            foreach (var wrapper in state.Data)
+            state.BaseHtmlTemplate = new HtmlTemplate
             {
-                wrapper.ResultHtml = _template
+                Html = _template
                     .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/retry")
                     .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/run-all")
                     .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/")
-                    .Replace("[REFRESH_SIDEBAR_URL]", GetRefreshUrl(httpContext, wrapper.Id))
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list")
-                    .Replace("[CONTENT_BLOCK]", GetContent(wrapper));
-            }
+            };
         }
 
-        public string GenerateHtmlPage(CompareResultPair resultPair)
+        public string GetHtmlPage(CompareResultPair resultPair)
         {
             return _template
-                .Replace("[REFRESH_SIDEBAR_URL]", "/Does-not-exist")
                 .Replace("[REQUEST_LIST_URL]", "/Does-not-exist")
-                .Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs));
+                .Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
         }
 
-        public string GetSinglePageContent(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
+        public string GetTestResultFragment(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
         {
             var content = GetContent(wrapper);
-
-            // TODO: Only run this when the result is different then before
             GenerateRequestListHtml(state.Data, httpContext);
-
             return content;
         }
 
-        private string GetContent(RequestWrapper wrapper)
+        public string GetRequestListFragment() => _requestListHtml;
+
+        private string GetContent(RequestWrapper wrapper) =>
+            GetContent(wrapper.CompareResultPair, wrapper.CompareResultPair?.Diffs ?? [], wrapper);
+
+        private string GetContent(CompareResultPair? compareResultPair, List<Diff> diffs, RequestWrapper? wrapper)
         {
-            var original = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.INSERT]);
-            var changed = diff_prettyHtml_custom(wrapper.CompareResultPair?.Result1, wrapper.CompareResultPair?.Diffs, wrapper, [Operation.EQUAL, Operation.DELETE]);
+            var original = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, wrapper, [Operation.EQUAL, Operation.DELETE]);
+            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, wrapper, [Operation.EQUAL, Operation.INSERT]);
 
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
         }
-
-        private string GetContent(CompareResultPair compareResultPair, List<Diff> diffs)
-        {
-            var original = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.DELETE]);
-            var changed = diff_prettyHtml_custom(compareResultPair?.Result1, diffs, null, [Operation.EQUAL, Operation.INSERT]);
-
-            return _contentTemplate
-                .Replace("[CONTENT_ORIGINAL]", original)
-                .Replace("[CONTENT_CHANGED]", changed);
-        }
-
-        public string GetRequestListHtml() => _requestListHtml;
-
-        private string GetRefreshUrl(HttpContext httpContext, int index) => $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/{index}";
 
         private void GenerateRequestListHtml(List<RequestWrapper> wrappers, HttpContext httpContext)
         {
@@ -105,8 +91,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
                 .Replace("[REQUESTS_FAILED_COUNT]", $"{failedRequests.Count}")
                 .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
-                .Replace("[REQUESTS_SUCCESS_COUNT]", $"{successfulRequest.Count}")
-                .Replace("[REFRESH_SIDEBAR_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/request-list");
+                .Replace("[REQUESTS_SUCCESS_COUNT]", $"{successfulRequest.Count}");
         }
 
         private string GetBaseUrl(HttpRequest request)
@@ -179,7 +164,6 @@ namespace RefactorHelper.UIGenerator
 
             return "Pending";
         }
-
 
         private string GetResultCode(RefactorTestResult? result)
         {
