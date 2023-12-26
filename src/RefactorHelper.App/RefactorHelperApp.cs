@@ -84,12 +84,12 @@ namespace RefactorHelper.App
 
         public string GetSettingsPage(HttpContext httpContext)
         {
-            var content = UIGeneratorService.GetSettingsFragment();
+            var content = UIGeneratorService.GetSettingsFragment(Settings);
             return State.BaseHtmlTemplate.SetContent(content);
         }
 
         public string GetSettingsFragment(HttpContext httpContext) =>
-            UIGeneratorService.GetSettingsFragment();
+            UIGeneratorService.GetSettingsFragment(Settings);
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {

@@ -13,10 +13,10 @@ namespace Basic_Setup_Demo
                 RunOnStart = false,
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
-                DefaultParameters = [new("customerId", "4007")],
+                DefaultParameters = [new("customerId", "4007"), new("message", "Foo")],
                 Runs =
                 [
-                    [new("message", "Foo")],
+                    [new("message", "Yoo")],
                     [new("message", "Bar")],
                 ],
                 PropertiesToReplace = 

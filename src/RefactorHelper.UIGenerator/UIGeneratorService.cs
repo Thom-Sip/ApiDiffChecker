@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
+using RefactorHelper.Models.Config;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
 using RefactorHelper.Models.Uigenerator;
@@ -20,6 +21,8 @@ namespace RefactorHelper.UIGenerator
 
         protected string _requestListHtml { get; set; } = string.Empty;
 
+        protected Formbuilder Formbuilder { get; set; }
+
         public UIGeneratorService(string contentFolder, string outputFolder)
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
@@ -29,6 +32,8 @@ namespace RefactorHelper.UIGenerator
             _settingsFragmentTemplate = File.ReadAllText($"{contentFolder}/SettingsFragment.html");
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
+
+            Formbuilder = new Formbuilder(contentFolder);
 
             if (!Directory.Exists(_outputFolder))
                 Directory.CreateDirectory(_outputFolder);
@@ -62,9 +67,12 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
-        public string GetSettingsFragment()
+        public string GetSettingsFragment(RefactorHelperSettings settings)
         {
-            return _settingsFragmentTemplate;
+            var result = _settingsFragmentTemplate
+                .Replace("[STRING_PARAMETERS]", Formbuilder.GetForm(settings.DefaultParameters));
+
+            return result;
         }
 
         public string GetRequestListFragment() => _requestListHtml;
