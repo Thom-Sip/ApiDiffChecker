@@ -16,9 +16,12 @@ namespace RefactorHelper.App
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
             app.AddInitliazeEndpoint();
+            app.AddResetEndpoint();
             app.AddOpenResultPageEndpoint();
+            app.AddOpenSettingsPageEndpoint();
             app.AddRunAllFragmentEndpoint();
             app.AddOpenRequestFragmentEndpoint();
+            app.AddSettingsFragmentEndpoint();
             app.AddRetrySingleRequestFragmentEndpoint();
             app.AddGetRequestListFragmentEndpoint();
             app.AddStaticFileEndpoint("styles.css");
@@ -40,6 +43,21 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
+        private static void AddResetEndpoint(this WebApplication app)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
+            {
+                await app.App().Reset(context);
+                var result = app.App().GetDashboard();
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
         private static void AddOpenResultPageEndpoint(this WebApplication app)
         {
             // Run all request and open static html in browser
@@ -47,6 +65,21 @@ namespace RefactorHelper.App
             {
                 await app.App().Initialize(context);
                 var result = app.App().GetResultPage(requestId, context);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddOpenSettingsPageEndpoint(this WebApplication app)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/settings", async (HttpContext context) =>
+            {
+                await app.App().Initialize(context);
+                var result = app.App().GetSettingsPage(context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -97,6 +130,21 @@ namespace RefactorHelper.App
                 await context.Response
                     .SetHtmlHeader()
                     .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddSettingsFragmentEndpoint(this WebApplication app)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/fragment/settings", async (HttpContext context) =>
+            {
+                await app.App().Initialize(context);
+                var result = app.App().GetSettingsFragment(context);
+
+                await context.Response
+                    .SetHtmlHeader()
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();

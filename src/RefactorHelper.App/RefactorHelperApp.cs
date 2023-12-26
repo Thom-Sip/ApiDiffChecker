@@ -5,7 +5,6 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
 
 namespace RefactorHelper.App
 {
@@ -48,20 +47,26 @@ namespace RefactorHelper.App
 
         public async Task Initialize(HttpContext httpContext)
         {
-            if(string.IsNullOrWhiteSpace(State.SwaggerJson))
+            if(!State.Initialized)
             {
-                var client = new HttpClient();
-                var result = await client.GetAsync(GetSwaggerUrl(httpContext));
-                State.SwaggerJson = await result.Content.ReadAsStringAsync();
-            }
+                await Reset(httpContext);
 
-            // Get requests from swagger
+                // Run Once
+                State.Initialized = true;
+            }
+        }
+
+        public async Task Reset(HttpContext httpContext)
+        {
+            // Process Swagger
+            var client = new HttpClient();
+            var result = await client.GetAsync(GetSwaggerUrl(httpContext));
+            State.SwaggerJson = await result.Content.ReadAsStringAsync();
+
+            // Get requests from Swagger
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
-            if (Settings.RunOnStart)
-                await Run();
-
-            // Generate output
+            // Generate html output
             UIGeneratorService.GenerateBaseUI(State, httpContext);
         }
 
@@ -74,9 +79,17 @@ namespace RefactorHelper.App
         {
             State.CurrentRequest = requestId;
             var content = UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
-
             return State.BaseHtmlTemplate.SetContent(content);
         }
+
+        public string GetSettingsPage(HttpContext httpContext)
+        {
+            var content = UIGeneratorService.GetSettingsFragment();
+            return State.BaseHtmlTemplate.SetContent(content);
+        }
+
+        public string GetSettingsFragment(HttpContext httpContext) =>
+            UIGeneratorService.GetSettingsFragment();
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {

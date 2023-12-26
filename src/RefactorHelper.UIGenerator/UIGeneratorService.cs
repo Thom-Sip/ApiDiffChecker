@@ -16,6 +16,7 @@ namespace RefactorHelper.UIGenerator
         protected string _contentTemplate { get; set; }
         protected string _diffBoxTemplate { get; set; }
         protected string _requestListTemplate { get; set; }
+        protected string _settingsFragmentTemplate { get; set; }
 
         protected string _requestListHtml { get; set; } = string.Empty;
 
@@ -25,6 +26,7 @@ namespace RefactorHelper.UIGenerator
             _contentTemplate = File.ReadAllText($"{contentFolder}/ContentTemplate.html");
             _diffBoxTemplate = File.ReadAllText($"{contentFolder}/DiffBoxTemplate.html");
             _requestListTemplate = File.ReadAllText($"{contentFolder}/RequestListTemplate.html");
+            _settingsFragmentTemplate = File.ReadAllText($"{contentFolder}/SettingsFragment.html");
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
 
@@ -41,16 +43,16 @@ namespace RefactorHelper.UIGenerator
                 Html = _template
                     .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/retry")
                     .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/run-all")
-                    .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/")
+                    .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/reset")
                     .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/request-list")
+                    .Replace("[SETTINGS_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/settings")
+                    .Replace("[SETTINGS_FRAGMENT_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/settings")
             };
         }
 
         public string GetHtmlPage(CompareResultPair resultPair)
         {
-            return _template
-                .Replace("[REQUEST_LIST_URL]", "/Does-not-exist")
-                .Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
+            return _template.Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
         }
 
         public string GetTestResultFragment(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
@@ -58,6 +60,11 @@ namespace RefactorHelper.UIGenerator
             var content = GetContent(wrapper);
             GenerateRequestListHtml(state.Data, httpContext);
             return content;
+        }
+
+        public string GetSettingsFragment()
+        {
+            return _settingsFragmentTemplate;
         }
 
         public string GetRequestListFragment() => _requestListHtml;

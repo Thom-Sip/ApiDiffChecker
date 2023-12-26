@@ -4,6 +4,8 @@ namespace RefactorHelper.Models
 {
     public class RefactorHelperState
     {
+        public bool Initialized { get; set; }
+
         public string SwaggerJson { get; set; } = string.Empty;
 
         public int CurrentRequest { get; set; }

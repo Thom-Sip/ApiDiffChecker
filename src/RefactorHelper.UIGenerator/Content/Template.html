@@ -16,7 +16,14 @@
                     <button class="header-button">Requests</button>
                 </div>
                 <div class="side-bar-header-item">
-                    <button class="header-button">Settings</button>
+                    <button class="header-button"
+                            id="settings-button"
+                            hx-get="[SETTINGS_FRAGMENT_URL]"
+                            hx-swap="innerHTML"
+                            hx-replace-url="[SETTINGS_URL]"
+                            hx-target="#result-container">
+                        Settings
+                    </button>
                 </div>
             </div>
 
