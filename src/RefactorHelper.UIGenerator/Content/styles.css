@@ -113,7 +113,6 @@ body, html {
   border: var(--border);
   border-top: 0px;
   background-color: var(--main-color-lighter);
-  padding: var(--padding-small);
 }
 .side-bar-group-content > ul > li:hover {
   background-color: var(--main-color-lightest);
@@ -123,7 +122,7 @@ body, html {
 }
 .side-bar-group-content .request-item {
   display: block;
-  padding: var(--padding-small);
+  padding: var(--padding);
 }
 
 /* Main content*/

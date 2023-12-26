@@ -82,7 +82,6 @@
         border: var(--border);
         border-top: 0px;
         background-color: var(--main-color-lighter);
-        padding: var(--padding-small);
 
         &:hover {
             background-color: var(--main-color-lightest);
@@ -95,6 +94,6 @@
 
     .request-item {
         display: block;
-        padding: var(--padding-small);
+        padding: var(--padding);
     }
 }
