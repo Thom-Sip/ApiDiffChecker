@@ -111,6 +111,7 @@ namespace RefactorHelper.UIGenerator
                         $"<span class=\"request-item\" " +
                               $"hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/{item.Id}\"" +
                               $"hx-swap=\"innerHTML\" " +
+                              $"hx-replace-url=\"/run-refactor-helper/{item.Id}\"" +
                               $"hx-target=\"#result-container\">" +
                               $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}" +
                         $"</span>" +

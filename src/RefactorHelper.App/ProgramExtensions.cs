@@ -16,6 +16,7 @@ namespace RefactorHelper.App
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
             app.AddInitliazeEndpoint();
+            app.AddOpenResultPageEndpoint();
             app.AddRunAllFragmentEndpoint();
             app.AddOpenRequestFragmentEndpoint();
             app.AddRetrySingleRequestFragmentEndpoint();
@@ -31,6 +32,21 @@ namespace RefactorHelper.App
             {
                 await app.App().Initialize(context);
                 var result = app.App().GetDashboard();
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddOpenResultPageEndpoint(this WebApplication app)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
+            {
+                await app.App().Initialize(context);
+                var result = app.App().GetResultPage(requestId, context);
 
                 await context.Response
                     .SetHtmlHeader()

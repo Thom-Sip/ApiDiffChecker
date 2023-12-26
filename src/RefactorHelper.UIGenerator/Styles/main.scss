@@ -10,7 +10,7 @@
 /* Header */
 .header {
     height: var(--banner-height);
-    max-height: var(--banner-height);
+    min-height: var(--banner-height);
     display: flex;
     flex-direction: row;
 }

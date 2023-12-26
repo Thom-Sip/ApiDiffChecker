@@ -5,6 +5,7 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace RefactorHelper.App
 {
@@ -67,6 +68,14 @@ namespace RefactorHelper.App
         public string GetDashboard()
         {
             return State.BaseHtmlTemplate.SetContent("");
+        }
+
+        public string GetResultPage(int requestId, HttpContext httpContext)
+        {
+            State.CurrentRequest = requestId;
+            var content = UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+
+            return State.BaseHtmlTemplate.SetContent(content);
         }
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
