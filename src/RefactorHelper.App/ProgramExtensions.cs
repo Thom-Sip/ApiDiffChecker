@@ -10,31 +10,33 @@ namespace RefactorHelper.App
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings) =>
             services.AddSingleton(new RefactorHelperApp(settings));
 
-        private static RefactorHelperApp App(this WebApplication app) => 
-            app.Services.GetRequiredService<RefactorHelperApp>();
-
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
-            app.AddInitliazeEndpoint();
-            app.AddResetEndpoint();
-            app.AddOpenResultPageEndpoint();
-            app.AddOpenSettingsPageEndpoint();
-            app.AddRunAllFragmentEndpoint();
-            app.AddOpenRequestFragmentEndpoint();
-            app.AddSettingsFragmentEndpoint();
-            app.AddRetrySingleRequestFragmentEndpoint();
-            app.AddGetRequestListFragmentEndpoint();
-            app.AddStaticFileEndpoint("styles.css");
-            app.AddStaticFileEndpoint("htmx.min.js");
+            var myApp = app.Services.GetRequiredService<RefactorHelperApp>();
+
+            app.DashboardPage(myApp);
+            app.ResultPage(myApp);
+            app.ResetPage(myApp);
+            app.SettingsPage(myApp);
+
+            app.RunAllFragment(myApp);
+            app.ResultFragment(myApp);
+            app.RetryRequestFragment(myApp);
+            app.RequestListFragment(myApp);
+            app.SettingsFragment(myApp);
+
+            app.AddStaticFileEndpoint(myApp, "styles.css");
+            app.AddStaticFileEndpoint(myApp, "htmx.min.js");
         }
 
-        private static void AddInitliazeEndpoint(this WebApplication app)
+        #region Pages
+        private static void DashboardPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
-                await app.App().Initialize(context);
-                var result = app.App().GetDashboard();
+                await myApp.Initialize(context);
+                var result = myApp.GetDashboard();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -43,28 +45,13 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddResetEndpoint(this WebApplication app)
-        {
-            // Run all request and open static html in browser
-            app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
-            {
-                await app.App().Reset(context);
-                var result = app.App().GetDashboard();
-
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void AddOpenResultPageEndpoint(this WebApplication app)
+        private static void ResultPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
             {
-                await app.App().Initialize(context);
-                var result = app.App().GetResultPage(requestId, context);
+                await myApp.Initialize(context);
+                var result = myApp.GetResultPage(requestId, context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -73,13 +60,28 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddOpenSettingsPageEndpoint(this WebApplication app)
+        private static void ResetPage(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
+            {
+                await myApp.Reset(context);
+                var result = myApp.GetDashboard();
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void SettingsPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/settings", async (HttpContext context) =>
             {
-                await app.App().Initialize(context);
-                var result = app.App().GetSettingsPage(context);
+                await myApp.Initialize(context);
+                var result = myApp.GetSettingsPage(context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -87,14 +89,15 @@ namespace RefactorHelper.App
 
             }).ExcludeFromDescription();
         }
+        #endregion
 
-        private static void AddRunAllFragmentEndpoint(this WebApplication app)
+        #region Fragments
+        private static void RunAllFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/fragment/run-all", async (HttpContext context) =>
             {
-                var result = await app.App()
-                    .RunAll(context);
+                var result = await myApp.RunAll(context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -104,13 +107,12 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddOpenRequestFragmentEndpoint(this WebApplication app)
+        private static void ResultFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Navigate to the results of a request based on its index
             app.MapGet("/run-refactor-helper/fragment/{requestId}", async (int requestId, HttpContext context) =>
             {
-                var result = app.App()
-                    .GetResultFragment(context, requestId);
+                var result = myApp.GetResultFragment(context, requestId);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -119,13 +121,12 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddRetrySingleRequestFragmentEndpoint(this WebApplication app)
+        private static void RetryRequestFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single requst and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/retry", async (HttpContext context) =>
             {
-                var result = await app.App()
-                    .RetryCurrentRequestFragment(context);
+                var result = await myApp.RetryCurrentRequestFragment(context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -135,13 +136,13 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddSettingsFragmentEndpoint(this WebApplication app)
+        private static void SettingsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/fragment/settings", async (HttpContext context) =>
             {
-                await app.App().Initialize(context);
-                var result = app.App().GetSettingsFragment(context);
+                await myApp.Initialize(context);
+                var result = myApp.GetSettingsFragment(context);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -150,13 +151,12 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddGetRequestListFragmentEndpoint(this WebApplication app)
+        private static void RequestListFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/request-list", async (HttpContext context) =>
             {
-                var result = app.App()
-                    .GetRequestListFragment();
+                var result = myApp.GetRequestListFragment();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -165,12 +165,16 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void AddStaticFileEndpoint(this WebApplication app, string fileName)
+        #endregion
+
+        #region Misc
+
+        private static void AddStaticFileEndpoint(this WebApplication app, RefactorHelperApp myApp, string fileName)
         {
             // Get css so we don't need to service static files
             app.MapGet($"/run-refactor-helper/{fileName}", async (HttpContext context) =>
             {
-                var result = app.App().GetContentFile(fileName);
+                var result = myApp.GetContentFile(fileName);
                 await context.Response.WriteAsync(result);
 
             }).ExcludeFromDescription();
@@ -187,5 +191,7 @@ namespace RefactorHelper.App
             response.Headers[key] = value;
             return response;
         }
+
+        #endregion
     }
 }
