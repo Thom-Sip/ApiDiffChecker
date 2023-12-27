@@ -9,8 +9,6 @@ namespace RefactorHelper.App
     {
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
         {
-            // HACK FOR NOW
-            // services.AddAntiforgery(options => options.SuppressXFrameOptionsHeader = false);
             return services.AddSingleton(new RefactorHelperApp(settings));
         }   
 
