@@ -15,13 +15,12 @@ namespace Basic_Setup_Demo
                 BaseUrl2 = "https://localhost:44371",
                 DefaultParameters = 
                 [
-                    new("customerId", "400721"),
-                    new("accountId", "5")
+                    new("customerId", "400721")
                 ],
                 Runs =
                 [
-                    [new("message", "Yoo")],
-                    [new("message", "Bar")],
+                    [new("accountId", "1")],
+                    [new("accountId", "2")],
                 ],
                 PropertiesToReplace =
                 [

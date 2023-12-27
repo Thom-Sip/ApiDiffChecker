@@ -50,8 +50,12 @@
     flex-direction: column
 }
 
+.side-bar-group {
+    flex: 1;
+}
+
 .side-bar-group-header {
-    max-height: 3rem;
+    width: 100%;
     border-radius: var(--border-radius-top);
     margin-top: var(--margin);
     background-color: var(--main-color-dark);

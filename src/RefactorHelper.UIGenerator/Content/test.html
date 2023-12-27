@@ -35,19 +35,24 @@
 
             <div class="side-bar-content">
                 <div id="request-list-box" hx-get="https://localhost:44371/run-refactor-helper/request-list" hx-swap="innerHtml" hx-trigger="refresh-request-list from:body, load" class="">
-                    <div class="side-bar-group-header">Pending Request</div>
-                    <div class="side-bar-group-content">
-                        <ul>
-                        </ul>
+
+                    <div class="side-bar-group">
+                        <div class="side-bar-group-header">Pending Request</div>
+                        <div class="side-bar-group-content">
+                            <ul>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="side-bar-group-header">Failed Request</div>
-                    <div class="side-bar-group-content">
-                        <ul>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/0" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Bar</span></li>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Foo</span></li>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/3" hx-swap="innerHTML" hx-target="#result-container">200 /weatherforecast</span></li>
-                        </ul>
+                    <div class="side-bar-group">
+                        <div class="side-bar-group-header">Failed Request</div>
+                        <div class="side-bar-group-content">
+                            <ul>
+                                <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/0" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Bar</span></li>
+                                <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Foo</span></li>
+                                <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/3" hx-swap="innerHTML" hx-target="#result-container">200 /weatherforecast</span></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="side-bar-group-header">Successfull Requests</div>
