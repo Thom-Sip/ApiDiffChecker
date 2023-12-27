@@ -66,17 +66,6 @@ namespace RefactorHelper.App
             return State.BaseHtmlTemplate.SetContent(content);
         }
 
-        public string GetSettingsPage()
-        {
-            return State.BaseHtmlTemplate.SetContent(UIGeneratorService.GetSettingsFragment());
-        }
-
-        public string GetSettingsFragment() =>
-            UIGeneratorService.GetSettingsFragment();
-
-        public string GetFormFragment(FormType formType, bool allowEdit) =>
-            UIGeneratorService.GetFormFragment(State.SwaggerOutput, allowEdit, formType);
-
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
             var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));

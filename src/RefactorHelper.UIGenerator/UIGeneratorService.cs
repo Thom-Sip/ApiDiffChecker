@@ -72,19 +72,21 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
+        public string GetSettingsPage() => State.BaseHtmlTemplate.SetContent(GetSettingsFragment());
+
         public string GetSettingsFragment()
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetFormFragment(State.SwaggerOutput, false, FormType.UrlParameters))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(State.SwaggerOutput, false, FormType.QueryParameters));
+                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false))
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false));
 
             return result;
         }
 
-        public string GetFormFragment(SwaggerProcessorOutput swaggerOutput, bool allowEdit, FormType formType)
+        public string GetFormFragment(FormType formType, bool allowEdit)
         {
             return Formbuilder.GetForm(
-                    GetFormData(swaggerOutput, formType),
+                    GetFormData(State.SwaggerOutput, formType),
                     $"/run-refactor-helper/fragment/save/{formType}",
                     $"/run-refactor-helper/fragment/settings/{formType}?allowEdit={!allowEdit}", allowEdit);
         }

@@ -100,7 +100,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/settings", async (HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetSettingsPage();
+                var result = myApp.UIGeneratorService.GetSettingsPage();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -161,7 +161,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/settings", async (HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetSettingsFragment();
+                var result = myApp.UIGeneratorService.GetSettingsFragment();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -176,7 +176,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/settings/{formType}", async (bool allowEdit, FormType formType, HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetFormFragment(formType, allowEdit);
+                var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -192,7 +192,7 @@ namespace RefactorHelper.App
             {
                 myApp.SaveUrlParams(form);
                 myApp.ProcessSettings(context);
-                var result = myApp.GetFormFragment(formType, false);
+                var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
 
                 await context.Response
                     .SetHtmlHeader()
