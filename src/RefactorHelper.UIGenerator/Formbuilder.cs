@@ -14,10 +14,10 @@ namespace RefactorHelper.UIGenerator
             _formFieldTemplate = File.ReadAllText($"{contentFolder}/Forms/FormFieldTemplate.html");
         }
 
-        public string GetForm(List<Parameter> parameters)
+        public string GetForm(List<Parameter> parameters, string putUrl)
         {
             var text = _formTemplate
-                .Replace("[PUT_URL]", $"")
+                .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", $"")
                 .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, parameters.Select(GetFormField)));
 

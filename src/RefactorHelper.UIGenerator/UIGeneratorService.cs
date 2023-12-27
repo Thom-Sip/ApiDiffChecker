@@ -71,8 +71,8 @@ namespace RefactorHelper.UIGenerator
         public string GetSettingsFragment(SwaggerProcessorOutput swaggerOutput)
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.UrlParameters))
-                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.QueryParameters));
+                .Replace("[URL_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.UrlParameters, "/run-refactor-helper/fragment/save/urlparams"))
+                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.QueryParameters, "/run-refactor-helper/fragment/save/queryparams"));
 
             return result;
         }

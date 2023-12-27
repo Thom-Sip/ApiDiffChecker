@@ -7,8 +7,12 @@ namespace RefactorHelper.App
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings) =>
-            services.AddSingleton(new RefactorHelperApp(settings));
+        public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
+        {
+            // HACK FOR NOW
+            // services.AddAntiforgery(options => options.SuppressXFrameOptionsHeader = false);
+            return services.AddSingleton(new RefactorHelperApp(settings));
+        }   
 
         public static void AddRefactorHelperEndpoints(this WebApplication app)
         {
@@ -24,6 +28,7 @@ namespace RefactorHelper.App
             app.RetryRequestFragment(myApp);
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
+            app.SaveUrlParams(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
             app.AddStaticFileEndpoint(myApp, "htmx.min.js");
@@ -163,6 +168,22 @@ namespace RefactorHelper.App
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();
+        }
+
+        private static void SaveUrlParams(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapPut("/run-refactor-helper/fragment/save/urlparams", async (HttpContext context, IFormCollection form) =>
+            {
+                var result = myApp.SaveUrlParams(form);
+                myApp.ProcessSettings(context);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
         }
 
         #endregion

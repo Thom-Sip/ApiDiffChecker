@@ -5,6 +5,7 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace RefactorHelper.App
 {
@@ -71,6 +72,15 @@ namespace RefactorHelper.App
             UIGeneratorService.GenerateBaseUI(State, httpContext);
         }
 
+        public void ProcessSettings(HttpContext httpContext)
+        {
+            // Combine Settings with State to generate the Final Requests
+            State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
+
+            // Generate html output
+            UIGeneratorService.GenerateBaseUI(State, httpContext);
+        }
+
         public string GetDashboard()
         {
             return State.BaseHtmlTemplate.SetContent("");
@@ -106,21 +116,16 @@ namespace RefactorHelper.App
 
         public async Task<string> RunAll(HttpContext httpContext)
         {
-            await Run();
-
-            // Generate output
-            UIGeneratorService.GenerateBaseUI(State, httpContext);
-
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
-        }
-
-        private async Task Run()
-        {
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
             CompareService.CompareResponses(State);
+
+            // Generate output
+            UIGeneratorService.GenerateBaseUI(State, httpContext);
+
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
         public string GetResultFragment(HttpContext httpContext, int requestId)
@@ -139,6 +144,24 @@ namespace RefactorHelper.App
 
             // Get Content Block to display in page
             return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+        }
+
+        public string SaveUrlParams(IFormCollection form)
+        {
+            foreach(var formfield in form)
+            {
+                var param = Settings.DefaultParameters.FirstOrDefault(x => x.Key == formfield.Key);
+
+                if (param != null)
+                {
+                    param.Value = formfield.Value.ToString();
+                    continue;
+                }
+
+                Settings.DefaultParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+            }
+
+            return string.Empty;
         }
 
         public string GetRequestListFragment() => UIGeneratorService.GetRequestListFragment();

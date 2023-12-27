@@ -25,7 +25,7 @@
     {
         public string Key { get; private set; }
 
-        public string Value { get; private set; }
+        public string Value { get; set; }
 
         public Parameter(string key, string value)
         {
