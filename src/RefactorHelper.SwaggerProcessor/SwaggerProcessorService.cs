@@ -7,14 +7,9 @@ using Parameter = RefactorHelper.Models.Config.Parameter;
 
 namespace RefactorHelper.SwaggerProcessor
 {
-    public class SwaggerProcessorService
+    public class SwaggerProcessorService(RefactorHelperSettings settings)
     {
-        private RefactorHelperSettings Settings { get; }
-
-        public SwaggerProcessorService(RefactorHelperSettings settings)
-        {
-            Settings = settings;
-        }
+        private RefactorHelperSettings Settings { get; } = settings;
 
         public static SwaggerProcessorOutput GetQueryParamsFromSwagger(string swaggerJson)
         {

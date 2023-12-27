@@ -8,14 +8,14 @@ namespace RefactorHelper.RequestHandler
 {
     public class RequestHandlerService(RefactorHelperSettings settings)
     {
-        private RefactorHelperSettings _settings { get; } = settings;
+        private RefactorHelperSettings Settings { get; } = settings;
 
-        private HttpClient _client1 { get; } = settings.HttpClient1 ?? new HttpClient
+        private HttpClient Client1 { get; } = settings.HttpClient1 ?? new HttpClient
         {
             BaseAddress = new Uri(settings.BaseUrl1)
         };
 
-        private HttpClient _client2 { get; } = settings.HttpClient2 ?? new HttpClient
+        private HttpClient Client2 { get; } = settings.HttpClient2 ?? new HttpClient
         {
             BaseAddress = new Uri(settings.BaseUrl2)
         };
@@ -30,8 +30,8 @@ namespace RefactorHelper.RequestHandler
 
         public async Task SetResponses(RequestWrapper requestWrapper)
         {
-            var request1 = _client1.GetAsync(requestWrapper.Request.Path);
-            var request2 = _client2.GetAsync(requestWrapper.Request.Path);
+            var request1 = Client1.GetAsync(requestWrapper.Request.Path);
+            var request2 = Client2.GetAsync(requestWrapper.Request.Path);
 
             await Task.WhenAll(request1, request2);
 
@@ -49,7 +49,7 @@ namespace RefactorHelper.RequestHandler
             };
         }
 
-        private RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
+        private static RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
         {
             return new RefactorTestResult
             {
@@ -64,7 +64,7 @@ namespace RefactorHelper.RequestHandler
             {
                 var responseObj1 = JsonConvert.DeserializeObject<object>(response);
 
-                if (_settings.PropertiesToReplace.Count > 0)
+                if (Settings.PropertiesToReplace.Count > 0)
                 {
                     if(responseObj1 is JArray arr)
                     {
@@ -72,7 +72,7 @@ namespace RefactorHelper.RequestHandler
                         {
                             foreach (JProperty attributeProperty in item.Cast<JProperty>())
                             {
-                                var replaceProp = _settings.PropertiesToReplace.FirstOrDefault(x => 
+                                var replaceProp = Settings.PropertiesToReplace.FirstOrDefault(x => 
                                     x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
 
                                 if (replaceProp != null)
