@@ -24,7 +24,7 @@ namespace RefactorHelper.UIGenerator
 
         protected Formbuilder Formbuilder { get; set; }
 
-        public UIGeneratorService(string contentFolder, string outputFolder)
+        public UIGeneratorService(string contentFolder, string outputFolder, RefactorHelperSettings settings)
         {
             _template = File.ReadAllText($"{contentFolder}/Template.html");
             _contentTemplate = File.ReadAllText($"{contentFolder}/ContentTemplate.html");
@@ -34,7 +34,7 @@ namespace RefactorHelper.UIGenerator
             _outputFolder = outputFolder;
             _runfolder = outputFolder;
 
-            Formbuilder = new Formbuilder(contentFolder);
+            Formbuilder = new Formbuilder(contentFolder, settings);
 
             if (!Directory.Exists(_outputFolder))
                 Directory.CreateDirectory(_outputFolder);

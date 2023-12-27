@@ -43,7 +43,7 @@ namespace RefactorHelper.App
             CompareService = new CompareService();
 
             // UI Generator
-            UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
+            UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder, Settings);
         }
 
         public async Task Initialize(HttpContext httpContext)

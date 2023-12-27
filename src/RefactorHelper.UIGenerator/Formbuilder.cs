@@ -8,8 +8,11 @@ namespace RefactorHelper.UIGenerator
 
         protected string _formFieldTemplate { get; set; }
 
-        public Formbuilder(string contentFolder)
+        protected RefactorHelperSettings Settings { get; set; }
+
+        public Formbuilder(string contentFolder, RefactorHelperSettings settings)
         {
+            Settings = settings;
             _formTemplate = File.ReadAllText($"{contentFolder}/Forms/FormTemplate.html");
             _formFieldTemplate = File.ReadAllText($"{contentFolder}/Forms/FormFieldTemplate.html");
         }
@@ -26,9 +29,11 @@ namespace RefactorHelper.UIGenerator
 
         private string GetFormField(Parameter paramater)
         {
+            var existingSettings = Settings.DefaultParameters.FirstOrDefault(x => x.Key == paramater.Key);
+
             return _formFieldTemplate
                 .Replace("[KEY]", paramater.Key)
-                .Replace("[VALUE]", paramater.Value);
+                .Replace("[VALUE]", existingSettings?.Value ?? paramater.Value);
         }
     }
 }
