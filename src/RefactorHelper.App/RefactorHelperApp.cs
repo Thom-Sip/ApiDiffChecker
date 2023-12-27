@@ -17,11 +17,11 @@ namespace RefactorHelper.App
         UIGeneratorService uiGeneratorService)
     {
         public RefactorHelperSettings Settings { get; set; } = settings;
+        public RefactorHelperState State { get; set; } = state;
         public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
         public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
         public CompareService CompareService { get; set; } = compareService;
         public UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
-        public RefactorHelperState State { get; set; } = state;
 
         public async Task Initialize()
         {
