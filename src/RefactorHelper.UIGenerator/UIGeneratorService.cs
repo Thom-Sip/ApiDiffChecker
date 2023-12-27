@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.External;
