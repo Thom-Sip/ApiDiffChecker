@@ -116,17 +116,23 @@ namespace RefactorHelper.UIGenerator
             var failedRequests = wrappers.Where(x => x.Changed && x.Executed).ToList();
             var successfulRequest = wrappers.Where(x => !x.Changed && x.Executed).ToList();
 
-            var requestsPendingListHtml = GetSidebarContent(pendingRequests, httpContext);
-            var requestsFailedListHtml = GetSidebarContent(failedRequests, httpContext);
-            var requestsSuccessListHtml = GetSidebarContent(successfulRequest, httpContext);
+            _requestListHtml = string.Empty;
 
-            _requestListHtml = _requestListTemplate
-                .Replace("[REQUESTS_PENDING]", requestsPendingListHtml)
-                .Replace("[REQUESTS_PENDING_COUNT]", $"{pendingRequests.Count}")
-                .Replace("[REQUESTS_FAILED]", requestsFailedListHtml)
-                .Replace("[REQUESTS_FAILED_COUNT]", $"{failedRequests.Count}")
-                .Replace("[REQUESTS_SUCCESS]", requestsSuccessListHtml)
-                .Replace("[REQUESTS_SUCCESS_COUNT]", $"{successfulRequest.Count}");
+            if (pendingRequests.Count > 0)
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(pendingRequests, httpContext, "Pending Requests")}";
+
+            if (failedRequests.Count > 0)
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(failedRequests, httpContext, "Failed Requests")}";
+
+            if (successfulRequest.Count > 0)
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(successfulRequest, httpContext, "Success Requests")}";
+        }
+
+        private string GenerateRequestList(List<RequestWrapper> wrappers, HttpContext httpContext, string title)
+        {
+            return _requestListTemplate
+              .Replace("[TITLE]", $"{title} ({wrappers.Count})")
+              .Replace("[REQUESTS]", GetSidebarContent(wrappers, httpContext));
         }
 
         private string GetBaseUrl(HttpRequest request)
