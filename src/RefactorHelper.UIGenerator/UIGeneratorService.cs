@@ -147,7 +147,7 @@ namespace RefactorHelper.UIGenerator
                               $"hx-get=\"/run-refactor-helper/fragment/{item.Id}\" " +
                               $"hx-replace-url=\"/run-refactor-helper/{item.Id}\" " +
                               $"hx-swap=\"innerHTML\" " +
-                              $"hx-target=\"#result-container\">" +
+                              $"hx-target=\"#main-content\">" +
                               $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}" +
                         $"</span>" +
                     $"</li>");

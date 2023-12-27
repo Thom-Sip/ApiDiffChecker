@@ -195,6 +195,9 @@ body, html {
   padding: var(--padding-large);
   border-radius: var(--border-radius-top);
 }
+.result-container-header h1 {
+  margin-bottom: 0px;
+}
 
 .result-container-header h1 {
   margin-top: 0px;

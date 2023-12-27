@@ -21,7 +21,7 @@
                             hx-get="[SETTINGS_FRAGMENT_URL]"
                             hx-swap="innerHTML"
                             hx-replace-url="[SETTINGS_URL]"
-                            hx-target="#result-container">
+                            hx-target="#main-content">
                         Settings
                     </button>
                 </div>
@@ -51,7 +51,7 @@
                             id="retry-all-button"
                             hx-get="[RETRY_ALL_URL]"
                             hx-swap="innerHTML"
-                            hx-target="#result-container">
+                            hx-target="#main-content">
                         Run All
                     </button>
                 </div>
@@ -60,7 +60,7 @@
                             id="refresh-button"
                             hx-get="[RETRY_REQUEST_URL]"
                             hx-swap="innerHTML"
-                            hx-target="#result-container">
+                            hx-target="#main-content">
                         Run
                     </button>
                 </div>
@@ -69,7 +69,7 @@
                 </div>
             </div>
 
-            <div class="content-box" id="result-container">
+            <div class="content-box" id="main-content">
                 [CONTENT_BLOCK]
             </div>
         </div>
