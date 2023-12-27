@@ -19,6 +19,28 @@
         public List<List<Parameter>> Runs { get; set; } = [[]];
 
         public List<Parameter> PropertiesToReplace { get; set; } = [];
+
+        public HttpClient HttpClient1 { get; set; }
+
+        public HttpClient HttpClient2 { get; set; }
+
+        public RefactorHelperSettings()
+        {
+            SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
+            if (string.IsNullOrWhiteSpace(OutputFolder))
+                OutputFolder = Path.Combine(GetBinPath(), "Output");
+
+            if (string.IsNullOrWhiteSpace(ContentFolder))
+                ContentFolder = Path.Combine(GetBinPath(), "Content");
+        }
+
+        private string GetBinPath() =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
     }
 
     public class Parameter

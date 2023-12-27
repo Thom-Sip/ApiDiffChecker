@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using RefactorHelper.Comparer;
+using RefactorHelper.Models;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.Uigenerator;
+using RefactorHelper.RequestHandler;
+using RefactorHelper.SwaggerProcessor;
+using RefactorHelper.UIGenerator;
 
 namespace RefactorHelper.App
 {
@@ -10,7 +15,15 @@ namespace RefactorHelper.App
     {
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
         {
-            return services.AddSingleton(new RefactorHelperApp(settings));
+            services.AddSingleton(settings);
+            services.AddSingleton<RefactorHelperState>();
+            services.AddSingleton<RefactorHelperApp>();
+            services.AddSingleton<SwaggerProcessorService>();
+            services.AddSingleton<RequestHandlerService>();
+            services.AddSingleton<CompareService>();
+            services.AddSingleton<UIGeneratorService>();
+
+            return services;
         }   
 
         public static void AddRefactorHelperEndpoints(this WebApplication app)

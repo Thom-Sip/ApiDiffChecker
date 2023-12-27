@@ -6,11 +6,19 @@ using Newtonsoft.Json.Linq;
 
 namespace RefactorHelper.RequestHandler
 {
-    public class RequestHandlerService(HttpClient client1, HttpClient client2, RefactorHelperSettings settings)
+    public class RequestHandlerService(RefactorHelperSettings settings)
     {
-        private HttpClient _client1 { get; } = client1;
-        private HttpClient _client2 { get; } = client2;
         private RefactorHelperSettings _settings { get; } = settings;
+
+        private HttpClient _client1 { get; } = settings.HttpClient1 ?? new HttpClient
+        {
+            BaseAddress = new Uri(settings.BaseUrl1)
+        };
+
+        private HttpClient _client2 { get; } = settings.HttpClient2 ?? new HttpClient
+        {
+            BaseAddress = new Uri(settings.BaseUrl2)
+        };
 
         public async Task QueryApis(RefactorHelperState state)
         {

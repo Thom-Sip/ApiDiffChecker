@@ -24,17 +24,17 @@ namespace RefactorHelper.UIGenerator
 
         protected Formbuilder Formbuilder { get; set; }
 
-        public UIGeneratorService(string contentFolder, string outputFolder, RefactorHelperSettings settings)
+        public UIGeneratorService(RefactorHelperSettings settings)
         {
-            _template = File.ReadAllText($"{contentFolder}/Template.html");
-            _contentTemplate = File.ReadAllText($"{contentFolder}/ContentTemplate.html");
-            _diffBoxTemplate = File.ReadAllText($"{contentFolder}/DiffBoxTemplate.html");
-            _requestListTemplate = File.ReadAllText($"{contentFolder}/RequestListTemplate.html");
-            _settingsFragmentTemplate = File.ReadAllText($"{contentFolder}/SettingsFragment.html");
-            _outputFolder = outputFolder;
-            _runfolder = outputFolder;
+            _template = File.ReadAllText($"{settings.ContentFolder}/Template.html");
+            _contentTemplate = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
+            _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
+            _requestListTemplate = File.ReadAllText($"{settings.ContentFolder}/RequestListTemplate.html");
+            _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/SettingsFragment.html");
+            _outputFolder = settings.OutputFolder;
+            _runfolder = settings.OutputFolder;
 
-            Formbuilder = new Formbuilder(contentFolder, settings);
+            Formbuilder = new Formbuilder(settings.ContentFolder, settings);
 
             if (!Directory.Exists(_outputFolder))
                 Directory.CreateDirectory(_outputFolder);

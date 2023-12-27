@@ -9,42 +9,20 @@ using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
 {
-    public class RefactorHelperApp
+    public class RefactorHelperApp(
+        RefactorHelperSettings settings,
+        RefactorHelperState state,
+        SwaggerProcessorService swaggerProcessorService,
+        RequestHandlerService requestHandlerService,
+        CompareService compareService,
+        UIGeneratorService uiGeneratorService)
     {
-        private RefactorHelperSettings Settings { get; set; }
-        private RefactorHelperState State { get; set; } = new();
-
-        private SwaggerProcessorService SwaggerProcessorService { get; set; }
-        private RequestHandlerService RequestHandlerService { get; set; }
-        private CompareService CompareService { get; set; }
-        private UIGeneratorService UIGeneratorService { get; set; }
-
-        public RefactorHelperApp(RefactorHelperSettings settings)
-        {
-            Settings = SetDefaults(settings);
-
-            // Setup Swagger Processor
-            SwaggerProcessorService = new SwaggerProcessorService(Settings);
-
-            // Setup Request Handler
-            RequestHandlerService = new RequestHandlerService(
-                new HttpClient
-                {
-                    BaseAddress = new Uri(Settings.BaseUrl1)
-                },
-                new HttpClient
-                {
-                    BaseAddress = new Uri(Settings.BaseUrl2)
-                }, 
-                Settings
-            );
-
-            // Compare Service
-            CompareService = new CompareService();
-
-            // UI Generator
-            UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder, Settings);
-        }
+        private RefactorHelperSettings Settings { get; set; } = settings;
+        private SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
+        private RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
+        private CompareService CompareService { get; set; } = compareService;
+        private UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
+        private RefactorHelperState State { get; set; } = state;
 
         public async Task Initialize(HttpContext httpContext)
         {
@@ -168,20 +146,6 @@ namespace RefactorHelper.App
         public string GetRequestListFragment() => UIGeneratorService.GetRequestListFragment();
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
-
-        private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
-        {
-            if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = Path.Combine(GetBinPath(), "Output");
-
-            if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = Path.Combine(GetBinPath(), "Content");
-
-            return settings;
-        }
-
-        private static string GetBinPath() =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
 
         private string GetSwaggerUrl(HttpContext httpContext)
         {
