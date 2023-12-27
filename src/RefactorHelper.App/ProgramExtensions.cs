@@ -57,9 +57,7 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -72,9 +70,7 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetTestResultPage(requestId);
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -87,9 +83,7 @@ namespace RefactorHelper.App
                 await myApp.Reset();
                 var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -102,9 +96,7 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsPage();
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -119,9 +111,8 @@ namespace RefactorHelper.App
                 var result = await myApp.RunAll();
 
                 await context.Response
-                    .SetHtmlHeader()
                     .SetHxTriggerHeader("refresh-request-list")
-                    .WriteAsync(result);
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -132,10 +123,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/{requestId}", async (int requestId, HttpContext context) =>
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
-
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -148,9 +136,8 @@ namespace RefactorHelper.App
                 var result = await myApp.RetryCurrentRequestFragment();
 
                 await context.Response
-                    .SetHtmlHeader()
                     .SetHxTriggerHeader("refresh-request-list")
-                    .WriteAsync(result);
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -163,9 +150,7 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsFragment();
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -178,9 +163,7 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
 
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -195,9 +178,8 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
 
                 await context.Response
-                    .SetHtmlHeader()
                     .SetHxTriggerHeader("refresh-request-list")
-                    .WriteAsync(result);
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
         }
@@ -208,10 +190,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/request-list", async (HttpContext context) =>
             {
                 var result = myApp.UIGeneratorService.GetRequestListFragment();
-
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -221,11 +200,8 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/sidebar/settings", async (HttpContext context) =>
             {
-                var result = myApp.UIGeneratorService.GetRequestListFragment();
-
-                await context.Response
-                    .SetHtmlHeader()
-                    .WriteAsync(result);
+                var result = myApp.UIGeneratorService.GetSettingsSideBarFragment();
+                await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -244,6 +220,9 @@ namespace RefactorHelper.App
 
             }).ExcludeFromDescription();
         }
+
+        private static async Task WriteHtmlResponse(this HttpResponse response, string result)
+            => await response.SetHtmlHeader().WriteAsync(result);
 
         public static HttpResponse SetHtmlHeader(this HttpResponse response) => 
             response.SetResponseHeader("ContentType", "text/html");
