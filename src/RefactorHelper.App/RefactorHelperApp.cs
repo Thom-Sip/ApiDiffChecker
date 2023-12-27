@@ -64,6 +64,7 @@ namespace RefactorHelper.App
             State.SwaggerJson = await result.Content.ReadAsStringAsync();
 
             // Get requests from Swagger
+            State.SwaggerOutput = SwaggerProcessorService.GetQueryParamsFromSwagger(State.SwaggerJson);
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Generate html output
@@ -84,12 +85,12 @@ namespace RefactorHelper.App
 
         public string GetSettingsPage(HttpContext httpContext)
         {
-            var content = UIGeneratorService.GetSettingsFragment(Settings);
+            var content = UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
             return State.BaseHtmlTemplate.SetContent(content);
         }
 
         public string GetSettingsFragment(HttpContext httpContext) =>
-            UIGeneratorService.GetSettingsFragment(Settings);
+            UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {

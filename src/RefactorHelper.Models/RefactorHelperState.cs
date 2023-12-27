@@ -1,4 +1,5 @@
-﻿using RefactorHelper.Models.Uigenerator;
+﻿using RefactorHelper.Models.SwaggerProcessor;
+using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.Models
 {
@@ -10,9 +11,9 @@ namespace RefactorHelper.Models
 
         public int CurrentRequest { get; set; }
 
-        public string BaseHtml { get; set; } = string.Empty;
-
         public HtmlTemplate BaseHtmlTemplate { get; set; } = new();
+
+        public SwaggerProcessorOutput SwaggerOutput { get; set; } = new();
 
         public List<RequestWrapper> Data { get; set; } = [];
 

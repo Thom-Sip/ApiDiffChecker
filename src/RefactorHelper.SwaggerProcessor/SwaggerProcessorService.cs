@@ -16,6 +16,45 @@ namespace RefactorHelper.SwaggerProcessor
             Settings = settings;
         }
 
+        public static SwaggerProcessorOutput GetQueryParamsFromSwagger(string swaggerJson)
+        {
+            var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
+
+            return new()
+            {
+                UrlParameters = GetParams(doc, "path"),
+                QueryParameters = GetParams(doc, "query"),
+                Requests = GetGetRequests(doc)
+            };
+        }
+
+        private static List<Parameter> GetParams(SwaggerDocument doc, string paramType)
+        {
+            var getRequestsWithParams = doc.paths
+                .Where(x => x.Value.get != null && x.Value.get.parameters != null)
+                .Select(x => x.Value.get).ToList();
+
+            var urlParams = getRequestsWithParams
+                .SelectMany(x => x.parameters.Where(y => y.@in == paramType))
+                .Distinct()
+                .ToList();
+
+            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).ToList();
+        }
+
+        private static List<RequestDetails> GetGetRequests(SwaggerDocument doc)
+        {
+            var getRequests = doc.paths
+               .Where(x => x.Value.get != null).ToList();
+
+            return getRequests.Select(x => new RequestDetails
+            {
+                Operation = x.Value.get,
+                Template = x.Key,
+                Path = x.Key
+            }).ToList();
+        }
+
         public List<RequestWrapper> ProcessSwagger(string swaggerJson)
         {
             var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
