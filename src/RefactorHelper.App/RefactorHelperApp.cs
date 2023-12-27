@@ -5,7 +5,6 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
-using System.Net.Http;
 using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
