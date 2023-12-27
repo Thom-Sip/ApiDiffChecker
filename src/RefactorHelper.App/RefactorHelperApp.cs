@@ -102,6 +102,9 @@ namespace RefactorHelper.App
         public string GetSettingsFragment(HttpContext httpContext) =>
             UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
 
+        public string GetUrlParamsFragment(HttpContext httpContext, bool allowEdit) =>
+            UIGeneratorService.GetUrlParamsFragment(State.SwaggerOutput, allowEdit);
+
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
             var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));

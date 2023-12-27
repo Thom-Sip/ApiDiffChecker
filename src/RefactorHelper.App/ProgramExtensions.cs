@@ -26,6 +26,7 @@ namespace RefactorHelper.App
             app.RetryRequestFragment(myApp);
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
+            app.UrlParamsFragment(myApp);
             app.SaveUrlParams(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
@@ -146,6 +147,21 @@ namespace RefactorHelper.App
             {
                 await myApp.Initialize(context);
                 var result = myApp.GetSettingsFragment(context);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void UrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/fragment/settings/urlparams", async (bool allowEdit, HttpContext context) =>
+            {
+                await myApp.Initialize(context);
+                var result = myApp.GetUrlParamsFragment(context, allowEdit);
 
                 await context.Response
                     .SetHtmlHeader()

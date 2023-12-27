@@ -71,10 +71,24 @@ namespace RefactorHelper.UIGenerator
         public string GetSettingsFragment(SwaggerProcessorOutput swaggerOutput)
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.UrlParameters, "/run-refactor-helper/fragment/save/urlparams"))
-                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.QueryParameters, "/run-refactor-helper/fragment/save/queryparams"));
+                .Replace("[URL_PARAMETERS]", Formbuilder.GetForm(
+                    swaggerOutput.UrlParameters, 
+                    "/run-refactor-helper/fragment/save/urlparams", 
+                    "/run-refactor-helper/fragment/settings/urlparams?allowEdit=false", false))
+                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(
+                    swaggerOutput.QueryParameters,
+                    "/run-refactor-helper/fragment/save/queryparams",
+                    "/run-refactor-helper/fragment/settings/urlparams?allowEdit=false", false));
 
             return result;
+        }
+
+        public string GetUrlParamsFragment(SwaggerProcessorOutput swaggerOutput, bool allowEdit)
+        {
+            return Formbuilder.GetForm(
+                    swaggerOutput.UrlParameters,
+                    "/run-refactor-helper/fragment/save/urlparams",
+                    $"/run-refactor-helper/fragment/settings/urlparams?allowEdit={!allowEdit}", !allowEdit);
         }
 
         public string GetRequestListFragment() => _requestListHtml;
