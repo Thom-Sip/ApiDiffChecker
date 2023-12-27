@@ -10,16 +10,6 @@ namespace RefactorHelper.RequestHandler
     {
         private RefactorHelperSettings Settings { get; } = settings;
 
-        private HttpClient Client1 { get; } = settings.HttpClient1 ?? new HttpClient
-        {
-            BaseAddress = new Uri(settings.BaseUrl1)
-        };
-
-        private HttpClient Client2 { get; } = settings.HttpClient2 ?? new HttpClient
-        {
-            BaseAddress = new Uri(settings.BaseUrl2)
-        };
-
         public async Task QueryApis(RefactorHelperState state)
         {
             var tasks = state.Data.Select(SetResponses).ToList();
@@ -30,8 +20,8 @@ namespace RefactorHelper.RequestHandler
 
         public async Task SetResponses(RequestWrapper requestWrapper)
         {
-            var request1 = Client1.GetAsync(requestWrapper.Request.Path);
-            var request2 = Client2.GetAsync(requestWrapper.Request.Path);
+            var request1 = Settings.HttpClient1.GetAsync(requestWrapper.Request.Path);
+            var request2 = Settings.HttpClient2.GetAsync(requestWrapper.Request.Path);
 
             await Task.WhenAll(request1, request2);
 

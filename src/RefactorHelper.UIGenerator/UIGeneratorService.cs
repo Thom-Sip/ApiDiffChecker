@@ -17,20 +17,24 @@ namespace RefactorHelper.UIGenerator
         protected string _template { get; set; }
         protected string _contentTemplate { get; set; }
         protected string _diffBoxTemplate { get; set; }
-        protected string _requestListTemplate { get; set; }
+        protected string _sideBarGroupTemplate { get; set; }
         protected string _settingsFragmentTemplate { get; set; }
 
         protected string _requestListHtml { get; set; } = string.Empty;
 
         protected Formbuilder Formbuilder { get; set; }
 
-        public UIGeneratorService(RefactorHelperSettings settings)
+        private RefactorHelperState State { get; set; }
+
+        public UIGeneratorService(RefactorHelperSettings settings, RefactorHelperState state)
         {
+            State = state;
+
             _template = File.ReadAllText($"{settings.ContentFolder}/Template.html");
             _contentTemplate = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
             _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
-            _requestListTemplate = File.ReadAllText($"{settings.ContentFolder}/RequestListTemplate.html");
-            _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/SettingsFragment.html");
+            _sideBarGroupTemplate = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
+            _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
             _outputFolder = settings.OutputFolder;
             _runfolder = settings.OutputFolder;
 
@@ -68,11 +72,11 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
-        public string GetSettingsFragment(SwaggerProcessorOutput swaggerOutput)
+        public string GetSettingsFragment()
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetFormFragment(swaggerOutput, false, FormType.UrlParameters))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(swaggerOutput, false, FormType.QueryParameters));
+                .Replace("[URL_PARAMETERS]", GetFormFragment(State.SwaggerOutput, false, FormType.UrlParameters))
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(State.SwaggerOutput, false, FormType.QueryParameters));
 
             return result;
         }
@@ -130,14 +134,15 @@ namespace RefactorHelper.UIGenerator
 
         private string GenerateRequestList(List<RequestWrapper> wrappers, HttpContext httpContext, string title)
         {
-            return _requestListTemplate
+            return _sideBarGroupTemplate
               .Replace("[TITLE]", $"{title} ({wrappers.Count})")
-              .Replace("[REQUESTS]", GetSidebarContent(wrappers, httpContext));
+              .Replace("[CONTENT]", GetSidebarContent(wrappers, httpContext));
         }
 
         private string GetSidebarContent(List<RequestWrapper> resultPairs, HttpContext httpContext)
         {
             var sb = new StringBuilder();
+            sb.Append("<ul>");
 
             foreach(var item in resultPairs)
             {
@@ -153,6 +158,7 @@ namespace RefactorHelper.UIGenerator
                     $"</li>");
             }
 
+            sb.Append("</ul>");
             return sb.ToString();
         }
 

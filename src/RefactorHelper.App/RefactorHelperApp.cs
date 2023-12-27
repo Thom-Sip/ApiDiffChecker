@@ -17,12 +17,12 @@ namespace RefactorHelper.App
         CompareService compareService,
         UIGeneratorService uiGeneratorService)
     {
-        private RefactorHelperSettings Settings { get; set; } = settings;
-        private SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
-        private RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
-        private CompareService CompareService { get; set; } = compareService;
-        private UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
-        private RefactorHelperState State { get; set; } = state;
+        public RefactorHelperSettings Settings { get; set; } = settings;
+        public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
+        public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
+        public CompareService CompareService { get; set; } = compareService;
+        public UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
+        public RefactorHelperState State { get; set; } = state;
 
         public async Task Initialize(HttpContext httpContext)
         {
@@ -59,11 +59,6 @@ namespace RefactorHelper.App
             UIGeneratorService.GenerateBaseUI(State, httpContext);
         }
 
-        public string GetDashboard()
-        {
-            return State.BaseHtmlTemplate.SetContent("");
-        }
-
         public string GetResultPage(int requestId, HttpContext httpContext)
         {
             State.CurrentRequest = requestId;
@@ -71,14 +66,13 @@ namespace RefactorHelper.App
             return State.BaseHtmlTemplate.SetContent(content);
         }
 
-        public string GetSettingsPage(HttpContext httpContext)
+        public string GetSettingsPage()
         {
-            var content = UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
-            return State.BaseHtmlTemplate.SetContent(content);
+            return State.BaseHtmlTemplate.SetContent(UIGeneratorService.GetSettingsFragment());
         }
 
-        public string GetSettingsFragment(HttpContext httpContext) =>
-            UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
+        public string GetSettingsFragment() =>
+            UIGeneratorService.GetSettingsFragment();
 
         public string GetFormFragment(FormType formType, bool allowEdit) =>
             UIGeneratorService.GetFormFragment(State.SwaggerOutput, allowEdit, formType);
@@ -142,8 +136,6 @@ namespace RefactorHelper.App
                 Settings.DefaultParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
             }
         }
-
-        public string GetRequestListFragment() => UIGeneratorService.GetRequestListFragment();
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 

@@ -4,15 +4,15 @@
     {
         public bool RunOnStart { get; set; }
 
-        public string OutputFolder { get; set; } = string.Empty;
+        public string OutputFolder { get; set; } = Path.Combine(GetBinPath(), "Output");
 
-        public string ContentFolder { get; set; } = string.Empty;
+        public string ContentFolder { get; set; } = Path.Combine(GetBinPath(), "Content");
 
-        public string SwaggerUrl { get; set; }
+        public string SwaggerUrl { get; set; } = string.Empty;
 
-        public required string BaseUrl1 { get; set; }
+        public string BaseUrl1 { get; set; } = string.Empty;
 
-        public required string BaseUrl2 { get; set; }
+        public string BaseUrl2 { get; set; } = string.Empty;
 
         public List<Parameter> DefaultParameters { get; set; } = [];
 
@@ -24,35 +24,27 @@
 
         public HttpClient HttpClient2 { get; set; }
 
-        public RefactorHelperSettings()
+        public RefactorHelperSettings(HttpClient client1, HttpClient client2)
         {
-            SetDefaults();
+            HttpClient1 = client1;
+            HttpClient2 = client2;
         }
 
-        private void SetDefaults()
+        public RefactorHelperSettings(string baseUrl1, string baseUrl2)
         {
-            if (string.IsNullOrWhiteSpace(OutputFolder))
-                OutputFolder = Path.Combine(GetBinPath(), "Output");
-
-            if (string.IsNullOrWhiteSpace(ContentFolder))
-                ContentFolder = Path.Combine(GetBinPath(), "Content");
+            BaseUrl1 = baseUrl1;
+            BaseUrl2 = baseUrl2;
+            HttpClient1 = new HttpClient
+            {
+                BaseAddress = new Uri(BaseUrl1)
+            };
+            HttpClient2 = new HttpClient
+            {
+                BaseAddress = new Uri(BaseUrl2)
+            };
         }
 
-        private string GetBinPath() =>
+        private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
-
-    }
-
-    public class Parameter
-    {
-        public string Key { get; private set; }
-
-        public string Value { get; set; }
-
-        public Parameter(string key, string value)
-        {
-            Key = key;
-            Value = value;
-        }
     }
 }

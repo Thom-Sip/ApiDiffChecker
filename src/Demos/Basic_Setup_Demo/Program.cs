@@ -7,32 +7,35 @@ namespace Basic_Setup_Demo
     {
         public static void Main(string[] args)
         {
-            // Settings
-            var settings = new RefactorHelperSettings
-            {
-                RunOnStart = false,
-                BaseUrl1 = "https://localhost:44371",
-                BaseUrl2 = "https://localhost:44371",
-                DefaultParameters = 
-                [
-                    new("customerId", "400721")
-                ],
-                Runs =
-                [
-                    [new("accountId", "1")],
-                    [new("accountId", "2")],
-                ],
-                PropertiesToReplace =
-                [
-                    new("Timestamp", "[REPLACED_TIMESTAMP]"),
-                    new("requestId", $"[{Guid.Empty}]"),
-                ]
-            };
-
             var builder = WebApplication.CreateBuilder(args);
 
-            // Setup DI 
-            builder.Services.AddRefactorHelper(settings);
+            if (builder.Environment.IsDevelopment())
+            {
+                // RefactorHelper Settings
+                var settings = new RefactorHelperSettings(
+                    baseUrl1: "https://localhost:44371",
+                    baseUrl2: "https://localhost:44371")
+                {
+                    RunOnStart = false,
+                    DefaultParameters = 
+                    [
+                        new("customerId", "400721")
+                    ],
+                    Runs =
+                    [
+                        [new("accountId", "1")],
+                        [new("accountId", "2")],
+                    ],
+                    PropertiesToReplace =
+                    [
+                        new("Timestamp", "[REPLACED_TIMESTAMP]"),
+                        new("requestId", $"[{Guid.Empty}]"),
+                    ]
+                };
+
+                // RefactorHelper Dependency Injection
+                builder.Services.AddRefactorHelper(settings);
+            } 
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -44,7 +47,7 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // Setup all endpoints required for RefactorHelper to work
+                // RefactorHelper Endpoints
                 app.AddRefactorHelperEndpoints();
             }
 

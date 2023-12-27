@@ -40,6 +40,7 @@ namespace RefactorHelper.App
             app.RetryRequestFragment(myApp);
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
+            app.SettingsSideBarFragment(myApp);
             app.UrlParamsFragment(myApp);
             app.SaveUrlParamsFragment(myApp);
 
@@ -54,7 +55,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetDashboard();
+                var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
                 await context.Response
                     .SetHtmlHeader()
@@ -84,7 +85,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
             {
                 await myApp.Reset(context);
-                var result = myApp.GetDashboard();
+                var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
                 await context.Response
                     .SetHtmlHeader()
@@ -99,7 +100,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/settings", async (HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetSettingsPage(context);
+                var result = myApp.GetSettingsPage();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -160,7 +161,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/settings", async (HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetSettingsFragment(context);
+                var result = myApp.GetSettingsFragment();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -206,7 +207,21 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/request-list", async (HttpContext context) =>
             {
-                var result = myApp.GetRequestListFragment();
+                var result = myApp.UIGeneratorService.GetRequestListFragment();
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void SettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet("/run-refactor-helper/fragment/sidebar/settings", async (HttpContext context) =>
+            {
+                var result = myApp.UIGeneratorService.GetRequestListFragment();
 
                 await context.Response
                     .SetHtmlHeader()
