@@ -10,10 +10,6 @@
 
         public string SwaggerUrl { get; set; } = string.Empty;
 
-        public string BaseUrl1 { get; set; } = string.Empty;
-
-        public string BaseUrl2 { get; set; } = string.Empty;
-
         public List<Parameter> DefaultParameters { get; set; } = [];
 
         public List<List<Parameter>> Runs { get; set; } = [[]];
@@ -32,16 +28,21 @@
 
         public RefactorHelperSettings(string baseUrl1, string baseUrl2)
         {
-            BaseUrl1 = baseUrl1;
-            BaseUrl2 = baseUrl2;
             HttpClient1 = new HttpClient
             {
-                BaseAddress = new Uri(BaseUrl1)
+                BaseAddress = new Uri(baseUrl1)
             };
             HttpClient2 = new HttpClient
             {
-                BaseAddress = new Uri(BaseUrl2)
+                BaseAddress = new Uri(baseUrl2)
             };
+        }
+
+        public string GetSwaggerUrl()
+        {
+            return string.IsNullOrWhiteSpace(SwaggerUrl)
+                ? $"{HttpClient1.BaseAddress}swagger/v1/swagger.json"
+                : SwaggerUrl;
         }
 
         private static string GetBinPath() =>

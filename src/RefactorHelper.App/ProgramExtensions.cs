@@ -54,7 +54,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
-                await myApp.Initialize(context);
+                await myApp.Initialize();
                 var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
                 await context.Response
@@ -69,8 +69,8 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
             {
-                await myApp.Initialize(context);
-                var result = myApp.GetResultPage(requestId);
+                await myApp.Initialize();
+                var result = myApp.UIGeneratorService.GetTestResultPage(requestId);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -84,7 +84,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
             {
-                await myApp.Reset(context);
+                await myApp.Reset();
                 var result = myApp.State.BaseHtmlTemplate.SetContent("");
 
                 await context.Response
@@ -99,7 +99,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/settings", async (HttpContext context) =>
             {
-                await myApp.Initialize(context);
+                await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsPage();
 
                 await context.Response
@@ -131,7 +131,7 @@ namespace RefactorHelper.App
             // Navigate to the results of a request based on its index
             app.MapGet("/run-refactor-helper/fragment/{requestId}", async (int requestId, HttpContext context) =>
             {
-                var result = myApp.GetResultFragment(requestId);
+                var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -160,7 +160,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/fragment/settings", async (HttpContext context) =>
             {
-                await myApp.Initialize(context);
+                await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsFragment();
 
                 await context.Response
@@ -175,7 +175,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/fragment/settings/{formType}", async (bool allowEdit, FormType formType, HttpContext context) =>
             {
-                await myApp.Initialize(context);
+                await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
 
                 await context.Response

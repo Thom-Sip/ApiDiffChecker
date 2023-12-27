@@ -5,7 +5,6 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
-using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
 {
@@ -24,22 +23,21 @@ namespace RefactorHelper.App
         public UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
         public RefactorHelperState State { get; set; } = state;
 
-        public async Task Initialize(HttpContext httpContext)
+        public async Task Initialize()
         {
             if(!State.Initialized)
             {
-                await Reset(httpContext);
+                await Reset();
 
                 // Run Once
                 State.Initialized = true;
             }
         }
 
-        public async Task Reset(HttpContext httpContext)
+        public async Task Reset()
         {
             // Process Swagger
-            var client = new HttpClient();
-            var result = await client.GetAsync(GetSwaggerUrl(httpContext));
+            var result = await Settings.HttpClient1.GetAsync(Settings.GetSwaggerUrl());
             State.SwaggerJson = await result.Content.ReadAsStringAsync();
 
             // Get requests from Swagger
@@ -59,25 +57,6 @@ namespace RefactorHelper.App
             UIGeneratorService.GenerateBaseUI(State);
         }
 
-        public string GetResultPage(int requestId)
-        {
-            State.CurrentRequest = requestId;
-            var content = UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
-            return State.BaseHtmlTemplate.SetContent(content);
-        }
-
-        public async Task<string> StaticCompare(string fileOne, string fileTwo)
-        {
-            var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
-            var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
-
-            var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
-
-            var html = UIGeneratorService.GetHtmlPage(compareResultPair);
-
-            return html;
-        }
-
         public async Task<string> RunAll()
         {
             // Perform api Requests
@@ -89,13 +68,7 @@ namespace RefactorHelper.App
             // Generate output
             UIGeneratorService.GenerateBaseUI(State);
 
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
-        }
-
-        public string GetResultFragment(int requestId)
-        {
-            State.CurrentRequest = requestId;
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
+            return UIGeneratorService.GetTestResultFragment();
         }
 
         public async Task<string> RetryCurrentRequestFragment()
@@ -107,7 +80,7 @@ namespace RefactorHelper.App
             CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
+            return UIGeneratorService.GetTestResultFragment();
         }
 
         public void SaveUrlParams(IFormCollection form)
@@ -128,12 +101,18 @@ namespace RefactorHelper.App
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 
-        private string GetSwaggerUrl(HttpContext httpContext)
+        #region Test Functions
+        public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
-            if (!string.IsNullOrWhiteSpace(Settings.SwaggerUrl))
-                return Settings.SwaggerUrl;
+            var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
+            var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
 
-            return $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.PathBase}/swagger/v1/swagger.json";
+            var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
+
+            var html = UIGeneratorService.GetHtmlPage(compareResultPair);
+
+            return html;
         }
+        #endregion
     }
 }

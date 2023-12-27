@@ -65,9 +65,13 @@ namespace RefactorHelper.UIGenerator
             return _template.Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
         }
 
-        public string GetTestResultFragment(RequestWrapper wrapper)
+        public string GetTestResultPage(int? requestId = null) => 
+            State.BaseHtmlTemplate.SetContent(GetTestResultFragment(requestId));
+
+        public string GetTestResultFragment(int? requestId = null)
         {
-            var content = GetContent(wrapper);
+            State.CurrentRequest = requestId ?? State.CurrentRequest;
+            var content = GetContent(State.GetCurrentRequest());
             GenerateRequestListHtml(State.Data);
             return content;
         }
