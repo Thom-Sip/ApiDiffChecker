@@ -191,7 +191,7 @@ namespace RefactorHelper.App
             {
                 myApp.SaveUrlParams(form);
                 myApp.ProcessSettings(context);
-                var result = myApp.GetUrlParamsFragment(context, true);
+                var result = myApp.GetUrlParamsFragment(context, false);
 
                 await context.Response
                     .SetHtmlHeader()
