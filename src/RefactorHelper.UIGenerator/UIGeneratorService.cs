@@ -71,21 +71,28 @@ namespace RefactorHelper.UIGenerator
         public string GetSettingsFragment(SwaggerProcessorOutput swaggerOutput)
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetUrlParamsFragment(swaggerOutput, false)
-                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(
-                    swaggerOutput.QueryParameters,
-                    "/run-refactor-helper/fragment/save/queryparams",
-                    "/run-refactor-helper/fragment/settings/urlparams?allowEdit=false", false)));
+                .Replace("[URL_PARAMETERS]", GetFormFragment(swaggerOutput, false, FormType.UrlParameters))
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(swaggerOutput, false, FormType.QueryParameters));
 
             return result;
         }
 
-        public string GetUrlParamsFragment(SwaggerProcessorOutput swaggerOutput, bool allowEdit)
+        public string GetFormFragment(SwaggerProcessorOutput swaggerOutput, bool allowEdit, FormType formType)
         {
             return Formbuilder.GetForm(
-                    swaggerOutput.UrlParameters,
-                    "/run-refactor-helper/fragment/save/urlparams",
-                    $"/run-refactor-helper/fragment/settings/urlparams?allowEdit={!allowEdit}", allowEdit);
+                    GetFormData(swaggerOutput, formType),
+                    $"/run-refactor-helper/fragment/save/{formType}",
+                    $"/run-refactor-helper/fragment/settings/{formType}?allowEdit={!allowEdit}", allowEdit);
+        }
+
+        private static List<Parameter> GetFormData(SwaggerProcessorOutput swaggerOutput, FormType formType)
+        {
+            return formType switch
+            {
+                FormType.QueryParameters => swaggerOutput.QueryParameters,
+                FormType.UrlParameters => swaggerOutput.UrlParameters,
+                _ => throw new NotImplementedException()
+            };
         }
 
         public string GetRequestListFragment() => _requestListHtml;

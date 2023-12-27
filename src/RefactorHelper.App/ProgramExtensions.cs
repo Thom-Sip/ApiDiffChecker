@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using RefactorHelper.Models.Config;
+using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
 {
@@ -158,16 +159,33 @@ namespace RefactorHelper.App
         private static void UrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet("/run-refactor-helper/fragment/settings/urlparams", async (bool allowEdit, HttpContext context) =>
+            app.MapGet("/run-refactor-helper/fragment/settings/{formType}", async (bool allowEdit, FormType formType, HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetUrlParamsFragment(context, allowEdit);
+                var result = myApp.GetFormFragment(formType, allowEdit);
 
                 await context.Response
                     .SetHtmlHeader()
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();
+        }
+
+        private static void SaveUrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapPut("/run-refactor-helper/fragment/save/{formType}", async (HttpContext context, FormType formType, IFormCollection form) =>
+            {
+                myApp.SaveUrlParams(form);
+                myApp.ProcessSettings(context);
+                var result = myApp.GetFormFragment(formType, false);
+
+                await context.Response
+                    .SetHtmlHeader()
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteAsync(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
         }
 
         private static void RequestListFragment(this WebApplication app, RefactorHelperApp myApp)
@@ -182,23 +200,6 @@ namespace RefactorHelper.App
                     .WriteAsync(result);
 
             }).ExcludeFromDescription();
-        }
-
-        private static void SaveUrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapPut("/run-refactor-helper/fragment/save/urlparams", async (HttpContext context, IFormCollection form) =>
-            {
-                myApp.SaveUrlParams(form);
-                myApp.ProcessSettings(context);
-                var result = myApp.GetUrlParamsFragment(context, false);
-
-                await context.Response
-                    .SetHtmlHeader()
-                    .SetHxTriggerHeader("refresh-request-list")
-                    .WriteAsync(result);
-
-            }).ExcludeFromDescription().DisableAntiforgery();
         }
 
         #endregion

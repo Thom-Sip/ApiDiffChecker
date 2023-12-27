@@ -6,6 +6,7 @@ using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
+using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
 {
@@ -102,8 +103,8 @@ namespace RefactorHelper.App
         public string GetSettingsFragment(HttpContext httpContext) =>
             UIGeneratorService.GetSettingsFragment(State.SwaggerOutput);
 
-        public string GetUrlParamsFragment(HttpContext httpContext, bool allowEdit) =>
-            UIGeneratorService.GetUrlParamsFragment(State.SwaggerOutput, allowEdit);
+        public string GetFormFragment(FormType formType, bool allowEdit) =>
+            UIGeneratorService.GetFormFragment(State.SwaggerOutput, allowEdit, formType);
 
         public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
