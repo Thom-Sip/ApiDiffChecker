@@ -186,7 +186,7 @@ namespace RefactorHelper.UIGenerator
 
             var html = _diffBoxTemplate
                   .Replace("[TITLE]", wrapper?.Request.Path)
-                  .Replace("[URL]", $"Url: {result?.Response?.RequestMessage?.RequestUri?.ToString() ?? "Pending"}")
+                  .Replace("[URL]", result?.Response?.RequestMessage?.RequestUri?.ToString() ?? "Pending")
                   .Replace("[RESULTCODE]", GetResultCodeHeaderText(wrapper))
                   .Replace("[CONTENT]", sb.ToString());
 
