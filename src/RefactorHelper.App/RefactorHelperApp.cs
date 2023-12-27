@@ -47,22 +47,22 @@ namespace RefactorHelper.App
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Generate html output
-            UIGeneratorService.GenerateBaseUI(State, httpContext);
+            UIGeneratorService.GenerateBaseUI(State);
         }
 
-        public void ProcessSettings(HttpContext httpContext)
+        public void ProcessSettings()
         {
             // Combine Settings with State to generate the Final Requests
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Generate html output
-            UIGeneratorService.GenerateBaseUI(State, httpContext);
+            UIGeneratorService.GenerateBaseUI(State);
         }
 
-        public string GetResultPage(int requestId, HttpContext httpContext)
+        public string GetResultPage(int requestId)
         {
             State.CurrentRequest = requestId;
-            var content = UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+            var content = UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
             return State.BaseHtmlTemplate.SetContent(content);
         }
 
@@ -78,7 +78,7 @@ namespace RefactorHelper.App
             return html;
         }
 
-        public async Task<string> RunAll(HttpContext httpContext)
+        public async Task<string> RunAll()
         {
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
@@ -87,18 +87,18 @@ namespace RefactorHelper.App
             CompareService.CompareResponses(State);
 
             // Generate output
-            UIGeneratorService.GenerateBaseUI(State, httpContext);
+            UIGeneratorService.GenerateBaseUI(State);
 
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
         }
 
-        public string GetResultFragment(HttpContext httpContext, int requestId)
+        public string GetResultFragment(int requestId)
         {
             State.CurrentRequest = requestId;
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
         }
 
-        public async Task<string> RetryCurrentRequestFragment(HttpContext httpContext)
+        public async Task<string> RetryCurrentRequestFragment()
         {
             // Perform single api request and update result
             await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
@@ -107,7 +107,7 @@ namespace RefactorHelper.App
             CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest());
         }
 
         public void SaveUrlParams(IFormCollection form)

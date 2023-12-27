@@ -44,9 +44,9 @@ namespace RefactorHelper.UIGenerator
                 Directory.CreateDirectory(_outputFolder);
         }
 
-        public void GenerateBaseUI(RefactorHelperState state, HttpContext httpContext)
+        public void GenerateBaseUI(RefactorHelperState state)
         {
-            GenerateRequestListHtml(state.Data, httpContext);
+            GenerateRequestListHtml(state.Data);
 
             state.BaseHtmlTemplate = new HtmlTemplate
             {
@@ -65,10 +65,10 @@ namespace RefactorHelper.UIGenerator
             return _template.Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
         }
 
-        public string GetTestResultFragment(RequestWrapper wrapper, RefactorHelperState state, HttpContext httpContext)
+        public string GetTestResultFragment(RequestWrapper wrapper)
         {
             var content = GetContent(wrapper);
-            GenerateRequestListHtml(state.Data, httpContext);
+            GenerateRequestListHtml(State.Data);
             return content;
         }
 
@@ -116,7 +116,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[CONTENT_CHANGED]", changed);
         }
 
-        private void GenerateRequestListHtml(List<RequestWrapper> wrappers, HttpContext httpContext)
+        private void GenerateRequestListHtml(List<RequestWrapper> wrappers)
         {
             var pendingRequests = wrappers.Where(x => !x.Executed).ToList();
             var failedRequests = wrappers.Where(x => x.Changed && x.Executed).ToList();
@@ -125,23 +125,23 @@ namespace RefactorHelper.UIGenerator
             _requestListHtml = string.Empty;
 
             if (pendingRequests.Count > 0)
-                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(pendingRequests, httpContext, "Pending Requests")}";
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(pendingRequests, "Pending Requests")}";
 
             if (failedRequests.Count > 0)
-                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(failedRequests, httpContext, "Failed Requests")}";
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(failedRequests, "Failed Requests")}";
 
             if (successfulRequest.Count > 0)
-                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(successfulRequest, httpContext, "Success Requests")}";
+                _requestListHtml = $"{_requestListHtml}{GenerateRequestList(successfulRequest, "Success Requests")}";
         }
 
-        private string GenerateRequestList(List<RequestWrapper> wrappers, HttpContext httpContext, string title)
+        private string GenerateRequestList(List<RequestWrapper> wrappers, string title)
         {
             return _sideBarGroupTemplate
               .Replace("[TITLE]", $"{title} ({wrappers.Count})")
-              .Replace("[CONTENT]", GetSidebarContent(wrappers, httpContext));
+              .Replace("[CONTENT]", GetSidebarContent(wrappers));
         }
 
-        private string GetSidebarContent(List<RequestWrapper> resultPairs, HttpContext httpContext)
+        private string GetSidebarContent(List<RequestWrapper> resultPairs)
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");

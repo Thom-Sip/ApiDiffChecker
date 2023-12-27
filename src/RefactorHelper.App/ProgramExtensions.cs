@@ -70,7 +70,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/{requestId}", async (int requestId, HttpContext context) =>
             {
                 await myApp.Initialize(context);
-                var result = myApp.GetResultPage(requestId, context);
+                var result = myApp.GetResultPage(requestId);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -116,7 +116,7 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet("/run-refactor-helper/fragment/run-all", async (HttpContext context) =>
             {
-                var result = await myApp.RunAll(context);
+                var result = await myApp.RunAll();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -131,7 +131,7 @@ namespace RefactorHelper.App
             // Navigate to the results of a request based on its index
             app.MapGet("/run-refactor-helper/fragment/{requestId}", async (int requestId, HttpContext context) =>
             {
-                var result = myApp.GetResultFragment(context, requestId);
+                var result = myApp.GetResultFragment(requestId);
 
                 await context.Response
                     .SetHtmlHeader()
@@ -145,7 +145,7 @@ namespace RefactorHelper.App
             // Run single requst and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/retry", async (HttpContext context) =>
             {
-                var result = await myApp.RetryCurrentRequestFragment(context);
+                var result = await myApp.RetryCurrentRequestFragment();
 
                 await context.Response
                     .SetHtmlHeader()
@@ -191,7 +191,7 @@ namespace RefactorHelper.App
             app.MapPut("/run-refactor-helper/fragment/save/{formType}", async (HttpContext context, FormType formType, IFormCollection form) =>
             {
                 myApp.SaveUrlParams(form);
-                myApp.ProcessSettings(context);
+                myApp.ProcessSettings();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
 
                 await context.Response
