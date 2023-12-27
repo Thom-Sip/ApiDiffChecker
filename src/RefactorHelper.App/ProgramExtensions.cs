@@ -27,7 +27,7 @@ namespace RefactorHelper.App
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
             app.UrlParamsFragment(myApp);
-            app.SaveUrlParams(myApp);
+            app.SaveUrlParamsFragment(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
             app.AddStaticFileEndpoint(myApp, "htmx.min.js");
@@ -184,13 +184,14 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void SaveUrlParams(this WebApplication app, RefactorHelperApp myApp)
+        private static void SaveUrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapPut("/run-refactor-helper/fragment/save/urlparams", async (HttpContext context, IFormCollection form) =>
             {
-                var result = myApp.SaveUrlParams(form);
+                myApp.SaveUrlParams(form);
                 myApp.ProcessSettings(context);
+                var result = myApp.GetUrlParamsFragment(context, true);
 
                 await context.Response
                     .SetHtmlHeader()

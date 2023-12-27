@@ -149,7 +149,7 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment(State.GetCurrentRequest(), State, httpContext);
         }
 
-        public string SaveUrlParams(IFormCollection form)
+        public void SaveUrlParams(IFormCollection form)
         {
             foreach(var formfield in form)
             {
@@ -163,8 +163,6 @@ namespace RefactorHelper.App
 
                 Settings.DefaultParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
             }
-
-            return string.Empty;
         }
 
         public string GetRequestListFragment() => UIGeneratorService.GetRequestListFragment();
