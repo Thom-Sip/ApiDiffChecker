@@ -4,6 +4,7 @@ using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
+using RefactorHelper.Models.SwaggerProcessor;
 using RefactorHelper.Models.Uigenerator;
 using System.Text;
 
@@ -67,10 +68,11 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
-        public string GetSettingsFragment(RefactorHelperSettings settings)
+        public string GetSettingsFragment(SwaggerProcessorOutput swaggerOutput)
         {
             var result = _settingsFragmentTemplate
-                .Replace("[STRING_PARAMETERS]", Formbuilder.GetForm(settings.DefaultParameters));
+                .Replace("[URL_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.UrlParameters))
+                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetForm(swaggerOutput.QueryParameters));
 
             return result;
         }
