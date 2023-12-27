@@ -13,13 +13,17 @@ namespace Basic_Setup_Demo
                 RunOnStart = false,
                 BaseUrl1 = "https://localhost:44371",
                 BaseUrl2 = "https://localhost:44371",
-                DefaultParameters = [new("customerId", "4007"), new("message", "Foo")],
+                DefaultParameters = 
+                [
+                    new("customerId", "400721"),
+                    new("accountId", "5")
+                ],
                 Runs =
                 [
                     [new("message", "Yoo")],
                     [new("message", "Bar")],
                 ],
-                PropertiesToReplace = 
+                PropertiesToReplace =
                 [
                     new("Timestamp", "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000"),
                     new("requestId", $"{Guid.Empty}"),
