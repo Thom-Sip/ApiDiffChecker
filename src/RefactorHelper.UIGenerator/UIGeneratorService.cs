@@ -47,12 +47,12 @@ namespace RefactorHelper.UIGenerator
             state.BaseHtmlTemplate = new HtmlTemplate
             {
                 Html = _template
-                    .Replace("[RETRY_REQUEST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/retry")
-                    .Replace("[RETRY_ALL_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/run-all")
-                    .Replace("[RESET_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/reset")
-                    .Replace("[REQUEST_LIST_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/request-list")
-                    .Replace("[SETTINGS_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/settings")
-                    .Replace("[SETTINGS_FRAGMENT_URL]", $"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/settings")
+                    .Replace("[RETRY_REQUEST_URL]", "/run-refactor-helper/fragment/retry")
+                    .Replace("[RETRY_ALL_URL]", "/run-refactor-helper/fragment/run-all")
+                    .Replace("[RESET_URL]", "/run-refactor-helper/reset")
+                    .Replace("[REQUEST_LIST_URL]", "/run-refactor-helper/fragment/request-list")
+                    .Replace("[SETTINGS_URL]", "/run-refactor-helper/settings")
+                    .Replace("[SETTINGS_FRAGMENT_URL]", "/run-refactor-helper/fragment/settings")
             };
         }
 
@@ -135,12 +135,6 @@ namespace RefactorHelper.UIGenerator
               .Replace("[REQUESTS]", GetSidebarContent(wrappers, httpContext));
         }
 
-        private string GetBaseUrl(HttpRequest request)
-        {
-            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
-            return baseUrl;
-        }
-
         private string GetSidebarContent(List<RequestWrapper> resultPairs, HttpContext httpContext)
         {
             var sb = new StringBuilder();
@@ -150,9 +144,9 @@ namespace RefactorHelper.UIGenerator
                 sb.Append(
                     $"<li>" +
                         $"<span class=\"request-item\" " +
-                              $"hx-get=\"{GetBaseUrl(httpContext.Request)}/run-refactor-helper/fragment/{item.Id}\"" +
+                              $"hx-get=\"/run-refactor-helper/fragment/{item.Id}\" " +
+                              $"hx-replace-url=\"/run-refactor-helper/{item.Id}\" " +
                               $"hx-swap=\"innerHTML\" " +
-                              $"hx-replace-url=\"/run-refactor-helper/{item.Id}\"" +
                               $"hx-target=\"#result-container\">" +
                               $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}" +
                         $"</span>" +

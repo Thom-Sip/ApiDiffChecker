@@ -17,11 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.App", "Refac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B-097E-481D-9BF7-CC87F03A79F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Custom_UI_Demo", "Demos\Custom_UI_Demo\Custom_UI_Demo.csproj", "{BD34B761-A215-4ADD-BC84-8171970EB6C0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic_Setup_Demo", "demos\Basic_Setup_Demo\Basic_Setup_Demo.csproj", "{5887A155-758C-4916-84DC-9D69FB33BFD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Diff_UI", "Demos\Test_Diff_UI\Test_Diff_UI.csproj", "{32C9C72C-3F2E-47A8-AD62-90351652E625}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Diff_UI", "Demos\Test_Diff_UI\Test_Diff_UI.csproj", "{32C9C72C-3F2E-47A8-AD62-90351652E625}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD34B761-A215-4ADD-BC84-8171970EB6C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5887A155-758C-4916-84DC-9D69FB33BFD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5887A155-758C-4916-84DC-9D69FB33BFD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5887A155-758C-4916-84DC-9D69FB33BFD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -70,7 +64,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{BD34B761-A215-4ADD-BC84-8171970EB6C0} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 		{5887A155-758C-4916-84DC-9D69FB33BFD9} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 		{32C9C72C-3F2E-47A8-AD62-90351652E625} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 	EndGlobalSection
