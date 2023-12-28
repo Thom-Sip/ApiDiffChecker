@@ -105,7 +105,6 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/run-all", async (HttpContext context) =>
             {
                 var result = await myApp.RunAll();
-
                 await context.Response
                     .SetHxTriggerHeader("refresh-request-list")
                     .WriteHtmlResponse(result);
@@ -132,7 +131,6 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/retry", async (HttpContext context) =>
             {
                 var result = await myApp.RetryCurrentRequestFragment();
-
                 await context.Response
                     .SetHxTriggerHeader("refresh-request-list")
                     .WriteHtmlResponse(result);
