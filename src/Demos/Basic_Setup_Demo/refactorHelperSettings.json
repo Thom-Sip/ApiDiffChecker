@@ -3,54 +3,54 @@
   "OutputFolder": "D:\\git\\RefactorHelper\\src\\demos\\Basic_Setup_Demo\\bin\\Debug\\net8.0\\Output",
   "ContentFolder": "D:\\git\\RefactorHelper\\src\\demos\\Basic_Setup_Demo\\bin\\Debug\\net8.0\\Content",
   "SwaggerUrl": "",
-  "DefaultParameters": [
-    {
-      "Key": "customerId",
-      "Value": "400721"
-    }
-  ],
-  "Runs": [
-    [
-      {
-        "Key": "accountId",
-        "Value": "1"
-      }
-    ],
-    [
-      {
-        "Key": "accountId",
-        "Value": "2"
-      }
-    ],
-    [
-      {
-        "Key": "accountId",
-        "Value": "3"
-      }
-    ],
-    [
+  "DefaultRunSettings": {
+    "UrlParameters": [
       {
         "Key": "customerId",
-        "Value": "300912"
+        "Value": "300111"
       },
       {
         "Key": "accountId",
-        "Value": "4"
+        "Value": "222"
       }
     ],
-    [],
-    [],
-    [],
-    []
-  ],
-  "PropertiesToReplace": [
+    "QueryParameters": [
+      {
+        "Key": "message",
+        "Value": "Yooo"
+      }
+    ],
+    "PropertiesToReplace": [
+      {
+        "Key": "Timestamp",
+        "Value": "[REPLACED_TIMESTAMP]"
+      },
+      {
+        "Key": "requestId",
+        "Value": "[00000000-0000-0000-0000-000000000000]"
+      }
+    ]
+  },
+  "Runs": [
     {
-      "Key": "Timestamp",
-      "Value": "[REPLACED_TIMESTAMP]"
+      "UrlParameters": [
+        {
+          "Key": "accountId",
+          "Value": "1"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
     },
     {
-      "Key": "requestId",
-      "Value": "[00000000-0000-0000-0000-000000000000]"
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "12"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
     }
   ]
 }

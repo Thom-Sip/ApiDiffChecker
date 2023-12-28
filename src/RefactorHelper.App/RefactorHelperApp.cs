@@ -5,6 +5,7 @@ using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Microsoft.AspNetCore.Http;
+using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.App
 {
@@ -83,19 +84,39 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment();
         }
 
-        public void SaveUrlParams(IFormCollection form)
+        public void SaveUrlParams(FormType formType, IFormCollection form)
         {
-            foreach(var formfield in form)
+            switch(formType)
             {
-                var param = Settings.DefaultParameters.FirstOrDefault(x => x.Key == formfield.Key);
+                case FormType.UrlParameters:
+                    foreach (var formfield in form)
+                    {
+                        var param = Settings.DefaultRunSettings.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
 
-                if (param != null)
-                {
-                    param.Value = formfield.Value.ToString();
-                    continue;
-                }
+                        if (param != null)
+                        {
+                            param.Value = formfield.Value.ToString();
+                            continue;
+                        }
 
-                Settings.DefaultParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                        Settings.DefaultRunSettings.UrlParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                    }
+                    break;
+
+                case FormType.QueryParameters:
+                    foreach (var formfield in form)
+                    {
+                        var param = Settings.DefaultRunSettings.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
+
+                        if (param != null)
+                        {
+                            param.Value = formfield.Value.ToString();
+                            continue;
+                        }
+
+                        Settings.DefaultRunSettings.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                    }
+                    break;
             }
         }
 

@@ -100,6 +100,15 @@ namespace RefactorHelper.UIGenerator
             .SetSideBar(GetSettingsSideBarFragment())
             .Html;
 
+        public string GetSettingsFragment(int runId)
+        {
+            var result = _settingsFragmentTemplate
+                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false))
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false));
+
+            return result;
+        }
+
         public string GetSettingsFragment()
         {
             var result = _settingsFragmentTemplate
@@ -109,22 +118,43 @@ namespace RefactorHelper.UIGenerator
             return result;
         }
 
-        public string GetFormFragment(FormType formType, bool allowEdit)
+        public string GetFormFragment(FormType formType, bool allowEdit, int? runId = null)
         {
             return Formbuilder.GetForm(
-                    GetFormData(State.SwaggerOutput, formType),
-                    $"/run-refactor-helper/fragment/save/{formType}",
-                    $"/run-refactor-helper/fragment/settings/{formType}?allowEdit={!allowEdit}", allowEdit);
+                    GetFormData(formType, runId),
+                    GetDefaultValues(formType),
+                    $"/run-refactor-helper/fragment/forms/save/{formType}",
+                    $"/run-refactor-helper/fragment/settings/forms/{formType}?allowEdit={!allowEdit}", allowEdit);
         }
 
-        private static List<Parameter> GetFormData(SwaggerProcessorOutput swaggerOutput, FormType formType)
+        private List<Parameter> GetFormData(FormType formType, int? runId)
+        {
+            if(runId != null)
+            {
+                return formType switch
+                {
+                    FormType.QueryParameters => Settings.Runs[runId.Value].QueryParameters,
+                    FormType.UrlParameters => Settings.Runs[runId.Value].UrlParameters,
+                    _ => throw new NotImplementedException()
+                };
+            }
+
+            return formType switch
+            {
+                FormType.QueryParameters => Settings.DefaultRunSettings.QueryParameters,
+                FormType.UrlParameters => Settings.DefaultRunSettings.UrlParameters,
+                _ => throw new NotImplementedException()
+            };
+        }
+
+        private List<Parameter> GetDefaultValues(FormType formType)
         {
             return formType switch
             {
-                FormType.QueryParameters => swaggerOutput.QueryParameters,
-                FormType.UrlParameters => swaggerOutput.UrlParameters,
+                FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
+                FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
                 _ => throw new NotImplementedException()
-            };
+            }; ;
         }
 
         public string GetSettingsSideBarFragment() => _settingsSidebarHtml;
