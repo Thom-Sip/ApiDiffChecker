@@ -7,10 +7,19 @@
     "UrlParameters": [
       {
         "Key": "customerId",
-        "Value": "400721"
+        "Value": "300111"
+      },
+      {
+        "Key": "accountId",
+        "Value": "222"
       }
     ],
-    "QueryParameters": [],
+    "QueryParameters": [
+      {
+        "Key": "message",
+        "Value": "Yooo"
+      }
+    ],
     "PropertiesToReplace": [
       {
         "Key": "Timestamp",
@@ -36,8 +45,8 @@
     {
       "UrlParameters": [
         {
-          "Key": "accountId",
-          "Value": "2"
+          "Key": "customerId",
+          "Value": "12"
         }
       ],
       "QueryParameters": [],

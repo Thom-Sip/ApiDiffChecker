@@ -45,7 +45,7 @@ namespace RefactorHelper.App
             app.SettingsSideBarFragment(myApp);
             app.AddRunSettingsSideBarFragment(myApp);
             app.UrlParamsFragment(myApp);
-            app.SaveUrlParamsFragment(myApp);
+            app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
 
@@ -185,10 +185,10 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
-        private static void SaveUrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void SaveFormFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapPut("/run-refactor-helper/fragment/save/{formType}", async (HttpContext context, FormType formType, IFormCollection formData) =>
+            app.MapPut("/run-refactor-helper/fragment/forms/save/{formType}", async (HttpContext context, FormType formType, IFormCollection formData) =>
             {
                 myApp.SaveUrlParams(formType, formData);
                 myApp.ProcessSettings();

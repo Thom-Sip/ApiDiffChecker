@@ -88,7 +88,7 @@ namespace RefactorHelper.App
         {
             switch(formType)
             {
-                case FormType.QueryParameters:
+                case FormType.UrlParameters:
                     foreach (var formfield in form)
                     {
                         var param = Settings.DefaultRunSettings.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
@@ -103,7 +103,7 @@ namespace RefactorHelper.App
                     }
                     break;
 
-                case FormType.UrlParameters:
+                case FormType.QueryParameters:
                     foreach (var formfield in form)
                     {
                         var param = Settings.DefaultRunSettings.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);

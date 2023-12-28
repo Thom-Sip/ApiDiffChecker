@@ -123,7 +123,7 @@ namespace RefactorHelper.UIGenerator
             return Formbuilder.GetForm(
                     GetFormData(formType, runId),
                     GetDefaultValues(formType),
-                    $"/run-refactor-helper/fragment/save/{formType}",
+                    $"/run-refactor-helper/fragment/forms/save/{formType}",
                     $"/run-refactor-helper/fragment/settings/forms/{formType}?allowEdit={!allowEdit}", allowEdit);
         }
 
