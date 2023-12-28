@@ -38,6 +38,7 @@ body, html {
 /* Side-Bar */
 .side-bar {
   max-width: 18vw;
+  min-width: 15em;
   margin: var(--margin);
   margin-right: var(--margin-half);
   display: flex;
