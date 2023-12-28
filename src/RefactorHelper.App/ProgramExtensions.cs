@@ -56,7 +56,6 @@ namespace RefactorHelper.App
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetEmptyRequestPage();
-
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -69,7 +68,6 @@ namespace RefactorHelper.App
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetTestResultPage(requestId);
-
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -82,7 +80,6 @@ namespace RefactorHelper.App
             {
                 await myApp.Reset();
                 var result = myApp.UIGeneratorService.GetEmptyRequestPage();
-
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -95,7 +92,6 @@ namespace RefactorHelper.App
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsPage();
-
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -166,7 +162,6 @@ namespace RefactorHelper.App
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
-
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -182,7 +177,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader("refresh-settings-list")
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
