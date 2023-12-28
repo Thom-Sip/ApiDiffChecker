@@ -122,7 +122,7 @@ namespace RefactorHelper.UIGenerator
         {
             return Formbuilder.GetForm(
                     GetFormData(formType, runId),
-                    GetDefaultValues(formType, runId),
+                    GetDefaultValues(formType),
                     $"/run-refactor-helper/fragment/save/{formType}",
                     $"/run-refactor-helper/fragment/settings/forms/{formType}?allowEdit={!allowEdit}", allowEdit);
         }
@@ -147,15 +147,14 @@ namespace RefactorHelper.UIGenerator
             };
         }
 
-        private List<Parameter> GetDefaultValues(FormType formType, int? runId = null)
+        private List<Parameter> GetDefaultValues(FormType formType)
         {
-            return new List<Parameter>();
-
-            //if(runId == null)
-            //    return formType switch
-            //    {
-            //        FormType.UrlParameters => Settings.DefaultRunSettings
-            //    }
+            return formType switch
+            {
+                FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
+                FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
+                _ => throw new NotImplementedException()
+            }; ;
         }
 
         public string GetSettingsSideBarFragment() => _settingsSidebarHtml;

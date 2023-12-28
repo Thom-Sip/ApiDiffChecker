@@ -12,10 +12,10 @@ namespace Basic_Setup_Demo
             if (builder.Environment.IsDevelopment())
             {
                 // Get Settings from json
-                //var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
-                //    jsonPath: GetSettingsJsonPath(),
-                //    baseUrl1: "https://localhost:44371",
-                //    baseUrl2: "https://localhost:44371");
+                var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
+                    jsonPath: GetSettingsJsonPath(),
+                    baseUrl1: "https://localhost:44371",
+                    baseUrl2: "https://localhost:44371");
 
                 // Static settings
                 var settings = new RefactorHelperSettings(
@@ -23,7 +23,7 @@ namespace Basic_Setup_Demo
                     baseUrl2: "https://localhost:44371");
 
                 // RefactorHelper Dependency Injection
-                builder.Services.AddRefactorHelper(settings);
+                builder.Services.AddRefactorHelper(settingsFromJson);
             } 
 
             builder.Services.AddControllers();
