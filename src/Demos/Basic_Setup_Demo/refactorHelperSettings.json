@@ -21,6 +21,22 @@
         "Key": "accountId",
         "Value": "2"
       }
+    ],
+    [
+      {
+        "Key": "accountId",
+        "Value": "3"
+      }
+    ],
+    [
+      {
+        "Key": "customerId",
+        "Value": "300912"
+      },
+      {
+        "Key": "accountId",
+        "Value": "4"
+      }
     ]
   ],
   "PropertiesToReplace": [

@@ -29,8 +29,11 @@ namespace RefactorHelper.UIGenerator
 
         private RefactorHelperState State { get; set; }
 
+        private RefactorHelperSettings Settings { get; set; }
+
         public UIGeneratorService(RefactorHelperSettings settings, RefactorHelperState state)
         {
+            Settings = settings;
             State = state;
 
             _template = File.ReadAllText($"{settings.ContentFolder}/Template.html");
@@ -158,19 +161,17 @@ namespace RefactorHelper.UIGenerator
             sb.Append("<ul>");
 
             sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", $"/TODO")
-                    .Replace("[SET_URL]", $"/TODO")
-                    .Replace("[TEXT]", "Default Values"));
+                .Replace("[GET_URL]", $"/TODO")
+                .Replace("[SET_URL]", $"/TODO")
+                .Replace("[TEXT]", "Default Values"));
 
-            sb.Append(_sideBarGroupItemTemplate
+            for(int i = 0; i < Settings.Runs.Count; i++)
+            {
+                sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", $"/TODO")
                     .Replace("[SET_URL]", $"/TODO")
-                    .Replace("[TEXT]", "Run 0"));
-
-            sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", $"/TODO")
-                    .Replace("[SET_URL]", $"/TODO")
-                    .Replace("[TEXT]", "Run 1"));
+                    .Replace("[TEXT]", $"Run {i}"));
+            }
 
             sb.Append("</ul>");
             return sb.ToString();
