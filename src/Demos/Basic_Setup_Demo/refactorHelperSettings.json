@@ -1,0 +1,36 @@
+{
+  "RunOnStart": false,
+  "OutputFolder": "D:\\git\\RefactorHelper\\src\\demos\\Basic_Setup_Demo\\bin\\Debug\\net8.0\\Output",
+  "ContentFolder": "D:\\git\\RefactorHelper\\src\\demos\\Basic_Setup_Demo\\bin\\Debug\\net8.0\\Content",
+  "SwaggerUrl": "",
+  "DefaultParameters": [
+    {
+      "Key": "customerId",
+      "Value": "400721"
+    }
+  ],
+  "Runs": [
+    [
+      {
+        "Key": "accountId",
+        "Value": "1"
+      }
+    ],
+    [
+      {
+        "Key": "accountId",
+        "Value": "2"
+      }
+    ]
+  ],
+  "PropertiesToReplace": [
+    {
+      "Key": "Timestamp",
+      "Value": "[REPLACED_TIMESTAMP]"
+    },
+    {
+      "Key": "requestId",
+      "Value": "[00000000-0000-0000-0000-000000000000]"
+    }
+  ]
+}

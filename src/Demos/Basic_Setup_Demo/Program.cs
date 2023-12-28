@@ -11,27 +11,11 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // RefactorHelper Settings
-                var settings = new RefactorHelperSettings(
+                // Get Settings
+                var settings = RefactorHelperSettings.GetSettingsFromJson(
+                    jsonPath: GetSettingsJsonPath(),
                     baseUrl1: "https://localhost:44371",
-                    baseUrl2: "https://localhost:44371")
-                {
-                    RunOnStart = false,
-                    DefaultParameters = 
-                    [
-                        new("customerId", "400721")
-                    ],
-                    Runs =
-                    [
-                        [new("accountId", "1")],
-                        [new("accountId", "2")],
-                    ],
-                    PropertiesToReplace =
-                    [
-                        new("Timestamp", "[REPLACED_TIMESTAMP]"),
-                        new("requestId", $"[{Guid.Empty}]"),
-                    ]
-                };
+                    baseUrl2: "https://localhost:44371");
 
                 // RefactorHelper Dependency Injection
                 builder.Services.AddRefactorHelper(settings);
@@ -55,6 +39,14 @@ namespace Basic_Setup_Demo
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
+        }
+
+        private static string GetSettingsJsonPath()
+        {
+            return Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                AppDomain.CurrentDomain.RelativeSearchPath ?? "",
+                "refactorHelperSettings.json");
         }
     }
 }

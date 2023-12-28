@@ -15,4 +15,10 @@
     <ProjectReference Include="..\..\RefactorHelper.App\RefactorHelper.App.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="refactorHelperSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
