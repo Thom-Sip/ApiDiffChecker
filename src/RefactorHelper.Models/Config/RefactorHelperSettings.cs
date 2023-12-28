@@ -16,12 +16,6 @@ namespace RefactorHelper.Models.Config
 
         public List<Run> Runs { get; set; } = [];
 
-        //public List<Parameter> DefaultParameters { get; set; } = [];
-
-        //public List<List<Parameter>> Runs { get; set; } = [];
-
-        //public List<Parameter> PropertiesToReplace { get; set; } = [];
-
         [JsonIgnore]
         public HttpClient? HttpClient1 { get; set; }
 
