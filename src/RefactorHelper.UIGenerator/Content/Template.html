@@ -13,7 +13,14 @@
         <div class="side-bar">
             <div class="side-bar-header">
                 <div class="side-bar-header-item">
-                    <button class="header-button">Requests</button>
+                    <button class="header-button"
+                            id="settings-button"
+                            hx-get="[REQUEST_FRAGMENT_URL]"
+                            hx-swap="innerHTML"
+                            hx-replace-url="[ROOT_URL]"
+                            hx-target="#main-content">
+                        Requests
+                    </button>
                 </div>
                 <div class="side-bar-header-item">
                     <button class="header-button"
@@ -25,6 +32,13 @@
                         Settings
                     </button>
                 </div>
+            </div>
+
+            <div class="htmx-invisble-trigger"
+                 hx-get="[SETTINGS_LIST_URL]"
+                 hx-swap="innerHtml"
+                 hx-target="#side-bar-content"
+                 hx-trigger="refresh-settings-list from:body">
             </div>
 
             <div id="side-bar-content"

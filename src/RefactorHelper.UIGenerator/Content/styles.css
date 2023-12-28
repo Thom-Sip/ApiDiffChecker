@@ -84,6 +84,10 @@ body, html {
   flex-direction: column;
 }
 
+.htmx-invisble-trigger {
+  max-height: 0px;
+}
+
 .side-bar-group {
   flex: 1;
 }

@@ -123,7 +123,9 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/{requestId}", async (int requestId, HttpContext context) =>
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
-                await context.Response.WriteHtmlResponse(result);
+                await context.Response
+                    .SetHxTriggerHeader("refresh-request-list")
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
@@ -150,7 +152,9 @@ namespace RefactorHelper.App
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsFragment();
 
-                await context.Response.WriteHtmlResponse(result);
+                await context.Response
+                    .SetHxTriggerHeader("refresh-settings-list")
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }

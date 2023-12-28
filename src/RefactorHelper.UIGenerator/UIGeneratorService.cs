@@ -58,9 +58,12 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[RETRY_REQUEST_URL]", "/run-refactor-helper/fragment/retry")
                     .Replace("[RETRY_ALL_URL]", "/run-refactor-helper/fragment/run-all")
                     .Replace("[RESET_URL]", "/run-refactor-helper/reset")
-                    .Replace("[REQUEST_LIST_URL]", "/run-refactor-helper/fragment/sidebar/settings")
+                    .Replace("[REQUEST_LIST_URL]", "/run-refactor-helper/fragment/request-list")
+                    .Replace("[SETTINGS_LIST_URL]", "/run-refactor-helper/fragment/sidebar/settings")
                     .Replace("[SETTINGS_URL]", "/run-refactor-helper/settings")
                     .Replace("[SETTINGS_FRAGMENT_URL]", "/run-refactor-helper/fragment/settings")
+                    .Replace("[REQUEST_FRAGMENT_URL]", $"/run-refactor-helper/fragment/0")
+                    .Replace("[ROOT_URL]", "/run-refactor-helper")
             };
         }
 
