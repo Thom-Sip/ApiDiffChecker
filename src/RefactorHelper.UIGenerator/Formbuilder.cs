@@ -29,7 +29,7 @@ namespace RefactorHelper.UIGenerator
             var text = (allowEdit ? _formTemplateEdit : _formTemplate)
                 .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", getUrl)
-                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, parameters.Select(x => GetFormField(x, savedParams, allowEdit))))
+                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit))))
                 .Replace("[DISABLED]", allowEdit ? "" : "disabled");
 
             return text;
