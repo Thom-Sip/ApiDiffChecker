@@ -57,7 +57,7 @@ namespace RefactorHelper.App
         private static void DashboardPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet(Url.Page.Dashboard, async (HttpContext context) =>
+            app.MapGet(Url.Page.Root, async (HttpContext context) =>
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetEmptyRequestPage();
@@ -255,7 +255,7 @@ namespace RefactorHelper.App
         private static void AddStaticFileEndpoint(this WebApplication app, RefactorHelperApp myApp, string fileName)
         {
             // Get css so we don't need to service static files
-            app.MapGet($"/run-refactor-helper/{fileName}", async (HttpContext context) =>
+            app.MapGet($"{Url.Page.Root}/{fileName}", async (HttpContext context) =>
             {
                 var result = myApp.GetContentFile(fileName);
                 await context.Response.WriteAsync(result);

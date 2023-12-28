@@ -66,7 +66,7 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[SETTINGS_URL]", Url.Page.Settings)
                     .Replace("[SETTINGS_FRAGMENT_URL]", Url.Fragment.Settings)
                     .Replace("[REQUEST_FRAGMENT_URL]", $"{Url.Fragment.TestResult}/0")
-                    .Replace("[ROOT_URL]", Url.Page.Dashboard)
+                    .Replace("[ROOT_URL]", Url.Page.Root)
             };
         }
 
@@ -121,8 +121,8 @@ namespace RefactorHelper.UIGenerator
             return Formbuilder.GetForm(
                     GetFormData(formType, runId),
                     GetDefaultValues(formType),
-                    $"/run-refactor-helper/fragment/forms/save/{formType}",
-                    $"/run-refactor-helper/fragment/settings/forms/{formType}?allowEdit={!allowEdit}", allowEdit);
+                    $"{Url.Fragment.FormPut}/{formType}",
+                    $"{Url.Fragment.FormGet}/{formType}?allowEdit={!allowEdit}", allowEdit);
         }
 
         private List<Parameter> GetFormData(FormType formType, int? runId)
@@ -190,8 +190,8 @@ namespace RefactorHelper.UIGenerator
             sb.Append("<ul>");
 
             sb.Append(_sideBarGroupItemTemplate
-                .Replace("[GET_URL]", $"/run-refactor-helper/fragment/settings")
-                .Replace("[SET_URL]", $"/run-refactor-helper/settings")
+                .Replace("[GET_URL]", Url.Fragment.Settings)
+                .Replace("[SET_URL]", Url.Page.Settings)
                 .Replace("[TEXT]", "Default Values"));
 
             for(int i = 0; i < Settings.Runs.Count; i++)
@@ -203,7 +203,7 @@ namespace RefactorHelper.UIGenerator
             }
 
             sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", "/run-refactor-helper/fragment/sidebar/settings/add")
+                    .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
                     .Replace("[SET_URL]", $"")
                     .Replace("[HX_TARGET]", "#side-bar-content")
                     .Replace("[TEXT]", $"+ Add Run"));
@@ -260,8 +260,8 @@ namespace RefactorHelper.UIGenerator
             foreach(var item in resultPairs)
             {
                 sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", $"/run-refactor-helper/fragment/{item.Id}")
-                    .Replace("[SET_URL]", $"/run-refactor-helper/fragment/{item.Id}")
+                    .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
+                    .Replace("[SET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", "#main-content")
                     .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
             }

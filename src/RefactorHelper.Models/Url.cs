@@ -4,7 +4,7 @@
     {
         public static class Page
         {
-            public static string Dashboard { get; } = "/run-refactor-helper";
+            public static string Root { get; } = "/run-refactor-helper";
 
             public static string TestResult { get; } = "/run-refactor-helper";
 
