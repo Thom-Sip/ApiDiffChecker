@@ -12,11 +12,15 @@ namespace RefactorHelper.Models.Config
 
         public string SwaggerUrl { get; set; } = string.Empty;
 
-        public List<Parameter> DefaultParameters { get; set; } = [];
+        public Run DefaultRunSettings { get; set; } = new();
 
-        public List<List<Parameter>> Runs { get; set; } = [];
+        public List<Run> Runs { get; set; } = [];
 
-        public List<Parameter> PropertiesToReplace { get; set; } = [];
+        //public List<Parameter> DefaultParameters { get; set; } = [];
+
+        //public List<List<Parameter>> Runs { get; set; } = [];
+
+        //public List<Parameter> PropertiesToReplace { get; set; } = [];
 
         [JsonIgnore]
         public HttpClient? HttpClient1 { get; set; }
@@ -28,13 +32,11 @@ namespace RefactorHelper.Models.Config
         {
             HttpClient1 = client1;
             HttpClient2 = client2;
-            Runs.Add([]);
         }
 
         public RefactorHelperSettings(string baseUrl1, string baseUrl2)
         {
             this.SetClientsFromUrls(baseUrl1, baseUrl2);
-            Runs.Add([]);
         }
 
         public static RefactorHelperSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
@@ -46,9 +48,6 @@ namespace RefactorHelper.Models.Config
                 var json = File.ReadAllText(jsonPath);
                 result = JsonConvert.DeserializeObject<RefactorHelperSettings>(json) ?? new RefactorHelperSettings();
             }
-
-            if (result.Runs.Count == 0)
-                result.Runs.Add([]);
 
             return result.SetClientsFromUrls(baseUrl1, baseUrl2);
         }

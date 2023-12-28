@@ -54,7 +54,7 @@ namespace RefactorHelper.RequestHandler
             {
                 var responseObj1 = JsonConvert.DeserializeObject<object>(response);
 
-                if (Settings.PropertiesToReplace.Count > 0)
+                if (Settings.DefaultRunSettings.PropertiesToReplace.Count > 0)
                 {
                     if(responseObj1 is JArray arr)
                     {
@@ -62,7 +62,7 @@ namespace RefactorHelper.RequestHandler
                         {
                             foreach (JProperty attributeProperty in item.Cast<JProperty>())
                             {
-                                var replaceProp = Settings.PropertiesToReplace.FirstOrDefault(x => 
+                                var replaceProp = Settings.DefaultRunSettings.PropertiesToReplace.FirstOrDefault(x => 
                                     x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
 
                                 if (replaceProp != null)

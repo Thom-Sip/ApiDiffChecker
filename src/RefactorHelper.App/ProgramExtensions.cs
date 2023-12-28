@@ -41,11 +41,11 @@ namespace RefactorHelper.App
             app.RetryRequestFragment(myApp);
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
+            app.SettingsRunByIdFragment(myApp);
             app.SettingsSideBarFragment(myApp);
             app.AddRunSettingsSideBarFragment(myApp);
             app.UrlParamsFragment(myApp);
             app.SaveUrlParamsFragment(myApp);
-
 
             app.DownloadSettings(myApp);
 
@@ -158,10 +158,25 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
+        private static void SettingsRunByIdFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet("/run-refactor-helper/fragment/settings/runs/{runId}", async (HttpContext context, int runId) =>
+            {
+                await myApp.Initialize();
+                var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
+
+                await context.Response
+                    .SetHxTriggerHeader("refresh-settings-list")
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
         private static void UrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet("/run-refactor-helper/fragment/settings/{formType}", async (bool allowEdit, FormType formType, HttpContext context) =>
+            app.MapGet("/run-refactor-helper/fragment/settings/forms/{formType}", async (bool allowEdit, FormType formType, HttpContext context) =>
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
@@ -173,9 +188,9 @@ namespace RefactorHelper.App
         private static void SaveUrlParamsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapPut("/run-refactor-helper/fragment/save/{formType}", async (HttpContext context, FormType formType, IFormCollection form) =>
+            app.MapPut("/run-refactor-helper/fragment/save/{formType}", async (HttpContext context, FormType formType, IFormCollection formData) =>
             {
-                myApp.SaveUrlParams(form);
+                myApp.SaveUrlParams(formType, formData);
                 myApp.ProcessSettings();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
 
@@ -213,7 +228,7 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapGet("/run-refactor-helper/fragment/sidebar/settings/add", async (HttpContext context) =>
             {
-                myApp.Settings.Runs.Add([]);
+                myApp.Settings.Runs.Add(new());
                 var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
                 await context.Response.WriteHtmlResponse(result);
 

@@ -11,9 +11,14 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // Get Settings
-                var settings = RefactorHelperSettings.GetSettingsFromJson(
-                    jsonPath: GetSettingsJsonPath(),
+                // Get Settings from json
+                //var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
+                //    jsonPath: GetSettingsJsonPath(),
+                //    baseUrl1: "https://localhost:44371",
+                //    baseUrl2: "https://localhost:44371");
+
+                // Static settings
+                var settings = new RefactorHelperSettings(
                     baseUrl1: "https://localhost:44371",
                     baseUrl2: "https://localhost:44371");
 

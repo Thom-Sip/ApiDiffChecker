@@ -1,4 +1,5 @@
 ﻿using RefactorHelper.Models.Config;
+using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -23,24 +24,24 @@ namespace RefactorHelper.UIGenerator
             _formFieldTemplateEdit = File.ReadAllText($"{contentFolder}/Forms/FormFieldTemplateEdit.html");
         }
 
-        public string GetForm(List<Parameter> parameters, string putUrl, string getUrl, bool allowEdit)
+        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit)
         {
             var text = (allowEdit ? _formTemplateEdit : _formTemplate)
                 .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", getUrl)
-                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, parameters.Select(x => GetFormField(x, allowEdit))))
+                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, parameters.Select(x => GetFormField(x, savedParams, allowEdit))))
                 .Replace("[DISABLED]", allowEdit ? "" : "disabled");
 
             return text;
         }
 
-        private string GetFormField(Parameter paramater, bool allowEdit)
+        private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit)
         {
-            var existingSettings = Settings.DefaultParameters.FirstOrDefault(x => x.Key == paramater.Key);
+            var existingSettings = parameters.FirstOrDefault(x => x.Key == parameter.Key);
 
             return (allowEdit ? _formFieldTemplateEdit : _formFieldTemplate)
-                .Replace("[KEY]", paramater.Key)
-                .Replace("[VALUE]", existingSettings?.Value ?? paramater.Value);
+                .Replace("[KEY]", parameter.Key)
+                .Replace("[VALUE]", existingSettings?.Value ?? parameter.Value);
         }
     }
 }
