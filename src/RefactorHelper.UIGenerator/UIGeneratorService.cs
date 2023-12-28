@@ -72,8 +72,15 @@ namespace RefactorHelper.UIGenerator
             return _template.Replace("[CONTENT_BLOCK]", GetContent(resultPair, resultPair.Diffs, null));
         }
 
-        public string GetTestResultPage(int? requestId = null) => 
-            State.BaseHtmlTemplate.SetContent(GetTestResultFragment(requestId));
+        public string GetEmptyRequestPage() => State.BaseHtmlTemplate
+            .SetContent("")
+            .SetSideBar(GetRequestListFragment())
+            .Html;
+
+        public string GetTestResultPage(int? requestId = null) => State.BaseHtmlTemplate
+            .SetContent(GetTestResultFragment(requestId))
+            .SetSideBar(GetRequestListFragment())
+            .Html;
 
         public string GetTestResultFragment(int? requestId = null)
         {
@@ -83,7 +90,10 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
-        public string GetSettingsPage() => State.BaseHtmlTemplate.SetContent(GetSettingsFragment());
+        public string GetSettingsPage() => State.BaseHtmlTemplate
+            .SetContent(GetSettingsFragment())
+            .SetSideBar(GetSettingsSideBarFragment())
+            .Html;
 
         public string GetSettingsFragment()
         {

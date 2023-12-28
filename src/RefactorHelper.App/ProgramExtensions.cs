@@ -55,7 +55,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper", async (HttpContext context) =>
             {
                 await myApp.Initialize();
-                var result = myApp.State.BaseHtmlTemplate.SetContent("");
+                var result = myApp.UIGeneratorService.GetEmptyRequestPage();
 
                 await context.Response.WriteHtmlResponse(result);
 
@@ -81,7 +81,7 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/reset", async (HttpContext context) =>
             {
                 await myApp.Reset();
-                var result = myApp.State.BaseHtmlTemplate.SetContent("");
+                var result = myApp.UIGeneratorService.GetEmptyRequestPage();
 
                 await context.Response.WriteHtmlResponse(result);
 

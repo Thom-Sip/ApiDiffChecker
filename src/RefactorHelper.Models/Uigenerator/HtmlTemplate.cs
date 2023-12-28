@@ -4,9 +4,20 @@
     {
         public string Html { get; set; } = string.Empty;
 
-        public string SetContent(string content)
+        public HtmlTemplate SetContent(string content)
         {
-            return Html.Replace("[CONTENT_BLOCK]", content);
+            return new HtmlTemplate
+            {
+                Html = Html.Replace("[CONTENT_BLOCK]", content)
+            };
+        }
+
+        public HtmlTemplate SetSideBar(string content)
+        {
+            return new HtmlTemplate
+            {
+                Html = Html.Replace("[SIDEBAR_CONTENT]", content)
+            };
         }
     }
 }
