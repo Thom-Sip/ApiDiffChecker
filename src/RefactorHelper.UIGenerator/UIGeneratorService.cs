@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Primitives;
-using RefactorHelper.Models;
+﻿using RefactorHelper.Models;
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.External;
 using RefactorHelper.Models.RequestHandler;
-using RefactorHelper.Models.SwaggerProcessor;
 using RefactorHelper.Models.Uigenerator;
 using System.Text;
 
@@ -60,15 +58,15 @@ namespace RefactorHelper.UIGenerator
             state.BaseHtmlTemplate = new HtmlTemplate
             {
                 Html = _template
-                    .Replace("[RETRY_REQUEST_URL]", "/run-refactor-helper/fragment/retry")
-                    .Replace("[RETRY_ALL_URL]", "/run-refactor-helper/fragment/run-all")
-                    .Replace("[RESET_URL]", "/run-refactor-helper/reset")
-                    .Replace("[REQUEST_LIST_URL]", "/run-refactor-helper/fragment/request-list")
-                    .Replace("[SETTINGS_LIST_URL]", "/run-refactor-helper/fragment/sidebar/settings")
-                    .Replace("[SETTINGS_URL]", "/run-refactor-helper/settings")
-                    .Replace("[SETTINGS_FRAGMENT_URL]", "/run-refactor-helper/fragment/settings")
-                    .Replace("[REQUEST_FRAGMENT_URL]", $"/run-refactor-helper/fragment/0")
-                    .Replace("[ROOT_URL]", "/run-refactor-helper")
+                    .Replace("[RETRY_REQUEST_URL]", Url.Fragment.RetryCurrentRequest)
+                    .Replace("[RETRY_ALL_URL]", Url.Fragment.RunAll)
+                    .Replace("[RESET_URL]", Url.Page.Reset)
+                    .Replace("[REQUEST_LIST_URL]", Url.Fragment.SideBarRequests)
+                    .Replace("[SETTINGS_LIST_URL]", Url.Fragment.SideBarSettings)
+                    .Replace("[SETTINGS_URL]", Url.Page.Settings)
+                    .Replace("[SETTINGS_FRAGMENT_URL]", Url.Fragment.Settings)
+                    .Replace("[REQUEST_FRAGMENT_URL]", $"{Url.Fragment.TestResult}/0")
+                    .Replace("[ROOT_URL]", Url.Page.Dashboard)
             };
         }
 
@@ -192,8 +190,8 @@ namespace RefactorHelper.UIGenerator
             sb.Append("<ul>");
 
             sb.Append(_sideBarGroupItemTemplate
-                .Replace("[GET_URL]", $"/TODO")
-                .Replace("[SET_URL]", $"/TODO")
+                .Replace("[GET_URL]", $"/run-refactor-helper/fragment/settings")
+                .Replace("[SET_URL]", $"/run-refactor-helper/settings")
                 .Replace("[TEXT]", "Default Values"));
 
             for(int i = 0; i < Settings.Runs.Count; i++)

@@ -47,6 +47,7 @@
     column-gap: var(--margin);
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .result-container-header-element {
