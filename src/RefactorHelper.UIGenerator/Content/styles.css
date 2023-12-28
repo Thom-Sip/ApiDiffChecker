@@ -132,6 +132,10 @@ body, html {
   display: block;
   padding: var(--padding);
 }
+.side-bar-group-content .request-item a {
+  color: var(--text-color-dark);
+  text-decoration: none;
+}
 
 /* Main content*/
 .main-box {

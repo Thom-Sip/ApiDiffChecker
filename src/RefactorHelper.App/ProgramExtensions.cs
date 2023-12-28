@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using RefactorHelper.Comparer;
 using RefactorHelper.Models;
 using RefactorHelper.Models.Config;
@@ -43,6 +44,8 @@ namespace RefactorHelper.App
             app.SettingsSideBarFragment(myApp);
             app.UrlParamsFragment(myApp);
             app.SaveUrlParamsFragment(myApp);
+
+            app.DownloadSettings(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
             app.AddStaticFileEndpoint(myApp, "htmx.min.js");
@@ -203,6 +206,19 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
+        #endregion
+
+        #region Download
+        private static void DownloadSettings(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet("/run-refactor-helper/download/settings", async (HttpContext context) =>
+            {
+                var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
+                await context.Response.SetResponseHeader("ContentType", "application/json").WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
         #endregion
 
         #region Misc

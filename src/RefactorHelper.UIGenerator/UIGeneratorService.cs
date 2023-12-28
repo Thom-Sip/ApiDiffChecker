@@ -19,6 +19,7 @@ namespace RefactorHelper.UIGenerator
         protected string _diffBoxTemplate { get; set; }
         protected string _sideBarGroupTemplate { get; set; }
         protected string _sideBarGroupItemTemplate { get; set; }
+        protected string _sideBarDownloadTemplate { get; set; }
         protected string _settingsFragmentTemplate { get; set; }
 
         protected string _requestsSidebarHtml { get; set; } = string.Empty;
@@ -37,6 +38,7 @@ namespace RefactorHelper.UIGenerator
             _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
             _sideBarGroupTemplate = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
             _sideBarGroupItemTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
+            _sideBarDownloadTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
             _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
             _outputFolder = settings.OutputFolder;
             _runfolder = settings.OutputFolder;
@@ -144,10 +146,7 @@ namespace RefactorHelper.UIGenerator
             var sb = new StringBuilder();
             sb.Append("<ul>");
 
-            sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", $"/TODO")
-                    .Replace("[SET_URL]", $"/TODO")
-                    .Replace("[TEXT]", "Export Settings"));
+            sb.Append(_sideBarDownloadTemplate);
 
             sb.Append("</ul>");
             return sb.ToString();

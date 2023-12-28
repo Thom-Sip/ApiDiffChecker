@@ -103,5 +103,10 @@
     .request-item {
         display: block;
         padding: var(--padding);
+
+        a {
+            color: var(--text-color-dark);
+            text-decoration: none;
+        }
     }
 }

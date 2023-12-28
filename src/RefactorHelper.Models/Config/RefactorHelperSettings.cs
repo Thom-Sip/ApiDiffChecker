@@ -1,4 +1,6 @@
-﻿namespace RefactorHelper.Models.Config
+﻿using Newtonsoft.Json;
+
+namespace RefactorHelper.Models.Config
 {
     public class RefactorHelperSettings
     {
@@ -16,8 +18,10 @@
 
         public List<Parameter> PropertiesToReplace { get; set; } = [];
 
+        [JsonIgnore]
         public HttpClient HttpClient1 { get; set; }
 
+        [JsonIgnore]
         public HttpClient HttpClient2 { get; set; }
 
         public RefactorHelperSettings(HttpClient client1, HttpClient client2)
