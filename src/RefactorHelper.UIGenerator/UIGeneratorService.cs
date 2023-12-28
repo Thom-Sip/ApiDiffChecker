@@ -129,7 +129,7 @@ namespace RefactorHelper.UIGenerator
 
         public string GetSettingsSideBarFragment() => _settingsSidebarHtml;
 
-        private void GenerateSettingsSideBarFragment()
+        public string GenerateSettingsSideBarFragment()
         {
             var sb = new StringBuilder();
 
@@ -142,6 +142,7 @@ namespace RefactorHelper.UIGenerator
               .Replace("[CONTENT]", GetSidebarParametersFragment()));
 
             _settingsSidebarHtml = sb.ToString();
+            return _settingsSidebarHtml;
         }
 
         private string GetSidebarSettingsFragment()
@@ -172,6 +173,12 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[SET_URL]", $"/TODO")
                     .Replace("[TEXT]", $"Run {i}"));
             }
+
+            sb.Append(_sideBarGroupItemTemplate
+                    .Replace("[GET_URL]", "/run-refactor-helper/fragment/sidebar/settings/add")
+                    .Replace("[SET_URL]", $"")
+                    .Replace("[HX_TARGET]", "#side-bar-content")
+                    .Replace("[TEXT]", $"+ Add Run"));
 
             sb.Append("</ul>");
             return sb.ToString();
@@ -227,6 +234,7 @@ namespace RefactorHelper.UIGenerator
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", $"/run-refactor-helper/fragment/{item.Id}")
                     .Replace("[SET_URL]", $"/run-refactor-helper/fragment/{item.Id}")
+                    .Replace("[HX_TARGET]", "#main-content")
                     .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
             }
 

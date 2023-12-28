@@ -182,10 +182,33 @@ body, html {
 }
 
 .content-box {
-  flex: 1;
   display: flex;
-  gap: var(--margin);
-  align-items: flex-start;
+  column-gap: var(--margin);
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.result-container-header-element {
+  flex-basis: 100%;
+  padding: var(--padding);
+}
+.result-container-header-element h1 {
+  margin: 0.25em 0 0.25em 0;
+}
+.result-container-header-element button {
+  cursor: pointer;
+  border: var(--border);
+  border-left: 0px;
+  font-size: larger;
+  font-weight: bolder;
+  background-color: var(--main-color-dark);
+  color: var(--text-color-light);
+  padding: var(--padding);
+  margin-top: var(--margin);
+  border-radius: var(--border-radius);
+}
+.result-container-header-element button:hover {
+  background-color: var(--main-color-darker);
 }
 
 .result-container {

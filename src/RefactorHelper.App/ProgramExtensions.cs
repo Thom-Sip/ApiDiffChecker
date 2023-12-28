@@ -42,8 +42,10 @@ namespace RefactorHelper.App
             app.RequestListFragment(myApp);
             app.SettingsFragment(myApp);
             app.SettingsSideBarFragment(myApp);
+            app.AddRunSettingsSideBarFragment(myApp);
             app.UrlParamsFragment(myApp);
             app.SaveUrlParamsFragment(myApp);
+
 
             app.DownloadSettings(myApp);
 
@@ -201,6 +203,18 @@ namespace RefactorHelper.App
             app.MapGet("/run-refactor-helper/fragment/sidebar/settings", async (HttpContext context) =>
             {
                 var result = myApp.UIGeneratorService.GetSettingsSideBarFragment();
+                await context.Response.WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet("/run-refactor-helper/fragment/sidebar/settings/add", async (HttpContext context) =>
+            {
+                myApp.Settings.Runs.Add([]);
+                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
