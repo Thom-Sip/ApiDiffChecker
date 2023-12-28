@@ -28,14 +28,12 @@ namespace RefactorHelper.Models.Config
         {
             HttpClient1 = client1;
             HttpClient2 = client2;
-
             Runs.Add([]);
         }
 
         public RefactorHelperSettings(string baseUrl1, string baseUrl2)
         {
             this.SetClientsFromUrls(baseUrl1, baseUrl2);
-
             Runs.Add([]);
         }
 
