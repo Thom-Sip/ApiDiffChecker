@@ -178,10 +178,10 @@ namespace RefactorHelper.App
         private static void FormFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, HttpContext context) =>
+            app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, int? runId, HttpContext context) =>
             {
                 await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit);
+                var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit, runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -190,11 +190,11 @@ namespace RefactorHelper.App
         private static void SaveFormFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, IFormCollection formData) =>
+            app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
             {
-                myApp.SaveUrlParams(formType, formData);
+                myApp.SaveUrlParams(formType, formData, runId);
                 myApp.ProcessSettings();
-                var result = myApp.UIGeneratorService.GetFormFragment(formType, false);
+                var result = myApp.UIGeneratorService.GetFormFragment(formType, false, runId);
 
                 await context.Response
                     .SetHxTriggerHeader("refresh-settings-list")

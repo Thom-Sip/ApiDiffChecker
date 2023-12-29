@@ -84,14 +84,16 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment();
         }
 
-        public void SaveUrlParams(FormType formType, IFormCollection form)
+        public void SaveUrlParams(FormType formType, IFormCollection form, int? runId)
         {
-            switch(formType)
+            var run = GetRun(runId);
+
+            switch (formType)
             {
                 case FormType.UrlParameters:
                     foreach (var formfield in form)
                     {
-                        var param = Settings.DefaultRunSettings.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
+                        var param = run.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
 
                         if (param != null)
                         {
@@ -99,14 +101,14 @@ namespace RefactorHelper.App
                             continue;
                         }
 
-                        Settings.DefaultRunSettings.UrlParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                        run.UrlParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
                     }
                     break;
 
                 case FormType.QueryParameters:
                     foreach (var formfield in form)
                     {
-                        var param = Settings.DefaultRunSettings.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
+                        var param = run.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
 
                         if (param != null)
                         {
@@ -114,10 +116,18 @@ namespace RefactorHelper.App
                             continue;
                         }
 
-                        Settings.DefaultRunSettings.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                        run.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
                     }
                     break;
             }
+        }
+
+        private Run GetRun(int? runId)
+        {
+            if(runId == null)
+                return Settings.DefaultRunSettings;
+
+            return Settings.Runs[runId.Value];
         }
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
