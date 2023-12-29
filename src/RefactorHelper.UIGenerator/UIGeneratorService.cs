@@ -98,6 +98,11 @@ namespace RefactorHelper.UIGenerator
             .SetSideBar(GetSettingsSideBarFragment())
             .Html;
 
+        public string GetRunSettingsPage(int runId) => State.BaseHtmlTemplate
+           .SetContent(GetSettingsFragment(runId))
+           .SetSideBar(GetSettingsSideBarFragment())
+           .Html;
+
         public string GetSettingsFragment(int runId)
         {
             var result = _settingsFragmentTemplate
@@ -207,7 +212,7 @@ namespace RefactorHelper.UIGenerator
             {
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
-                    .Replace("[SET_URL]", $"{Url.Page.Settings}/{i}")
+                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
                     .Replace("[HX_TARGET]", "#main-content")
                     .Replace("[TEXT]", $"Run {i}"));
             }
