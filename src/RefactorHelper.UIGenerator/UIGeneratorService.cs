@@ -118,11 +118,19 @@ namespace RefactorHelper.UIGenerator
 
         public string GetFormFragment(FormType formType, bool allowEdit, int? runId = null)
         {
+            var getUrl = $"{Url.Fragment.FormPut}/{formType}";
+            var putUrl = $"{Url.Fragment.FormGet}/{formType}?allowEdit={!allowEdit}";
+
+            if(runId != null)
+            {
+                getUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}";
+                putUrl = $"{Url.Fragment.FormGet}/{formType}?runId={runId}&allowEdit={!allowEdit}";
+            }
+
             return Formbuilder.GetForm(
                     GetFormData(formType, runId),
                     GetDefaultValues(formType),
-                    $"{Url.Fragment.FormPut}/{formType}",
-                    $"{Url.Fragment.FormGet}/{formType}?allowEdit={!allowEdit}", allowEdit);
+                    getUrl, putUrl, allowEdit);
         }
 
         private List<Parameter> GetFormData(FormType formType, int? runId)
