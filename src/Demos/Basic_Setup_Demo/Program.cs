@@ -17,11 +17,6 @@ namespace Basic_Setup_Demo
                     baseUrl1: "https://localhost:44371",
                     baseUrl2: "https://localhost:44371");
 
-                // Static settings
-                var settings = new RefactorHelperSettings(
-                    baseUrl1: "https://localhost:44371",
-                    baseUrl2: "https://localhost:44371");
-
                 // RefactorHelper Dependency Injection
                 builder.Services.AddRefactorHelper(settingsFromJson);
             } 

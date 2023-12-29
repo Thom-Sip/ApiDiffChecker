@@ -101,8 +101,8 @@ namespace RefactorHelper.UIGenerator
         public string GetSettingsFragment(int runId)
         {
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false));
+                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false, runId))
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false, runId));
 
             return result;
         }
@@ -192,19 +192,21 @@ namespace RefactorHelper.UIGenerator
             sb.Append(_sideBarGroupItemTemplate
                 .Replace("[GET_URL]", Url.Fragment.Settings)
                 .Replace("[SET_URL]", Url.Page.Settings)
+                .Replace("[HX_TARGET]", "#main-content")
                 .Replace("[TEXT]", "Default Values"));
 
             for(int i = 0; i < Settings.Runs.Count; i++)
             {
                 sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[GET_URL]", $"/TODO")
-                    .Replace("[SET_URL]", $"/TODO")
+                    .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
+                    .Replace("[SET_URL]", $"{Url.Page.Settings}/{i}")
+                    .Replace("[HX_TARGET]", "#main-content")
                     .Replace("[TEXT]", $"Run {i}"));
             }
 
             sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
-                    .Replace("[SET_URL]", $"")
+                    .Replace("[SET_URL]", "")
                     .Replace("[HX_TARGET]", "#side-bar-content")
                     .Replace("[TEXT]", $"+ Add Run"));
 

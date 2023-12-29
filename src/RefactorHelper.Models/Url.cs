@@ -10,6 +10,8 @@
 
             public static string Settings { get; } = "/run-refactor-helper/settings";
 
+            public static string RunSettings { get; } = "/run-refactor-helper/settings/run";
+
             public static string Reset { get; } = "/run-refactor-helper/reset";
         }
 

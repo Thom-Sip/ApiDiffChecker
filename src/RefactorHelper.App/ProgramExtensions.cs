@@ -146,10 +146,12 @@ namespace RefactorHelper.App
         private static void SettingsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet(Url.Fragment.Settings, async (HttpContext context) =>
+            app.MapGet(Url.Fragment.Settings, async (HttpContext context, int? runId = null) =>
             {
                 await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsFragment();
+                var result = runId != null
+                    ? myApp.UIGeneratorService.GetSettingsFragment(runId.Value)
+                    : myApp.UIGeneratorService.GetSettingsFragment();
 
                 await context.Response
                     .SetHxTriggerHeader("refresh-settings-list")
