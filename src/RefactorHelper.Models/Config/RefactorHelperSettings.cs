@@ -15,21 +15,10 @@ namespace RefactorHelper.Models.Config
         public List<Run> Runs { get; set; } = [];
 
         [JsonIgnore]
-        public HttpClient? HttpClient1 { get; set; }
+        public HttpClient HttpClient1 { get; set; }
 
         [JsonIgnore]
-        public HttpClient? HttpClient2 { get; set; }
-
-        public RefactorHelperSettings(HttpClient client1, HttpClient client2)
-        {
-            HttpClient1 = client1;
-            HttpClient2 = client2;
-        }
-
-        public RefactorHelperSettings(string baseUrl1, string baseUrl2)
-        {
-            this.SetClientsFromUrls(baseUrl1, baseUrl2);
-        }
+        public HttpClient HttpClient2 { get; set; }
 
         public static RefactorHelperSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
         {
@@ -44,10 +33,18 @@ namespace RefactorHelper.Models.Config
             return result.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
 
-        /// <summary>
-        /// used only for GetSettingsFromJson
-        /// </summary>
         private RefactorHelperSettings() { }
+
+        public RefactorHelperSettings(HttpClient client1, HttpClient client2)
+        {
+            HttpClient1 = client1;
+            HttpClient2 = client2;
+        }
+
+        public RefactorHelperSettings(string baseUrl1, string baseUrl2)
+        {
+            this.SetClientsFromUrls(baseUrl1, baseUrl2);
+        }
 
         public string GetSwaggerUrl()
         {
