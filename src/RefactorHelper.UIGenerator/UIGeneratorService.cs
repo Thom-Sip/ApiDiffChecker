@@ -207,7 +207,7 @@ namespace RefactorHelper.UIGenerator
             sb.Append(_sideBarGroupItemTemplate
                 .Replace("[GET_URL]", Url.Fragment.Settings)
                 .Replace("[SET_URL]", Url.Page.Settings)
-                .Replace("[HX_TARGET]", "#main-content")
+                .Replace("[HX_TARGET]", Section.MainContent)
                 .Replace("[TEXT]", "Default Values"));
 
             for(int i = 0; i < Settings.Runs.Count; i++)
@@ -220,16 +220,16 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
                     .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
                     .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
-                    .Replace("[HX_TARGET]", "#main-content")
+                    .Replace("[HX_TARGET]", Section.MainContent)
+                    .Replace("[HX_DELETE_TARGET]", Section.SideBar)
                     .Replace("[LI-ID]", $"run-button-{i}")
-                    .Replace("[HX_DELETE_TARGET]", "#side-bar-content")
                     .Replace("[TEXT]", $"Run {i}"));
             }
 
             sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
                     .Replace("[SET_URL]", "")
-                    .Replace("[HX_TARGET]", "#side-bar-content")
+                    .Replace("[HX_TARGET]", Section.SideBar)
                     .Replace("[TEXT]", $"<b>+</b> Add Run"));
 
             sb.Append("</ul>");
@@ -286,7 +286,7 @@ namespace RefactorHelper.UIGenerator
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[SET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
-                    .Replace("[HX_TARGET]", "#main-content")
+                    .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
             }
 
