@@ -4,24 +4,16 @@ using System.Text;
 
 namespace RefactorHelper.UIGenerator
 {
-    public class SidebarGeneratorService : BaseContentGenerator
+    public class SidebarGeneratorService(
+        RefactorHelperSettings settings,
+        RefactorHelperState state) : BaseContentGenerator(settings, state)
     {
         protected string _requestsSidebarHtml { get; set; } = string.Empty;
         protected string _settingsSidebarHtml { get; set; } = string.Empty;
-        protected string _sideBarGroupTemplate { get; set; }
-        protected string _sideBarGroupItemTemplate { get; set; }
-        protected string _sideBarGroupItemTemplateWithDelete { get; set; }
-        protected string _sideBarDownloadTemplate { get; set; }
-
-        public SidebarGeneratorService(
-            RefactorHelperSettings settings, 
-            RefactorHelperState state) : base(settings, state)
-        {
-            _sideBarGroupTemplate = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
-            _sideBarGroupItemTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
-            _sideBarGroupItemTemplateWithDelete = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
-            _sideBarDownloadTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
-        }
+        protected string _sideBarGroupTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
+        protected string _sideBarGroupItemTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
+        protected string _sideBarGroupItemTemplateWithDelete { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
+        protected string _sideBarDownloadTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
 
         public string GetSettingsSideBarFragment() =>
             GenerateSettingsSideBarFragment(State.CurrentRun);

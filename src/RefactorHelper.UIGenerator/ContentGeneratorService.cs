@@ -2,40 +2,24 @@
 using RefactorHelper.Models.Comparer;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.External;
-using RefactorHelper.Models.RequestHandler;
 using RefactorHelper.Models.Uigenerator;
 using System.Text;
 
 namespace RefactorHelper.UIGenerator
 {
-    public class ContentGeneratorService : BaseContentGenerator
+    public class ContentGeneratorService(
+        RefactorHelperSettings settings,
+        RefactorHelperState state,
+        SidebarGeneratorService sidebarGeneratorService,
+        Formbuilder formBuilder) : BaseContentGenerator(settings, state)
     {
-        protected string _outputFolder { get; set; }
-        protected string _runfolder { get; set; }
-        protected string _template { get; set; }
-        protected string _contentTemplate { get; set; }
-        protected string _diffBoxTemplate { get; set; }
-        protected string _settingsFragmentTemplate { get; set; }
+        protected string _template { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Template.html");
+        protected string _contentTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
+        protected string _diffBoxTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
+        protected string _settingsFragmentTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
 
-        protected Formbuilder Formbuilder { get; set; }
-        protected SidebarGeneratorService SidebarGeneratorService { get; set; }
-
-        public ContentGeneratorService(RefactorHelperSettings settings, RefactorHelperState state, SidebarGeneratorService sidebarGeneratorService) : base(settings, state)
-        {
-            SidebarGeneratorService = sidebarGeneratorService;
-
-            _template = File.ReadAllText($"{settings.ContentFolder}/Template.html");
-            _contentTemplate = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
-            _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
-            _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
-            _outputFolder = settings.OutputFolder;
-            _runfolder = settings.OutputFolder;
-
-            Formbuilder = new Formbuilder(settings.ContentFolder, settings);
-
-            if (!Directory.Exists(_outputFolder))
-                Directory.CreateDirectory(_outputFolder);
-        }
+        protected Formbuilder Formbuilder { get; set; } = formBuilder;
+        protected SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
 
         public void GenerateBaseUI(RefactorHelperState state)
         {

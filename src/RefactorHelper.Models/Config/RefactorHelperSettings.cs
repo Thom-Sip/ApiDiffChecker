@@ -6,8 +6,6 @@ namespace RefactorHelper.Models.Config
     {
         public bool RunOnStart { get; set; }
 
-        public string OutputFolder { get; set; } = Path.Combine(GetBinPath(), "Output");
-
         public string ContentFolder { get; set; } = Path.Combine(GetBinPath(), "Content");
 
         public string SwaggerUrl { get; set; } = string.Empty;

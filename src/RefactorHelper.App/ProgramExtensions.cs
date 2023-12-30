@@ -22,6 +22,7 @@ namespace RefactorHelper.App
             services.AddSingleton<SwaggerProcessorService>();
             services.AddSingleton<RequestHandlerService>();
             services.AddSingleton<CompareService>();
+            services.AddSingleton<Formbuilder>();
             services.AddSingleton<ContentGeneratorService>();
             services.AddSingleton<SidebarGeneratorService>();
 

@@ -1,28 +1,18 @@
 ﻿using RefactorHelper.Models.Config;
-using RefactorHelper.Models.Uigenerator;
 
 namespace RefactorHelper.UIGenerator
 {
-    public class Formbuilder
+    public class Formbuilder(RefactorHelperSettings settings)
     {
-        protected string _formTemplate { get; set; }
+        protected string _formTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplate.html");
 
-        protected string _formTemplateEdit { get; set; }
+        protected string _formTemplateEdit { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplateEdit.html");
 
-        protected string _formFieldTemplate { get; set; }
+        protected string _formFieldTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplate.html");
 
-        protected string _formFieldTemplateEdit { get; set; }
+        protected string _formFieldTemplateEdit { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEdit.html");
 
-        protected RefactorHelperSettings Settings { get; set; }
-
-        public Formbuilder(string contentFolder, RefactorHelperSettings settings)
-        {
-            Settings = settings;
-            _formTemplate = File.ReadAllText($"{contentFolder}/Forms/FormTemplate.html");
-            _formTemplateEdit = File.ReadAllText($"{contentFolder}/Forms/FormTemplateEdit.html");
-            _formFieldTemplate = File.ReadAllText($"{contentFolder}/Forms/FormFieldTemplate.html");
-            _formFieldTemplateEdit = File.ReadAllText($"{contentFolder}/Forms/FormFieldTemplateEdit.html");
-        }
+        protected RefactorHelperSettings Settings { get; set; } = settings;
 
         public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit)
         {
