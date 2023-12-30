@@ -230,7 +230,7 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
                     .Replace("[SET_URL]", "")
                     .Replace("[HX_TARGET]", "#side-bar-content")
-                    .Replace("[TEXT]", $"+ Add Run"));
+                    .Replace("[TEXT]", $"<b>+</b> Add Run"));
 
             sb.Append("</ul>");
             return sb.ToString();
