@@ -11,14 +11,12 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // Get Settings from json
-                var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
+                // RefactorHelper Dependency Injection
+                builder.Services.AddRefactorHelper(
+                    RefactorHelperSettings.GetSettingsFromJson(
                     jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
                     baseUrl1: "https://localhost:44371",
-                    baseUrl2: "https://localhost:44371");
-
-                // RefactorHelper Dependency Injection
-                builder.Services.AddRefactorHelper(settingsFromJson);
+                    baseUrl2: "https://localhost:44371"));
             } 
 
             builder.Services.AddControllers();
