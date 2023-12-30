@@ -117,9 +117,9 @@ namespace RefactorHelper.UIGenerator
             foreach (var item in resultPairs)
             {
                 sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[CSS_CLASS]", "request-item")
+                    .Replace("[CSS_CLASS]", item.Id == State.CurrentRequest ? "request-item-active" : "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
-                    .Replace("[SET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
+                    .Replace("[SET_URL]", $"{Url.Page.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
             }
