@@ -8,40 +8,25 @@ using System.Text;
 
 namespace RefactorHelper.UIGenerator
 {
-    public class UIGeneratorService
+    public class ContentGeneratorService : BaseContentGenerator
     {
         protected string _outputFolder { get; set; }
         protected string _runfolder { get; set; }
         protected string _template { get; set; }
         protected string _contentTemplate { get; set; }
         protected string _diffBoxTemplate { get; set; }
-        protected string _sideBarGroupTemplate { get; set; }
-        protected string _sideBarGroupItemTemplate { get; set; }
-        protected string _sideBarGroupItemTemplateWithDelete { get; set; }
-        protected string _sideBarDownloadTemplate { get; set; }
         protected string _settingsFragmentTemplate { get; set; }
 
-        protected string _requestsSidebarHtml { get; set; } = string.Empty;
-        protected string _settingsSidebarHtml { get; set; } = string.Empty;
-
         protected Formbuilder Formbuilder { get; set; }
+        protected SidebarGeneratorService SidebarGeneratorService { get; set; }
 
-        private RefactorHelperState State { get; set; }
-
-        private RefactorHelperSettings Settings { get; set; }
-
-        public UIGeneratorService(RefactorHelperSettings settings, RefactorHelperState state)
+        public ContentGeneratorService(RefactorHelperSettings settings, RefactorHelperState state, SidebarGeneratorService sidebarGeneratorService) : base(settings, state)
         {
-            Settings = settings;
-            State = state;
+            SidebarGeneratorService = sidebarGeneratorService;
 
             _template = File.ReadAllText($"{settings.ContentFolder}/Template.html");
             _contentTemplate = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
             _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
-            _sideBarGroupTemplate = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
-            _sideBarGroupItemTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
-            _sideBarGroupItemTemplateWithDelete = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
-            _sideBarDownloadTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
             _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
             _outputFolder = settings.OutputFolder;
             _runfolder = settings.OutputFolder;
@@ -54,8 +39,8 @@ namespace RefactorHelper.UIGenerator
 
         public void GenerateBaseUI(RefactorHelperState state)
         {
-            GenerateRequestSideBarHtml(state.Data);
-            GenerateSettingsSideBarFragment(null);
+            SidebarGeneratorService.GenerateRequestSideBarHtml(state.Data);
+            SidebarGeneratorService.GenerateSettingsSideBarFragment(null);
 
             state.BaseHtmlTemplate = new HtmlTemplate
             {
@@ -79,30 +64,30 @@ namespace RefactorHelper.UIGenerator
 
         public string GetEmptyRequestPage() => State.BaseHtmlTemplate
             .SetContent("")
-            .SetSideBar(GetRequestListFragment())
+            .SetSideBar(SidebarGeneratorService.GetRequestListFragment())
             .Html;
 
         public string GetTestResultPage(int? requestId = null) => State.BaseHtmlTemplate
             .SetContent(GetTestResultFragment(requestId))
-            .SetSideBar(GetRequestListFragment())
+            .SetSideBar(SidebarGeneratorService.GetRequestListFragment())
             .Html;
 
         public string GetTestResultFragment(int? requestId = null)
         {
             State.CurrentRequest = requestId ?? State.CurrentRequest;
             var content = GetContent(State.GetCurrentRequest());
-            GenerateRequestSideBarHtml(State.Data);
+            SidebarGeneratorService.GenerateRequestSideBarHtml(State.Data);
             return content;
         }
 
         public string GetSettingsPage() => State.BaseHtmlTemplate
             .SetContent(GetSettingsFragment())
-            .SetSideBar(GetSettingsSideBarFragment(null))
+            .SetSideBar(SidebarGeneratorService.GetSettingsSideBarFragment())
             .Html;
 
         public string GetRunSettingsPage(int runId) => State.BaseHtmlTemplate
            .SetContent(GetSettingsFragment(runId))
-           .SetSideBar(GetSettingsSideBarFragment(runId))
+           .SetSideBar(SidebarGeneratorService.GetSettingsSideBarFragment())
            .Html;
 
         public string GetSettingsFragment(int? runId = null)
@@ -122,7 +107,7 @@ namespace RefactorHelper.UIGenerator
         private static string GetSettingsTitle(int? runId)
         {
             return runId == null
-                ? "Default Settings"
+                ? "Default Parameters"
                 : $"Run {runId}";
         }
 
@@ -187,80 +172,6 @@ namespace RefactorHelper.UIGenerator
             }; ;
         }
 
-        public string GetSettingsSideBarFragment(int? runId)
-        {
-            return GenerateSettingsSideBarFragment(State.CurrentRun);
-        }
-
-        public string GenerateSettingsSideBarFragment(int? runId)
-        {
-            var sb = new StringBuilder();
-
-            sb.Append(_sideBarGroupTemplate
-              .Replace("[TITLE]", $"Settings")
-              .Replace("[CONTENT]", GetSidebarSettingsFragment()));
-
-            sb.Append(_sideBarGroupTemplate
-              .Replace("[TITLE]", $"Parameters")
-              .Replace("[CONTENT]", GetSidebarParametersFragment(runId)));
-
-            _settingsSidebarHtml = sb.ToString();
-            return _settingsSidebarHtml;
-        }
-
-        private string GetSidebarSettingsFragment()
-        {
-            var sb = new StringBuilder();
-            sb.Append("<ul>");
-
-            sb.Append(_sideBarDownloadTemplate);
-
-            sb.Append("</ul>");
-            return sb.ToString();
-        }
-
-        private string GetSidebarParametersFragment(int? runId)
-        {
-            var sb = new StringBuilder();
-            sb.Append("<ul>");
-
-            sb.Append(_sideBarGroupItemTemplate
-                .Replace("[CSS_CLASS]", runId == null ? "request-item-active" : "request-item")
-                .Replace("[GET_URL]", Url.Fragment.Settings)
-                .Replace("[SET_URL]", Url.Page.Settings)
-                .Replace("[HX_TARGET]", Section.MainContent)
-                .Replace("[TEXT]", "Default Values"));
-
-            for(int i = 0; i < Settings.Runs.Count; i++)
-            {
-                var template = i == 0
-                    ? _sideBarGroupItemTemplate
-                    : _sideBarGroupItemTemplateWithDelete;
-
-                sb.Append(template
-                    .Replace("[CSS_CLASS]", runId == i ? "request-item-active" : "request-item")
-                    .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
-                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
-                    .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
-                    .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[HX_DELETE_TARGET]", Section.SideBar)
-                    .Replace("[LI-ID]", $"run-button-{i}")
-                    .Replace("[TEXT]", $"Run {i}"));
-            }
-
-            sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[CSS_CLASS]", "request-item")
-                    .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
-                    .Replace("[SET_URL]", "")
-                    .Replace("[HX_TARGET]", Section.SideBar)
-                    .Replace("[TEXT]", $"<b>+</b> Add Run"));
-
-            sb.Append("</ul>");
-            return sb.ToString();
-        }
-
-        public string GetRequestListFragment() => _requestsSidebarHtml;
-
         private string GetContent(RequestWrapper wrapper) =>
             GetContent(wrapper.CompareResultPair, wrapper.CompareResultPair?.Diffs ?? [], wrapper);
 
@@ -272,50 +183,6 @@ namespace RefactorHelper.UIGenerator
             return _contentTemplate
                 .Replace("[CONTENT_ORIGINAL]", original)
                 .Replace("[CONTENT_CHANGED]", changed);
-        }
-
-        private void GenerateRequestSideBarHtml(List<RequestWrapper> wrappers)
-        {
-            var pendingRequests = wrappers.Where(x => !x.Executed).ToList();
-            var failedRequests = wrappers.Where(x => x.Changed && x.Executed).ToList();
-            var successfulRequest = wrappers.Where(x => !x.Changed && x.Executed).ToList();
-
-            _requestsSidebarHtml = string.Empty;
-
-            if (pendingRequests.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(pendingRequests, "Pending Requests")}";
-
-            if (failedRequests.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(failedRequests, "Failed Requests")}";
-
-            if (successfulRequest.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(successfulRequest, "Success Requests")}";
-        }
-
-        private string GenerateRequestList(List<RequestWrapper> wrappers, string title)
-        {
-            return _sideBarGroupTemplate
-              .Replace("[TITLE]", $"{title} ({wrappers.Count})")
-              .Replace("[CONTENT]", GetSidebarContent(wrappers));
-        }
-
-        private string GetSidebarContent(List<RequestWrapper> resultPairs)
-        {
-            var sb = new StringBuilder();
-            sb.Append("<ul>");
-
-            foreach(var item in resultPairs)
-            {
-                sb.Append(_sideBarGroupItemTemplate
-                    .Replace("[CSS_CLASS]", "request-item")
-                    .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
-                    .Replace("[SET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
-                    .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
-            }
-
-            sb.Append("</ul>");
-            return sb.ToString();
         }
 
         private string diff_prettyHtml_custom(CompareResult? result, List<Diff> diffs, RequestWrapper? wrapper, List<Operation> operations)
@@ -353,30 +220,6 @@ namespace RefactorHelper.UIGenerator
                   .Replace("[CONTENT]", sb.ToString());
 
             return html;
-        }
-
-        private string GetResultCodeHeaderText(RequestWrapper? wrapper)
-        {
-            if (wrapper?.TestResult?.Result1 != null)
-                return $"{GetResultCode(wrapper?.TestResult?.Result1)} {GetResultCodeString(wrapper?.TestResult?.Result1)}";
-
-            return "Pending";
-        }
-
-        private string GetResultCode(RefactorTestResult? result)
-        {
-            var statusCode = result?.ResponseObject?.StatusCode;
-            return statusCode != null
-                ? ((int)statusCode).ToString()
-                : "_";
-        }
-
-        private string GetResultCodeString(RefactorTestResult? result)
-        {
-            var statusCode = result?.ResponseObject?.StatusCode;
-            return statusCode != null
-                ? $"{statusCode}"
-                : "N/A";
         }
     }
 }

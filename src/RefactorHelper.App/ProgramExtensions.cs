@@ -22,7 +22,8 @@ namespace RefactorHelper.App
             services.AddSingleton<SwaggerProcessorService>();
             services.AddSingleton<RequestHandlerService>();
             services.AddSingleton<CompareService>();
-            services.AddSingleton<UIGeneratorService>();
+            services.AddSingleton<ContentGeneratorService>();
+            services.AddSingleton<SidebarGeneratorService>();
 
             return services;
         }   
@@ -220,7 +221,7 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapGet(Url.Fragment.SideBarRequests, async (HttpContext context) =>
             {
-                var result = myApp.UIGeneratorService.GetRequestListFragment();
+                var result = myApp.SidebarGeneratorService.GetRequestListFragment();
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -229,9 +230,9 @@ namespace RefactorHelper.App
         private static void SettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context, int? runId) =>
+            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context) =>
             {
-                var result = myApp.UIGeneratorService.GetSettingsSideBarFragment(runId);
+                var result = myApp.SidebarGeneratorService.GetSettingsSideBarFragment();
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -243,7 +244,7 @@ namespace RefactorHelper.App
             app.MapGet(Url.Fragment.SideBarSettingsAddRun, async (HttpContext context) =>
             {
                 myApp.Settings.Runs.Add(new());
-                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment(null);
+                var result = myApp.SidebarGeneratorService.GenerateSettingsSideBarFragment(null);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -255,7 +256,7 @@ namespace RefactorHelper.App
             app.MapDelete($"{Url.Fragment.SideBarSettingsRemoveRun}/{{runId}}", async (HttpContext context, int runId) =>
             {
                 myApp.Settings.Runs.RemoveAt(runId);
-                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment(runId);
+                var result = myApp.SidebarGeneratorService.GenerateSettingsSideBarFragment(runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();

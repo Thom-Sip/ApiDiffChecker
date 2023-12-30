@@ -15,14 +15,16 @@ namespace RefactorHelper.App
         SwaggerProcessorService swaggerProcessorService,
         RequestHandlerService requestHandlerService,
         CompareService compareService,
-        UIGeneratorService uiGeneratorService)
+        ContentGeneratorService uiGeneratorService,
+        SidebarGeneratorService sidebarGeneratorService)
     {
         public RefactorHelperSettings Settings { get; set; } = settings;
         public RefactorHelperState State { get; set; } = state;
         public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
         public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
         public CompareService CompareService { get; set; } = compareService;
-        public UIGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
+        public ContentGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
+        public SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
 
         public async Task Initialize()
         {
