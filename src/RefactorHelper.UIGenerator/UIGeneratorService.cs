@@ -55,7 +55,7 @@ namespace RefactorHelper.UIGenerator
         public void GenerateBaseUI(RefactorHelperState state)
         {
             GenerateRequestSideBarHtml(state.Data);
-            GenerateSettingsSideBarFragment();
+            GenerateSettingsSideBarFragment(null);
 
             state.BaseHtmlTemplate = new HtmlTemplate
             {
@@ -97,21 +97,47 @@ namespace RefactorHelper.UIGenerator
 
         public string GetSettingsPage() => State.BaseHtmlTemplate
             .SetContent(GetSettingsFragment())
-            .SetSideBar(GetSettingsSideBarFragment())
+            .SetSideBar(GetSettingsSideBarFragment(null))
             .Html;
 
         public string GetRunSettingsPage(int runId) => State.BaseHtmlTemplate
            .SetContent(GetSettingsFragment(runId))
-           .SetSideBar(GetSettingsSideBarFragment())
+           .SetSideBar(GetSettingsSideBarFragment(runId))
            .Html;
 
         public string GetSettingsFragment(int? runId = null)
         {
+            State.CurrentRun = runId;
+
             var result = _settingsFragmentTemplate
                 .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false, runId))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false, runId));
+                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false, runId))
+                .Replace("[TITLE]", GetSettingsTitle(runId))
+                .Replace("[TEXT]", GetSettingsText(runId))
+                .Replace("[BUTTON-TEXT]", GetSettingsCopyButtontext(runId));
 
             return result;
+        }
+
+        private static string GetSettingsTitle(int? runId)
+        {
+            return runId == null
+                ? "Default Settings"
+                : $"Run {runId}";
+        }
+
+        private static string GetSettingsText(int? runId)
+        {
+            return runId == null
+                ? "These values will be used to replace all url parameters and query string parameters found in your swagger."
+                : "For every Run RefactorHelper will generate api-requests using the run's parameters. If a parameter is not found in the run, the Default Parameters will be used instead.";
+        }
+
+        private static string GetSettingsCopyButtontext(int? runId)
+        {
+            return runId == null
+                ? "Copy to new Run"
+                : "Duplicate Run";
         }
 
         public string GetFormFragment(FormType formType, bool allowEdit, int? runId = null)
@@ -161,9 +187,12 @@ namespace RefactorHelper.UIGenerator
             }; ;
         }
 
-        public string GetSettingsSideBarFragment() => _settingsSidebarHtml;
+        public string GetSettingsSideBarFragment(int? runId)
+        {
+            return GenerateSettingsSideBarFragment(State.CurrentRun);
+        }
 
-        public string GenerateSettingsSideBarFragment()
+        public string GenerateSettingsSideBarFragment(int? runId)
         {
             var sb = new StringBuilder();
 
@@ -173,7 +202,7 @@ namespace RefactorHelper.UIGenerator
 
             sb.Append(_sideBarGroupTemplate
               .Replace("[TITLE]", $"Parameters")
-              .Replace("[CONTENT]", GetSidebarParametersFragment()));
+              .Replace("[CONTENT]", GetSidebarParametersFragment(runId)));
 
             _settingsSidebarHtml = sb.ToString();
             return _settingsSidebarHtml;
@@ -190,12 +219,13 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        private string GetSidebarParametersFragment()
+        private string GetSidebarParametersFragment(int? runId)
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
 
             sb.Append(_sideBarGroupItemTemplate
+                .Replace("[CSS_CLASS]", runId == null ? "request-item-active" : "request-item")
                 .Replace("[GET_URL]", Url.Fragment.Settings)
                 .Replace("[SET_URL]", Url.Page.Settings)
                 .Replace("[HX_TARGET]", Section.MainContent)
@@ -208,6 +238,7 @@ namespace RefactorHelper.UIGenerator
                     : _sideBarGroupItemTemplateWithDelete;
 
                 sb.Append(template
+                    .Replace("[CSS_CLASS]", runId == i ? "request-item-active" : "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
                     .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
                     .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
@@ -218,6 +249,7 @@ namespace RefactorHelper.UIGenerator
             }
 
             sb.Append(_sideBarGroupItemTemplate
+                    .Replace("[CSS_CLASS]", "request-item")
                     .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
                     .Replace("[SET_URL]", "")
                     .Replace("[HX_TARGET]", Section.SideBar)
@@ -275,6 +307,7 @@ namespace RefactorHelper.UIGenerator
             foreach(var item in resultPairs)
             {
                 sb.Append(_sideBarGroupItemTemplate
+                    .Replace("[CSS_CLASS]", "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[SET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", Section.MainContent)

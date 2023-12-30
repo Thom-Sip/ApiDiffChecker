@@ -163,9 +163,7 @@ namespace RefactorHelper.App
             app.MapGet(Url.Fragment.Settings, async (HttpContext context, int? runId = null) =>
             {
                 await myApp.Initialize();
-                var result = runId != null
-                    ? myApp.UIGeneratorService.GetSettingsFragment(runId.Value)
-                    : myApp.UIGeneratorService.GetSettingsFragment();
+                var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
                     .SetHxTriggerHeader("refresh-settings-list")
@@ -231,9 +229,9 @@ namespace RefactorHelper.App
         private static void SettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context) =>
+            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context, int? runId) =>
             {
-                var result = myApp.UIGeneratorService.GetSettingsSideBarFragment();
+                var result = myApp.UIGeneratorService.GetSettingsSideBarFragment(runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -245,7 +243,7 @@ namespace RefactorHelper.App
             app.MapGet(Url.Fragment.SideBarSettingsAddRun, async (HttpContext context) =>
             {
                 myApp.Settings.Runs.Add(new());
-                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
+                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment(null);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -257,7 +255,7 @@ namespace RefactorHelper.App
             app.MapDelete($"{Url.Fragment.SideBarSettingsRemoveRun}/{{runId}}", async (HttpContext context, int runId) =>
             {
                 myApp.Settings.Runs.RemoveAt(runId);
-                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
+                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment(runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();

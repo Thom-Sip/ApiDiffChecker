@@ -11,6 +11,8 @@ namespace RefactorHelper.Models
 
         public int CurrentRequest { get; set; }
 
+        public int? CurrentRun { get; set; }
+
         public HtmlTemplate BaseHtmlTemplate { get; set; } = new();
 
         public SwaggerProcessorOutput SwaggerOutput { get; set; } = new();

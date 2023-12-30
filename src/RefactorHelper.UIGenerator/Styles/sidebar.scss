@@ -90,7 +90,6 @@
         display: block;
         border: var(--border);
         border-top: 0px;
-        background-color: var(--main-color-lighter);
 
         .side-bar-item {
             display: flex;
@@ -127,10 +126,16 @@
 
     .request-item {
         display: block;
+        background-color: var(--main-color-lighter);
 
         a {
             color: var(--text-color-dark);
             text-decoration: none;
         }
+    }
+
+    .request-item-active {
+        background-color: var(--main-color-lightest);
+        font-weight: bolder;
     }
 }
