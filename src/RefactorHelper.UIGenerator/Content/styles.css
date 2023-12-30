@@ -122,19 +122,25 @@ body, html {
   border: var(--border);
   border-top: 0px;
 }
-.side-bar-group-content > ul > li .side-bar-item {
+.side-bar-group-content > ul > li:hover {
+  background-color: var(--main-color-lightest);
+}
+.side-bar-group-content > ul > li:last-child {
+  border-radius: var(--border-radius-bottom);
+}
+.side-bar-group-content .side-bar-item {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.side-bar-group-content > ul > li .side-bar-item .request-item-content {
+.side-bar-group-content .side-bar-item .request-item-content {
   cursor: pointer;
   font-family: Arial;
   border: none;
   flex: 1;
   padding: var(--padding);
 }
-.side-bar-group-content > ul > li .side-bar-item .request-item-delete-button {
+.side-bar-group-content .side-bar-item .request-item-delete-button {
   flex: 0 0 1em;
   cursor: pointer;
   font-family: Arial;
@@ -142,12 +148,6 @@ body, html {
   font-size: small;
   color: var(--text-color-dark);
   padding: var(--padding);
-}
-.side-bar-group-content > ul > li:hover {
-  background-color: var(--main-color-lightest);
-}
-.side-bar-group-content > ul > li:last-child {
-  border-radius: var(--border-radius-bottom);
 }
 .side-bar-group-content .request-item {
   display: block;

@@ -42,7 +42,7 @@
 
         public static class Download
         {
-            public static string Settings { get; } = "/run-refactor-helper/download/settings";
+            public static string Settings { get; } = "/run-refactor-helper/download/refactorHelperSettings.json";
         }
     }
 }
