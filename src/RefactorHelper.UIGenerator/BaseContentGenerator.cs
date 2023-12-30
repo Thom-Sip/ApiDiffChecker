@@ -10,7 +10,7 @@ namespace RefactorHelper.UIGenerator
 
         protected RefactorHelperSettings Settings { get; set; } = settings;
 
-        protected string GetResultCodeHeaderText(RequestWrapper? wrapper)
+        protected static string GetResultCodeHeaderText(RequestWrapper? wrapper)
         {
             if (wrapper?.TestResult?.Result1 != null)
                 return $"{GetResultCode(wrapper?.TestResult?.Result1)} {GetResultCodeString(wrapper?.TestResult?.Result1)}";
