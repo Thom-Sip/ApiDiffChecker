@@ -41,7 +41,7 @@ namespace RefactorHelper.UIGenerator
 
             return (allowEdit ? _formFieldTemplateEdit : _formFieldTemplate)
                 .Replace("[KEY]", parameter.Key)
-                .Replace("[VALUE]", existingSettings?.Value ?? parameter.Value);
+                .Replace("[VALUE]", existingSettings?.Value ?? string.Empty);
         }
     }
 }

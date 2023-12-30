@@ -206,7 +206,7 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
             {
-                myApp.SaveUrlParams(formType, formData, runId);
+                myApp.SaveForm(formType, formData, runId);
                 myApp.ProcessSettings();
                 var result = myApp.UIGeneratorService.GetFormFragment(formType, false, runId);
 

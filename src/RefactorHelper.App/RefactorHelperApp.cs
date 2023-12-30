@@ -84,14 +84,15 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment();
         }
 
-        public void SaveUrlParams(FormType formType, IFormCollection form, int? runId)
+        public void SaveForm(FormType formType, IFormCollection form, int? runId)
         {
             var run = GetRun(runId);
 
             switch (formType)
             {
                 case FormType.UrlParameters:
-                    foreach (var formfield in form)
+                    run.UrlParameters.Clear();
+                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
                     {
                         var param = run.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
 
@@ -106,7 +107,8 @@ namespace RefactorHelper.App
                     break;
 
                 case FormType.QueryParameters:
-                    foreach (var formfield in form)
+                    run.QueryParameters.Clear();
+                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
                     {
                         var param = run.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
 
