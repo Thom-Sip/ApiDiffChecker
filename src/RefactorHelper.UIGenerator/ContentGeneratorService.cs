@@ -64,12 +64,7 @@ namespace RefactorHelper.UIGenerator
             return content;
         }
 
-        public string GetSettingsPage() => State.BaseHtmlTemplate
-            .SetContent(GetSettingsFragment())
-            .SetSideBar(SidebarGeneratorService.GetSettingsSideBarFragment())
-            .Html;
-
-        public string GetRunSettingsPage(int runId) => State.BaseHtmlTemplate
+        public string GetSettingsPage(int? runId = null) => State.BaseHtmlTemplate
            .SetContent(GetSettingsFragment(runId))
            .SetSideBar(SidebarGeneratorService.GetSettingsSideBarFragment())
            .Html;

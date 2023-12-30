@@ -112,7 +112,7 @@ namespace RefactorHelper.App
             app.MapGet($"{Url.Page.RunSettings}/{{runId}}", async (HttpContext context, int runId) =>
             {
                 await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetRunSettingsPage(runId);
+                var result = myApp.UIGeneratorService.GetSettingsPage(runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
