@@ -8,8 +8,6 @@ namespace RefactorHelper.UIGenerator
         RefactorHelperSettings settings,
         RefactorHelperState state) : BaseContentGenerator(settings, state)
     {
-        protected string _requestsSidebarHtml { get; set; } = string.Empty;
-        protected string _settingsSidebarHtml { get; set; } = string.Empty;
         protected string _sideBarGroupTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
         protected string _sideBarGroupItemTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
         protected string _sideBarGroupItemTemplateWithDelete { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
@@ -23,24 +21,21 @@ namespace RefactorHelper.UIGenerator
             var sb = new StringBuilder();
 
             sb.Append(_sideBarGroupTemplate
-              .Replace("[TITLE]", $"Settings")
+              .Replace("[TITLE]", "Settings")
               .Replace("[CONTENT]", GetSidebarSettingsFragment()));
 
             sb.Append(_sideBarGroupTemplate
-              .Replace("[TITLE]", $"Parameters")
+              .Replace("[TITLE]", "Parameters")
               .Replace("[CONTENT]", GetSidebarParametersFragment(runId)));
 
-            _settingsSidebarHtml = sb.ToString();
-            return _settingsSidebarHtml;
+            return sb.ToString();
         }
 
         private string GetSidebarSettingsFragment()
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
-
             sb.Append(_sideBarDownloadTemplate);
-
             sb.Append("</ul>");
             return sb.ToString();
         }
@@ -85,24 +80,26 @@ namespace RefactorHelper.UIGenerator
             return sb.ToString();
         }
 
-        public string GetRequestListFragment() => _requestsSidebarHtml;
+        public string GetRequestListFragment() => GenerateRequestSideBarHtml(State.Data);
 
-        public void GenerateRequestSideBarHtml(List<RequestWrapper> wrappers)
+        public string GenerateRequestSideBarHtml(List<RequestWrapper> wrappers)
         {
             var pendingRequests = wrappers.Where(x => !x.Executed).ToList();
             var failedRequests = wrappers.Where(x => x.Changed && x.Executed).ToList();
             var successfulRequest = wrappers.Where(x => !x.Changed && x.Executed).ToList();
 
-            _requestsSidebarHtml = string.Empty;
+            var result = string.Empty;
 
             if (pendingRequests.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(pendingRequests, "Pending Requests")}";
+                result = $"{result}{GenerateRequestList(pendingRequests, "Pending Requests")}";
 
             if (failedRequests.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(failedRequests, "Failed Requests")}";
+                result = $"{result}{GenerateRequestList(failedRequests, "Failed Requests")}";
 
             if (successfulRequest.Count > 0)
-                _requestsSidebarHtml = $"{_requestsSidebarHtml}{GenerateRequestList(successfulRequest, "Success Requests")}";
+                result = $"{result}{GenerateRequestList(successfulRequest, "Success Requests")}";
+
+            return result;
         }
 
         private string GenerateRequestList(List<RequestWrapper> wrappers, string title)
