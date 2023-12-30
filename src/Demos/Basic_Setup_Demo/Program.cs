@@ -13,7 +13,7 @@ namespace Basic_Setup_Demo
             {
                 // Get Settings from json
                 var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
-                    jsonPath: GetSettingsJsonPath(),
+                    jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
                     baseUrl1: "https://localhost:44371",
                     baseUrl2: "https://localhost:44371");
 
@@ -39,14 +39,6 @@ namespace Basic_Setup_Demo
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
-        }
-
-        private static string GetSettingsJsonPath()
-        {
-            return Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                AppDomain.CurrentDomain.RelativeSearchPath ?? "",
-                "refactorHelperSettings.json");
         }
     }
 }
