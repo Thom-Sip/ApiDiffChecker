@@ -206,7 +206,7 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
             {
-                myApp.SaveForm(formType, formData, runId);
+                myApp.Formbuilder.SaveForm(formType, formData, runId);
                 myApp.ProcessSettings();
                 var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
@@ -262,7 +262,6 @@ namespace RefactorHelper.App
 
             }).ExcludeFromDescription();
         }
-
         #endregion
 
         #region Download
@@ -279,7 +278,6 @@ namespace RefactorHelper.App
         #endregion
 
         #region Misc
-
         private static void AddStaticFileEndpoint(this WebApplication app, RefactorHelperApp myApp, string fileName)
         {
             // Get css so we don't need to service static files
@@ -305,7 +303,6 @@ namespace RefactorHelper.App
             response.Headers[key] = value;
             return response;
         }
-
         #endregion
     }
 }

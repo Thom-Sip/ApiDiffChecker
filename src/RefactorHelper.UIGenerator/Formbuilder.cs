@@ -1,4 +1,5 @@
-﻿using RefactorHelper.Models;
+﻿using Microsoft.AspNetCore.Http;
+using RefactorHelper.Models;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models.Uigenerator;
 
@@ -83,6 +84,54 @@ namespace RefactorHelper.UIGenerator
             return (allowEdit ? _formFieldTemplateEdit : _formFieldTemplate)
                 .Replace("[KEY]", parameter.Key)
                 .Replace("[VALUE]", existingSettings?.Value ?? string.Empty);
+        }
+
+        public void SaveForm(FormType formType, IFormCollection form, int? runId)
+        {
+            var run = GetRun(runId);
+
+            switch (formType)
+            {
+                case FormType.UrlParameters:
+                    run.UrlParameters.Clear();
+                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
+                    {
+                        var param = run.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
+
+                        if (param != null)
+                        {
+                            param.Value = formfield.Value.ToString();
+                            continue;
+                        }
+
+                        run.UrlParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                    }
+                    break;
+
+                case FormType.QueryParameters:
+                    run.QueryParameters.Clear();
+                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
+                    {
+                        var param = run.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
+
+                        if (param != null)
+                        {
+                            param.Value = formfield.Value.ToString();
+                            continue;
+                        }
+
+                        run.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                    }
+                    break;
+            }
+        }
+
+        private Run GetRun(int? runId)
+        {
+            if (runId == null)
+                return Settings.DefaultRunSettings;
+
+            return Settings.Runs[runId.Value];
         }
     }
 }
