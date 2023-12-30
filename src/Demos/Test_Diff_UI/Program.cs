@@ -8,11 +8,11 @@ namespace Test_Diff_UI
         public static void Main(string[] args)
         {
             // Settings
-            var settings = new RefactorHelperSettings
+            var settings = new RefactorHelperSettings(
+                baseUrl1: "https://localhost:44371", 
+                baseUrl2: "https://localhost:44371")
             {
                 RunOnStart = false,
-                BaseUrl1 = "https://localhost:44371",
-                BaseUrl2 = "https://localhost:44371"
             };
 
             var builder = WebApplication.CreateBuilder(args);

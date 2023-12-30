@@ -7,13 +7,47 @@ using Parameter = RefactorHelper.Models.Config.Parameter;
 
 namespace RefactorHelper.SwaggerProcessor
 {
-    public class SwaggerProcessorService
+    public class SwaggerProcessorService(RefactorHelperSettings settings)
     {
-        private RefactorHelperSettings Settings { get; }
+        private RefactorHelperSettings Settings { get; } = settings;
 
-        public SwaggerProcessorService(RefactorHelperSettings settings)
+        public static SwaggerProcessorOutput GetQueryParamsFromSwagger(string swaggerJson)
         {
-            Settings = settings;
+            var doc = JsonConvert.DeserializeObject<SwaggerDocument>(swaggerJson);
+
+            return new()
+            {
+                UrlParameters = GetParams(doc, "path"),
+                QueryParameters = GetParams(doc, "query"),
+                Requests = GetGetRequests(doc)
+            };
+        }
+
+        private static List<Parameter> GetParams(SwaggerDocument doc, string paramType)
+        {
+            var getRequestsWithParams = doc.paths
+                .Where(x => x.Value.get != null && x.Value.get.parameters != null)
+                .Select(x => x.Value.get).ToList();
+
+            var urlParams = getRequestsWithParams
+                .SelectMany(x => x.parameters.Where(y => y.@in == paramType))
+                .Distinct()
+                .ToList();
+
+            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).ToList();
+        }
+
+        private static List<RequestDetails> GetGetRequests(SwaggerDocument doc)
+        {
+            var getRequests = doc.paths
+               .Where(x => x.Value.get != null).ToList();
+
+            return getRequests.Select(x => new RequestDetails
+            {
+                Operation = x.Value.get,
+                Template = x.Key,
+                Path = x.Key
+            }).ToList();
         }
 
         public List<RequestWrapper> ProcessSwagger(string swaggerJson)
@@ -41,17 +75,17 @@ namespace RefactorHelper.SwaggerProcessor
             return result;
         }
 
-        private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, List<Parameter> parameters)
+        private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, Run run)
         {
             return new RequestDetails 
             {
                 Template = path.Key.ToLower(),
                 Operation = path.Value.get,
-                Path = GetPath(path.Key.ToLower(), path.Value.get, parameters)
+                Path = GetPath(path.Key.ToLower(), path.Value.get, run)
             };
         }
 
-        private string GetPath(string template, Operation operation, List<Parameter> parameters)
+        private string GetPath(string template, Operation operation, Run run)
         {
             var queryParams = new List<string>();
 
@@ -59,11 +93,11 @@ namespace RefactorHelper.SwaggerProcessor
             {
                 if(param.@in == "path")
                 {
-                    if(TryGetValue(param.name, out var result, parameters))
+                    if(TryGetValue(param.name, out var result, run.UrlParameters))
                     {
                         template = ReplaceUrlParam(template, param, result);
                     }
-                    else if (TryGetValue(param.name, out var result2, Settings.DefaultParameters))
+                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.UrlParameters))
                     {
                         template = ReplaceUrlParam(template, param, result2);
                     }
@@ -71,18 +105,11 @@ namespace RefactorHelper.SwaggerProcessor
                 }
                 if(param.@in == "query")
                 {
-                    var value = param.name;
+                    var hasRunValue = TryGetValue(param.name, out var result, run.QueryParameters);
+                    var hasDefaultValue = TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.QueryParameters);
 
-                    if (TryGetValue(param.name, out var result, parameters))
-                    {
-                        value = result;
-                    }
-                    else if (TryGetValue(param.name, out var result2, Settings.DefaultParameters))
-                    {
-                        value = result2;
-                    }
-
-                    queryParams.Add($"{param.name}={value}");
+                    if(hasRunValue || hasDefaultValue)
+                        queryParams.Add($"{param.name}={result ?? result2}");
                 }
             }
 

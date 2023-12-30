@@ -4,106 +4,77 @@ using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace RefactorHelper.App
 {
-    public class RefactorHelperApp
+    public class RefactorHelperApp(
+        RefactorHelperSettings settings,
+        RefactorHelperState state,
+        SwaggerProcessorService swaggerProcessorService,
+        RequestHandlerService requestHandlerService,
+        CompareService compareService,
+        ContentGeneratorService uiGeneratorService,
+        SidebarGeneratorService sidebarGeneratorService,
+        Formbuilder formbuilder)
     {
-        private RefactorHelperSettings Settings { get; set; }
-        private RefactorHelperState State { get; set; } = new();
+        public RefactorHelperSettings Settings { get; set; } = settings;
+        public RefactorHelperState State { get; set; } = state;
+        public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
+        public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
+        public CompareService CompareService { get; set; } = compareService;
+        public ContentGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
+        public SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
+        public Formbuilder Formbuilder { get; set; } = formbuilder;
 
-        private SwaggerProcessorService SwaggerProcessorService { get; set; }
-        private RequestHandlerService RequestHandlerService { get; set; }
-        private CompareService CompareService { get; set; }
-        private UIGeneratorService UIGeneratorService { get; set; }
-
-        public RefactorHelperApp(RefactorHelperSettings settings)
+        public async Task Initialize()
         {
-            Settings = SetDefaults(settings);
+            if(!State.Initialized)
+            {
+                await Reset();
 
-            // Setup Swagger Processor
-            SwaggerProcessorService = new SwaggerProcessorService(Settings);
-
-            // Setup Request Handler
-            RequestHandlerService = new RequestHandlerService(
-                new HttpClient
-                {
-                    BaseAddress = new Uri(Settings.BaseUrl1)
-                },
-                new HttpClient
-                {
-                    BaseAddress = new Uri(Settings.BaseUrl2)
-                }, 
-                Settings
-            );
-
-            // Compare Service
-            CompareService = new CompareService();
-
-            // UI Generator
-            UIGeneratorService = new UIGeneratorService(Settings.ContentFolder, Settings.OutputFolder);
+                // Run Once
+                State.Initialized = true;
+            }
         }
 
-        public async Task<string> OpenUI(HttpContext httpContext)
+        public async Task Reset()
         {
-            if(string.IsNullOrWhiteSpace(State.SwaggerJson))
-            {
-                var client = new HttpClient();
-                var result = await client.GetAsync(GetSwaggerUrl(httpContext));
-                State.SwaggerJson = await result.Content.ReadAsStringAsync();
-            }
+            // Process Swagger
+            var result = await Settings.HttpClient1.GetAsync(Settings.GetSwaggerUrl());
+            State.SwaggerJson = await result.Content.ReadAsStringAsync();
 
-            // Get requests from swagger
+            // Get requests from Swagger
+            State.SwaggerOutput = SwaggerProcessorService.GetQueryParamsFromSwagger(State.SwaggerJson);
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
-            if (Settings.RunOnStart)
-                await Run();
-
-            // Generate output
-            UIGeneratorService.GenerateUI(State, httpContext);
-
-            return State.GetCurrentRequest()?.ResultHtml ?? "";
+            // Generate html output
+            UIGeneratorService.GenerateBaseUI(State);
         }
 
-        public async Task<string> StaticCompare(string fileOne, string fileTwo)
+        public void ProcessSettings()
         {
-            var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
-            var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
+            // Combine Settings with State to generate the Final Requests
+            State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
-            var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
-
-            var html = UIGeneratorService.GenerateHtmlPage(compareResultPair);
-
-            return html;
+            // Generate html output
+            UIGeneratorService.GenerateBaseUI(State);
         }
 
-        public async Task<string> RunAll(HttpContext httpContext)
-        {
-            await Run();
-
-            // Generate output
-            UIGeneratorService.GenerateUI(State, httpContext);
-
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
-        }
-
-        private async Task Run()
+        public async Task<string> RunAll()
         {
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
 
             // Get diffs on responses
             CompareService.CompareResponses(State);
+
+            // Generate output
+            UIGeneratorService.GenerateBaseUI(State);
+
+            return UIGeneratorService.GetTestResultFragment();
         }
 
-        public string GetResultPage(HttpContext httpContext, int requestId)
-        {
-            State.CurrentRequest = requestId;
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
-        }
-
-        public async Task<string> RetryCurrentRequest(HttpContext httpContext)
+        public async Task<string> RetryCurrentRequestFragment()
         {
             // Perform single api request and update result
             await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
@@ -112,35 +83,23 @@ namespace RefactorHelper.App
             CompareService.CompareResponse(State.GetCurrentRequest());
 
             // Get Content Block to display in page
-            UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
-
-            return UIGeneratorService.GetSinglePageContent(State.GetCurrentRequest(), State, httpContext);
+            return UIGeneratorService.GetTestResultFragment();
         }
-
-        public string GetRequestListHtml() => UIGeneratorService.GetRequestListHtml();
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));
 
-        private static RefactorHelperSettings SetDefaults(RefactorHelperSettings settings)
+        #region Test Functions
+        public async Task<string> StaticCompare(string fileOne, string fileTwo)
         {
-            if (string.IsNullOrWhiteSpace(settings.OutputFolder))
-                settings.OutputFolder = Path.Combine(GetBinPath(), "Output");
+            var file1 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileOne));
+            var file2 = File.ReadAllText(Path.Combine(Settings.ContentFolder, fileTwo));
 
-            if (string.IsNullOrWhiteSpace(settings.ContentFolder))
-                settings.ContentFolder = Path.Combine(GetBinPath(), "Content");
+            var compareResultPair = CompareService.GetCompareResultPair(file1, file2);
 
-            return settings;
+            var html = UIGeneratorService.GetHtmlPage(compareResultPair);
+
+            return html;
         }
-
-        private static string GetBinPath() =>
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
-
-        private string GetSwaggerUrl(HttpContext httpContext)
-        {
-            if (!string.IsNullOrWhiteSpace(Settings.SwaggerUrl))
-                return Settings.SwaggerUrl;
-
-            return $"{httpContext.Request.Scheme}://{httpContext.Request.Host}{httpContext.Request.PathBase}/swagger/v1/swagger.json";
-        }
+        #endregion
     }
 }

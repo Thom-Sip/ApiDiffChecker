@@ -1,251 +1,162 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="/run-refactor-helper/htmx.min.js"></script>
-    <title>RefactorHelper</title>
-    <style>
-        .htmx-indicator {
-            opacity: 0
-        }
-
-        .htmx-request .htmx-indicator {
-            opacity: 1;
-            transition: opacity 200ms ease-in;
-        }
-
-        .htmx-request.htmx-indicator {
-            opacity: 1;
-            transition: opacity 200ms ease-in;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-
-        <div class="side-bar">
+   <head>
+      <meta charset="utf-8">
+      <link rel="stylesheet" type="text/css" href="styles.css">
+      <script src="/run-refactor-helper/htmx.min.js"></script>
+      <title>RefactorHelper</title>
+      <style>
+         .htmx-indicator {
+         opacity: 0
+         }
+         .htmx-request .htmx-indicator {
+         opacity: 1;
+         transition: opacity 200ms ease-in;
+         }
+         .htmx-request.htmx-indicator {
+         opacity: 1;
+         transition: opacity 200ms ease-in;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <div class="side-bar">
             <div class="side-bar-header">
-                <div class="side-bar-header-item">
-                    <button class="header-button">Requests</button>
-                </div>
-                <div class="side-bar-header-item">
-                    <button class="header-button">Settings</button>
-                </div>
+               <div class="side-bar-header-item">
+                  <button class="header-button">Requests</button>
+               </div>
+               <div class="side-bar-header-item">
+                  <button class="header-button" id="settings-button" hx-get="/run-refactor-helper/fragment/settings" hx-swap="innerHTML" hx-replace-url="/run-refactor-helper/settings" hx-target="#main-content">
+                  Settings
+                  </button>
+               </div>
             </div>
-
-            <div class="side-bar-content">
-                <div id="request-list-box" hx-get="https://localhost:44371/run-refactor-helper/request-list" hx-swap="innerHtml" hx-trigger="refresh-request-list from:body, load" class="">
-                    <div class="side-bar-group-header">Pending Request</div>
-                    <div class="side-bar-group-content">
-                        <ul>
-                        </ul>
-                    </div>
-
-                    <div class="side-bar-group-header">Failed Request</div>
-                    <div class="side-bar-group-content">
-                        <ul>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/0" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Bar</span></li>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/4007?message=Foo</span></li>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/3" hx-swap="innerHTML" hx-target="#result-container">200 /weatherforecast</span></li>
-                        </ul>
-                    </div>
-
-                    <div class="side-bar-group-header">Successfull Requests</div>
-                    <div class="side-bar-group-content">
-                        <ul>
-                            <li><span class="request-item" hx-get="https://localhost:44371/run-refactor-helper/2" hx-swap="innerHTML" hx-target="#result-container">200 /fruitbasket/random</span></li>
-                        </ul>
-                    </div>
-                </div>
+            <div id="side-bar-content" class="side-bar-content" hx-get="/run-refactor-helper/fragment/request-list" hx-swap="innerHtml" hx-trigger="refresh-request-list from:body, load">
+               <div class="side-bar-group">
+                  <button class="side-bar-group-header" onclick="collapse(this)">Settings</button>
+                  <div class="side-bar-group-content">
+                     <ul>
+                        <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Export Settings</span></li>
+                        <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Import Settings</span></li>
+                        <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Replace Values</span></li>
+                     </ul>
+                  </div>
+               </div>
             </div>
-        </div>
+            <div id="side-bar-content" class="side-bar-content" hx-get="/run-refactor-helper/fragment/request-list" hx-swap="innerHtml" hx-trigger="refresh-request-list from:body, load">
+                <div class="side-bar-group">
+                   <button class="side-bar-group-header" onclick="collapse(this)">Parameters</button>
+                   <div class="side-bar-group-content">
+                      <ul>
+                         <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Default Parameters</span></li>
+                         <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Run 0</span></li>
+                         <li><span class="request-item" hx-get="/run-refactor-helper/fragment/1" hx-replace-url="/run-refactor-helper/1" hx-swap="innerHTML" hx-target="#main-content">Run 1</span></li>
+                      </ul>
+                   </div>
+                </div>
+             </div>
 
-        <div class="main-box">
+         </div>
+         <div class="main-box">
             <div class="header">
-                <div class="header-title-container">
-                    <div class="header-title">RefactorHelper</div>
-                </div>
-                <div class="header-item">
-                    <button class="header-button" onclick="window.location.href='https://localhost:44371/run-refactor-helper/';">
-                        Reset
-                    </button>
-                </div>
-                <div class="header-item">
-                    <button class="header-button" id="retry-all-button" hx-get="https://localhost:44371/run-refactor-helper/run-all" hx-swap="innerHTML" hx-target="#result-container">
-                        Run All
-                    </button>
-                </div>
-                <div class="header-item">
-                    <button class="header-button" id="refresh-button" hx-get="https://localhost:44371/run-refactor-helper/retry" hx-swap="innerHTML" hx-target="#result-container">
-                        Run
-                    </button>
-                </div>
-                <div class="header-item">
-                    <button class="header-button">Mode</button>
-                </div>
+               <div class="header-title-container">
+                  <div class="header-title">RefactorHelper</div>
+               </div>
+               <div class="header-item">
+                  <button class="header-button" onclick="window.location.href='/run-refactor-helper/reset';">
+                  Reset
+                  </button>
+               </div>
+               <div class="header-item">
+                  <button class="header-button" id="retry-all-button" hx-get="/run-refactor-helper/fragment/run-all" hx-swap="innerHTML" hx-target="#main-content">
+                  Run All
+                  </button>
+               </div>
+               <div class="header-item">
+                  <button class="header-button" id="refresh-button" hx-get="/run-refactor-helper/fragment/retry" hx-swap="innerHTML" hx-target="#main-content">
+                  Run
+                  </button>
+               </div>
+               <div class="header-item">
+                  <button class="header-button">Mode</button>
+               </div>
             </div>
-
-            <div class="content-box" id="result-container">
-                <div class="result-container">
-                    <div class="result-container-header">
-                        <h1>/weatherforecast</h1>
-                        <div>Url: Url: https://localhost:44371/weatherforecast </div>
-                        <div>ResultCode: 200 OK</div>
-                    </div>
-                    <div class="result-container-body">
-                        <span>
-[
-{
-"date": "2023-12-26",
-"temperatureC": 6,
-"temperatureF": 42,
-"summary": "Hot",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-27",
-"temperatureC": 25,
-"temperatureF": 76,
-"summary": "Mild",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-28",
-"temperatureC": 22,
-"temperatureF": 71,
-"summary": "Cool",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-29",
-"temperatureC": -12,
-"temperatureF": 11,
-"summary": "Bracing",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-30",
-"temperatureC": -1,
-"temperatureF": 31,
-"summary": "Bracing",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-31",
-"temperatureC": 39,
-"temperatureF": 102,
-"summary": "Scorching",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2024-01-01",
-"temperatureC": 8,
-"temperatureF": 46,
-"summary": "Warm",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2024-01-02",
-"temperatureC": 51,
-"temperatureF": 123,
-"summary": "Freezing",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2024-01-03",
-"temperatureC": 41,
-"temperatureF": 105,
-"summary": "Warm",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2024-01-04",
-"temperatureC": 5,
-"temperatureF": 40,
-"summary": "Freezing",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-}
-]
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="result-container">
-                    <div class="result-container-header">
-                        <h1>/weatherforecast</h1>
-                        <div>Url: Url: https://localhost:44371/weatherforecast </div>
-                        <div>ResultCode: 200 OK</div>
-                    </div>
-                    <div class="result-container-body">
-                        <span>
-[
-{
-"date": "2023-12-26",
-"temperatureC": 34,
-"temperatureF": 93,
-"summary": "Sweltering",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-27",
-"temperatureC": 35,
-"temperatureF": 94,
-"summary": "Sweltering",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-28",
-"temperatureC": 45,
-"temperatureF": 112,
-"summary": "Hot",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-29",
-"temperatureC": -8,
-"temperatureF": 18,
-"summary": "Chilly",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-30",
-"temperatureC": 40,
-"temperatureF": 103,
-"summary": "Warm",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-},
-{
-"date": "2023-12-31",
-"temperatureC": -15,
-"temperatureF": 6,
-"summary": "Chilly",
-"timestamp": "[REPLACED_TIMESTAMP]00000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-00000000000000000000-0000-0000-0000-000000000000",
-"requestId": "00000000-0000-0000-0000-000000000000"
-}
-]
-                        </span>
-                    </div>
-
-                </div>
+            <div class="content-box" id="main-content">
+               <div class="result-container">
+                  <div class="result-container-header">
+                     <h1>Url Parameters</h1>
+                  </div>
+                  <div class="result-container-body">
+                     <div hx-target="this" hx-swap="outerHTML">
+                        <div>
+                           <div><label>customerId</label>: 400721</div>
+                        </div>
+                        <div>
+                           <div><label>accountId</label>: {accountId}</div>
+                        </div>
+                        <button hx-get="/run-refactor-helper/fragment/settings/UrlParameters?allowEdit=True" class="btn btn-primary">
+                        Click To Edit
+                        </button>
+                     </div>
+                     <!--<form hx-put="/run-refactor-helper/fragment/forms/save/UrlParameters" hx-target="this" hx-swap="outerHTML">
+                        <div>
+                        <div><label>customerId</label>: 400721</div>
+                        </div>
+                        
+                        
+                        <div>
+                        <div><label>accountId</label>: {accountId}</div>
+                        </div>
+                        
+                        
+                        
+                        <button class="btn">Submit</button>
+                        <button class="btn" hx-get="/run-refactor-helper/fragment/settings/UrlParameters?allowEdit=True">Cancel</button>
+                        </form>-->
+                  </div>
+               </div>
+               <div class="result-container">
+                  <div class="result-container-header">
+                     <h1>Query Parameters</h1>
+                  </div>
+                  <div class="result-container-body">
+                     <div hx-target="this" hx-swap="outerHTML">
+                        <div>
+                           <div><label>message</label>: {message}</div>
+                        </div>
+                        <button hx-get="/run-refactor-helper/fragment/settings/QueryParameters?allowEdit=True" class="btn btn-primary">
+                        Click To Edit
+                        </button>
+                     </div>
+                     <!--<form hx-put="/run-refactor-helper/fragment/forms/save/QueryParameters" hx-target="this" hx-swap="outerHTML">
+                        <div>
+                        <div><label>message</label>: {message}</div>
+                        </div>
+                        
+                        
+                        
+                        <button class="btn">Submit</button>
+                        <button class="btn" hx-get="/run-refactor-helper/fragment/settings/QueryParameters?allowEdit=True">Cancel</button>
+                        </form>-->
+                  </div>
+               </div>
+               <div class="result-container">
+                  <div class="result-container-header">
+                     <h1>Replace Values</h1>
+                  </div>
+                  <div class="result-container-body">
+                     [REPLACE_VALUES]
+                  </div>
+               </div>
             </div>
-        </div>
-    </div>
-
-</body>
+         </div>
+      </div>
+      <script>
+         function collapse(e) {
+             var content = e.nextElementSibling;
+             content.classList.toggle("item-hidden");
+         }
+         
+      </script>
+   </body>
 </html>

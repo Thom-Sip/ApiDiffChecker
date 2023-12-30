@@ -19,8 +19,11 @@ body, html {
     --padding: 8px;
     --padding-small: 3px;
 
+    --button-padding: var(--padding) var(--padding-large) var(--padding) var(--padding-large);
+
     --border-color: rgb(13, 17, 44);
     --border-width: 1px;
+    --border-width-large: 2px;
     --border: var(--border-width) solid var(--border-color);
 
     --border-radius: 6px;

@@ -6,11 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace RefactorHelper.RequestHandler
 {
-    public class RequestHandlerService(HttpClient client1, HttpClient client2, RefactorHelperSettings settings)
+    public class RequestHandlerService(RefactorHelperSettings settings)
     {
-        private HttpClient _client1 { get; } = client1;
-        private HttpClient _client2 { get; } = client2;
-        private RefactorHelperSettings _settings { get; } = settings;
+        private RefactorHelperSettings Settings { get; } = settings;
 
         public async Task QueryApis(RefactorHelperState state)
         {
@@ -22,8 +20,8 @@ namespace RefactorHelper.RequestHandler
 
         public async Task SetResponses(RequestWrapper requestWrapper)
         {
-            var request1 = _client1.GetAsync(requestWrapper.Request.Path);
-            var request2 = _client2.GetAsync(requestWrapper.Request.Path);
+            var request1 = Settings.HttpClient1.GetAsync(requestWrapper.Request.Path);
+            var request2 = Settings.HttpClient2.GetAsync(requestWrapper.Request.Path);
 
             await Task.WhenAll(request1, request2);
 
@@ -41,7 +39,7 @@ namespace RefactorHelper.RequestHandler
             };
         }
 
-        private RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
+        private static RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
         {
             return new RefactorTestResult
             {
@@ -56,7 +54,7 @@ namespace RefactorHelper.RequestHandler
             {
                 var responseObj1 = JsonConvert.DeserializeObject<object>(response);
 
-                if (_settings.PropertiesToReplace.Count > 0)
+                if (Settings.DefaultRunSettings.PropertiesToReplace.Count > 0)
                 {
                     if(responseObj1 is JArray arr)
                     {
@@ -64,7 +62,7 @@ namespace RefactorHelper.RequestHandler
                         {
                             foreach (JProperty attributeProperty in item.Cast<JProperty>())
                             {
-                                var replaceProp = _settings.PropertiesToReplace.FirstOrDefault(x => 
+                                var replaceProp = Settings.DefaultRunSettings.PropertiesToReplace.FirstOrDefault(x => 
                                     x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
 
                                 if (replaceProp != null)

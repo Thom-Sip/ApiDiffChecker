@@ -22,7 +22,7 @@ namespace Basic_Setup_Demo.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
-            return Enumerable.Range(1, 4 + Random.Shared.Next(8)).Select(index => new WeatherForecast
+            return Enumerable.Range(1,  1 + Random.Shared.Next(5)).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
