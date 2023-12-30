@@ -105,20 +105,11 @@ namespace RefactorHelper.UIGenerator
            .SetSideBar(GetSettingsSideBarFragment())
            .Html;
 
-        public string GetSettingsFragment(int runId)
+        public string GetSettingsFragment(int? runId = null)
         {
             var result = _settingsFragmentTemplate
                 .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false, runId))
                 .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false, runId));
-
-            return result;
-        }
-
-        public string GetSettingsFragment()
-        {
-            var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false));
 
             return result;
         }
