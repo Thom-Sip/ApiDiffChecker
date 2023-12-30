@@ -1,10 +1,12 @@
 /* code display */
-span {
-    white-space: pre-wrap;
-    font-family: 'Courier New', Courier, monospace;
-    overflow-wrap: anywhere;
-    font-size: .8rem;
-    line-height: 10px;
+.result-container-body {
+    span {
+        white-space: pre-wrap;
+        font-family: 'Courier New', Courier, monospace;
+        overflow-wrap: anywhere;
+        font-size: .8rem;
+        line-height: 10px;
+    }
 }
 
 .content {

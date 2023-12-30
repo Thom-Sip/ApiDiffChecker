@@ -45,6 +45,7 @@ namespace RefactorHelper.App
             app.SettingsRunByIdFragment(myApp);
             app.SettingsSideBarFragment(myApp);
             app.AddRunSettingsSideBarFragment(myApp);
+            app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
             app.SaveFormFragment(myApp);
 
@@ -244,6 +245,18 @@ namespace RefactorHelper.App
             app.MapGet(Url.Fragment.SideBarSettingsAddRun, async (HttpContext context) =>
             {
                 myApp.Settings.Runs.Add(new());
+                var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
+                await context.Response.WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void RemoveRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapDelete($"{Url.Fragment.SideBarSettingsRemoveRun}/{{runId}}", async (HttpContext context, int runId) =>
+            {
+                myApp.Settings.Runs.RemoveAt(runId);
                 var result = myApp.UIGeneratorService.GenerateSettingsSideBarFragment();
                 await context.Response.WriteHtmlResponse(result);
 

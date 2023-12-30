@@ -92,6 +92,30 @@
         border-top: 0px;
         background-color: var(--main-color-lighter);
 
+        .side-bar-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .request-item-content {
+                cursor: pointer;
+                font-family: Arial;
+                border: none;
+                flex: 1;
+                padding: var(--padding);
+            }
+
+            .request-item-delete-button {
+                flex: 0 0 1em;
+                cursor: pointer;
+                font-family: Arial;
+                font-weight: 900;
+                font-size: small;
+                color: var(--text-color-dark);
+                padding: var(--padding);
+            }
+        }
+
         &:hover {
             background-color: var(--main-color-lightest);
         }
@@ -103,7 +127,6 @@
 
     .request-item {
         display: block;
-        padding: var(--padding);
 
         a {
             color: var(--text-color-dark);

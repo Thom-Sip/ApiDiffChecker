@@ -123,6 +123,27 @@ body, html {
   border-top: 0px;
   background-color: var(--main-color-lighter);
 }
+.side-bar-group-content > ul > li .side-bar-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.side-bar-group-content > ul > li .side-bar-item .request-item-content {
+  cursor: pointer;
+  font-family: Arial;
+  border: none;
+  flex: 1;
+  padding: var(--padding);
+}
+.side-bar-group-content > ul > li .side-bar-item .request-item-delete-button {
+  flex: 0 0 1em;
+  cursor: pointer;
+  font-family: Arial;
+  font-weight: 900;
+  font-size: small;
+  color: var(--text-color-dark);
+  padding: var(--padding);
+}
 .side-bar-group-content > ul > li:hover {
   background-color: var(--main-color-lightest);
 }
@@ -131,7 +152,6 @@ body, html {
 }
 .side-bar-group-content .request-item {
   display: block;
-  padding: var(--padding);
 }
 .side-bar-group-content .request-item a {
   color: var(--text-color-dark);
@@ -246,7 +266,7 @@ body, html {
 }
 
 /* code display */
-span {
+.result-container-body span {
   white-space: pre-wrap;
   font-family: "Courier New", Courier, monospace;
   overflow-wrap: anywhere;

@@ -36,6 +36,8 @@
             public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";
 
             public static string SideBarSettingsAddRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/add";
+
+            public static string SideBarSettingsRemoveRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/remove";
         }
 
         public static class Download

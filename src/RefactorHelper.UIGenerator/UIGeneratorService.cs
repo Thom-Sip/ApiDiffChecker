@@ -17,6 +17,7 @@ namespace RefactorHelper.UIGenerator
         protected string _diffBoxTemplate { get; set; }
         protected string _sideBarGroupTemplate { get; set; }
         protected string _sideBarGroupItemTemplate { get; set; }
+        protected string _sideBarGroupItemTemplateWithDelete { get; set; }
         protected string _sideBarDownloadTemplate { get; set; }
         protected string _settingsFragmentTemplate { get; set; }
 
@@ -39,6 +40,7 @@ namespace RefactorHelper.UIGenerator
             _diffBoxTemplate = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
             _sideBarGroupTemplate = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
             _sideBarGroupItemTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
+            _sideBarGroupItemTemplateWithDelete = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
             _sideBarDownloadTemplate = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
             _settingsFragmentTemplate = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
             _outputFolder = settings.OutputFolder;
@@ -210,10 +212,17 @@ namespace RefactorHelper.UIGenerator
 
             for(int i = 0; i < Settings.Runs.Count; i++)
             {
-                sb.Append(_sideBarGroupItemTemplate
+                var template = i == 0
+                    ? _sideBarGroupItemTemplate
+                    : _sideBarGroupItemTemplateWithDelete;
+
+                sb.Append(template
                     .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
                     .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
+                    .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
                     .Replace("[HX_TARGET]", "#main-content")
+                    .Replace("[LI-ID]", $"run-button-{i}")
+                    .Replace("[HX_DELETE_TARGET]", "#side-bar-content")
                     .Replace("[TEXT]", $"Run {i}"));
             }
 
