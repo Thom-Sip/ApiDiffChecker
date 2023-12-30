@@ -105,18 +105,11 @@ namespace RefactorHelper.SwaggerProcessor
                 }
                 if(param.@in == "query")
                 {
-                    var value = param.name;
+                    var hasRunValue = TryGetValue(param.name, out var result, run.QueryParameters);
+                    var hasDefaultValue = TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.QueryParameters);
 
-                    if (TryGetValue(param.name, out var result, run.QueryParameters))
-                    {
-                        value = result;
-                    }
-                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.QueryParameters))
-                    {
-                        value = result2;
-                    }
-
-                    queryParams.Add($"{param.name}={value}");
+                    if(hasRunValue || hasDefaultValue)
+                        queryParams.Add($"{param.name}={result ?? result2}");
                 }
             }
 
