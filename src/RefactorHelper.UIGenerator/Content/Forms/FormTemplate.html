@@ -1,17 +1,13 @@
 <div hx-target="this" hx-swap="outerHTML">
 
-    [FORM_FIELDS]
-
-    <button hx-get="[GET_URL]" class="btn btn-primary">
-        Click To Edit
-    </button>
+    <div class="form-container">
+        <div class="form-fields-container">
+            [FORM_FIELDS]
+        </div>
+        <div class="form-button-container">
+            <button hx-get="[GET_URL]" class="btn btn-primary">
+                Edit
+            </button>
+        </div>
+    </div>
 </div>
-
-
-<!--<form hx-put="[PUT_URL]" hx-target="this" hx-swap="outerHTML">
-
-    [FORM_FIELDS]
-
-    <button class="btn">Submit</button>
-    <button class="btn" hx-get="[GET_URL]">Cancel</button>
-</form>-->

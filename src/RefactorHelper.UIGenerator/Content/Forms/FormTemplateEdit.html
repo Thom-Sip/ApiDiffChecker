@@ -1,7 +1,15 @@
-<form hx-put="[PUT_URL]" hx-target="this" hx-swap="outerHTML">
+<div hx-target="this" hx-swap="outerHTML">
+    <form hx-put="[PUT_URL]" hx-target="this" hx-swap="outerHTML">
+        <div class="form-container">
 
-    [FORM_FIELDS]
+            <div class="form-fields-container">
+                [FORM_FIELDS]
+            </div>
+            <div class="form-button-container">
+                <button>Save</button>
+                <button hx-get="[GET_URL]">Cancel</button>
+            </div>
 
-    <button class="btn">Submit</button>
-    <button class="btn" hx-get="[GET_URL]">Cancel</button>
-</form>
+        </div>
+    </form>
+</div>
