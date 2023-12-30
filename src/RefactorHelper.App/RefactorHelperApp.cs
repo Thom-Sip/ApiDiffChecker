@@ -16,7 +16,8 @@ namespace RefactorHelper.App
         RequestHandlerService requestHandlerService,
         CompareService compareService,
         ContentGeneratorService uiGeneratorService,
-        SidebarGeneratorService sidebarGeneratorService)
+        SidebarGeneratorService sidebarGeneratorService,
+        Formbuilder formbuilder)
     {
         public RefactorHelperSettings Settings { get; set; } = settings;
         public RefactorHelperState State { get; set; } = state;
@@ -25,6 +26,7 @@ namespace RefactorHelper.App
         public CompareService CompareService { get; set; } = compareService;
         public ContentGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
         public SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
+        public Formbuilder Formbuilder { get; set; } = formbuilder;
 
         public async Task Initialize()
         {

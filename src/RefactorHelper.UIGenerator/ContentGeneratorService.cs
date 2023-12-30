@@ -79,8 +79,8 @@ namespace RefactorHelper.UIGenerator
             State.CurrentRun = runId;
 
             var result = _settingsFragmentTemplate
-                .Replace("[URL_PARAMETERS]", GetFormFragment(FormType.UrlParameters, false, runId))
-                .Replace("[QUERY_PARAMETERS]", GetFormFragment(FormType.QueryParameters, false, runId))
+                .Replace("[URL_PARAMETERS]", Formbuilder.GetFormFragment(FormType.UrlParameters, false, runId))
+                .Replace("[QUERY_PARAMETERS]", Formbuilder.GetFormFragment(FormType.QueryParameters, false, runId))
                 .Replace("[TITLE]", GetSettingsTitle(runId))
                 .Replace("[TEXT]", GetSettingsText(runId))
                 .Replace("[BUTTON-TEXT]", GetSettingsCopyButtontext(runId));
@@ -107,53 +107,6 @@ namespace RefactorHelper.UIGenerator
             return runId == null
                 ? "Copy to new Run"
                 : "Duplicate Run";
-        }
-
-        public string GetFormFragment(FormType formType, bool allowEdit, int? runId = null)
-        {
-            var getUrl = $"{Url.Fragment.FormPut}/{formType}";
-            var putUrl = $"{Url.Fragment.FormGet}/{formType}?allowEdit={!allowEdit}";
-
-            if(runId != null)
-            {
-                getUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}";
-                putUrl = $"{Url.Fragment.FormGet}/{formType}?runId={runId}&allowEdit={!allowEdit}";
-            }
-
-            return Formbuilder.GetForm(
-                    GetFormData(formType, runId),
-                    GetDefaultValues(formType),
-                    getUrl, putUrl, allowEdit);
-        }
-
-        private List<Parameter> GetFormData(FormType formType, int? runId)
-        {
-            if(runId != null)
-            {
-                return formType switch
-                {
-                    FormType.QueryParameters => Settings.Runs[runId.Value].QueryParameters,
-                    FormType.UrlParameters => Settings.Runs[runId.Value].UrlParameters,
-                    _ => throw new NotImplementedException()
-                };
-            }
-
-            return formType switch
-            {
-                FormType.QueryParameters => Settings.DefaultRunSettings.QueryParameters,
-                FormType.UrlParameters => Settings.DefaultRunSettings.UrlParameters,
-                _ => throw new NotImplementedException()
-            };
-        }
-
-        private List<Parameter> GetDefaultValues(FormType formType)
-        {
-            return formType switch
-            {
-                FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
-                FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
-                _ => throw new NotImplementedException()
-            }; ;
         }
 
         private string GetContent(RequestWrapper wrapper) =>

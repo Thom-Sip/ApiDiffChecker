@@ -195,7 +195,7 @@ namespace RefactorHelper.App
             app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, int? runId, HttpContext context) =>
             {
                 await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetFormFragment(formType, allowEdit, runId);
+                var result = myApp.Formbuilder.GetFormFragment(formType, allowEdit, runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -208,7 +208,7 @@ namespace RefactorHelper.App
             {
                 myApp.SaveForm(formType, formData, runId);
                 myApp.ProcessSettings();
-                var result = myApp.UIGeneratorService.GetFormFragment(formType, false, runId);
+                var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
                 await context.Response
                     .SetHxTriggerHeader("refresh-settings-list")
