@@ -18,7 +18,7 @@ namespace RefactorHelper.UIGenerator
             return "Pending";
         }
 
-        protected string GetResultCode(RefactorTestResult? result)
+        protected static string GetResultCode(RefactorTestResult? result)
         {
             var statusCode = result?.ResponseObject?.StatusCode;
             return statusCode != null
@@ -26,7 +26,7 @@ namespace RefactorHelper.UIGenerator
                 : "_";
         }
 
-        protected string GetResultCodeString(RefactorTestResult? result)
+        protected static string GetResultCodeString(RefactorTestResult? result)
         {
             var statusCode = result?.ResponseObject?.StatusCode;
             return statusCode != null
