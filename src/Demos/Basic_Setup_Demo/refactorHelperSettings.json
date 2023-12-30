@@ -14,12 +14,7 @@
         "Value": "222"
       }
     ],
-    "QueryParameters": [
-      {
-        "Key": "message",
-        "Value": "Yooo"
-      }
-    ],
+    "QueryParameters": [],
     "PropertiesToReplace": [
       {
         "Key": "Timestamp",
@@ -46,10 +41,105 @@
       "UrlParameters": [
         {
           "Key": "customerId",
-          "Value": "202"
+          "Value": "1001"
         }
       ],
-      "QueryParameters": [],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run1"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1002"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run2"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1003"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run3"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1004"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run4"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1005"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run5"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1006"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run6"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1007"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run7"
+        }
+      ],
       "PropertiesToReplace": []
     }
   ]

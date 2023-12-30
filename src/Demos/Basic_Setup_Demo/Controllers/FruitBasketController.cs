@@ -28,7 +28,6 @@ namespace Basic_Setup_Demo.Controllers
                 $"Message_{message}",
                 Summaries[Random.Shared.Next(Summaries.Length)],
                 Summaries[Random.Shared.Next(Summaries.Length)],
-                Summaries[Random.Shared.Next(Summaries.Length)]
             };
         }
 
