@@ -13,13 +13,13 @@ namespace RefactorHelper.UIGenerator
         SidebarGeneratorService sidebarGeneratorService,
         Formbuilder formBuilder) : BaseContentGenerator(settings, state)
     {
-        protected string _template { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Template.html");
-        protected string _contentTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
-        protected string _diffBoxTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
-        protected string _settingsFragmentTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
+        protected string _template { get; } = File.ReadAllText($"{settings.ContentFolder}/Template.html");
+        protected string _contentTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/ContentTemplate.html");
+        protected string _diffBoxTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/DiffBoxTemplate.html");
+        protected string _settingsFragmentTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Settings/SettingsFragment.html");
 
-        protected Formbuilder Formbuilder { get; set; } = formBuilder;
-        protected SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
+        protected Formbuilder Formbuilder { get; } = formBuilder;
+        protected SidebarGeneratorService SidebarGeneratorService { get; } = sidebarGeneratorService;
 
         public void GenerateBaseUI(RefactorHelperState state)
         {

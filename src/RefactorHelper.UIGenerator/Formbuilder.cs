@@ -7,17 +7,17 @@ namespace RefactorHelper.UIGenerator
 {
     public class Formbuilder(RefactorHelperSettings settings, RefactorHelperState state)
     {
-        protected string _formTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplate.html");
+        protected string _formTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplate.html");
 
-        protected string _formTemplateEdit { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplateEdit.html");
+        protected string _formTemplateEdit { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplateEdit.html");
 
-        protected string _formFieldTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplate.html");
+        protected string _formFieldTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplate.html");
 
-        protected string _formFieldTemplateEdit { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEdit.html");
+        protected string _formFieldTemplateEdit { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEdit.html");
 
-        protected RefactorHelperSettings Settings { get; set; } = settings;
+        protected RefactorHelperSettings Settings { get; } = settings;
 
-        protected RefactorHelperState State { get; set; } = state;
+        protected RefactorHelperState State { get; } = state;
 
         public string GetFormFragment(FormType formType, bool allowEdit, int? runId = null)
         {

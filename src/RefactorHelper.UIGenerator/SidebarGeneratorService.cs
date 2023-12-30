@@ -8,10 +8,10 @@ namespace RefactorHelper.UIGenerator
         RefactorHelperSettings settings,
         RefactorHelperState state) : BaseContentGenerator(settings, state)
     {
-        protected string _sideBarGroupTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
-        protected string _sideBarGroupItemTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
-        protected string _sideBarGroupItemTemplateWithDelete { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
-        protected string _sideBarDownloadTemplate { get; set; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
+        protected string _sideBarGroupTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
+        protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
+        protected string _sideBarGroupItemTemplateWithDelete { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
+        protected string _sideBarDownloadTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
 
         public string GetSettingsSideBarFragment() =>
             GenerateSettingsSideBarFragment(State.CurrentRun);

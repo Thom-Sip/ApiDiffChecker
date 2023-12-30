@@ -6,9 +6,9 @@ namespace RefactorHelper.UIGenerator
 {
     public class BaseContentGenerator(RefactorHelperSettings settings, RefactorHelperState state)
     {
-        protected RefactorHelperState State { get; set; } = state;
+        protected RefactorHelperState State { get; } = state;
 
-        protected RefactorHelperSettings Settings { get; set; } = settings;
+        protected RefactorHelperSettings Settings { get; } = settings;
 
         protected static string GetResultCodeHeaderText(RequestWrapper? wrapper)
         {
