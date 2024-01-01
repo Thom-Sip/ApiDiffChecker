@@ -15,6 +15,8 @@ namespace RefactorHelper.UIGenerator
 
         protected string _formFieldTemplateEdit { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEdit.html");
 
+        protected string _formFieldTemplateEditWithKey { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEditKeyAndValue.html");
+
         protected RefactorHelperSettings Settings { get; } = settings;
 
         protected RefactorHelperState State { get; } = state;
@@ -37,7 +39,8 @@ namespace RefactorHelper.UIGenerator
                     GetDefaultValues(formType),
                     getUrl, putUrl, allowEdit, 
                     AllowAdd: formType == FormType.Replacevalues,
-                    addRowUrl: addUrl);
+                    addRowUrl: addUrl,
+                    formType == FormType.Replacevalues ? _formFieldTemplateEditWithKey : _formFieldTemplateEdit);
         }
 
         private List<Parameter> GetFormData(FormType formType, int? runId)
@@ -73,12 +76,12 @@ namespace RefactorHelper.UIGenerator
             }; ;
         }
 
-        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl)
+        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl, string editTemplate)
         {
             var text = (allowEdit ? _formTemplateEdit : _formTemplate)
                 .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", getUrl)
-                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit))))
+                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit, editTemplate))))
                 .Replace("[DISABLED]", allowEdit ? "" : "disabled")
                 .Replace("[ADD_NEW_BUTTON]", AllowAdd ? GetAddRowButton(addRowUrl) : "");
 
@@ -90,11 +93,11 @@ namespace RefactorHelper.UIGenerator
             return $"<button hx-put=\"{url}\">New</button>";
         }
 
-        private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit)
+        private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit, string editTemplate)
         {
             var existingSettings = parameters.FirstOrDefault(x => x.Key == parameter.Key);
 
-            return (allowEdit ? _formFieldTemplateEdit : _formFieldTemplate)
+            return (allowEdit ? editTemplate : _formFieldTemplate)
                 .Replace("[KEY]", parameter.Key)
                 .Replace("[VALUE]", existingSettings?.Value ?? string.Empty);
         }
@@ -114,27 +117,29 @@ namespace RefactorHelper.UIGenerator
                     break;
 
                 case FormType.Replacevalues:
-                    run.PropertiesToReplace = SetParameterSettings(form);
+                    run.PropertiesToReplace = SetParameterSettingsWithKeys(form);
                     break;
             }
         }
 
-        public void AddRow(FormType formType, IFormCollection form, int? runId)
+        public void AddRow(FormType formType, int? runId)
         {
             var run = GetRun(runId);
 
             switch (formType)
             {
-                case FormType.Replacevalues:
-                    run.PropertiesToReplace.Add(new Parameter("", ""));
-                    break;
-
                 case FormType.UrlParameters:
                     run.UrlParameters.Add(new Parameter("", ""));
                     break;
 
                 case FormType.QueryParameters:
                     run.QueryParameters.Add(new Parameter("", ""));
+                    break;
+
+                case FormType.Replacevalues:
+                    run.PropertiesToReplace.Add(new Parameter(
+                        $"key{run.PropertiesToReplace.Count}",
+                        $"value{run.PropertiesToReplace.Count}"));
                     break;
             }
         }
@@ -147,9 +152,26 @@ namespace RefactorHelper.UIGenerator
             return Settings.Runs[runId.Value];
         }
 
+        private static List<Parameter> SetParameterSettingsWithKeys(IFormCollection form)
+        {
+            var result = new List<Parameter>();
+            for (int i = 0; i < form.Count; i +=2)
+            {
+                var key = form.Skip(i).FirstOrDefault();
+                var value = form.Skip(i + 1).FirstOrDefault();
+
+                if (string.IsNullOrWhiteSpace(key.Value.ToString()))
+                    continue;
+
+                result.Add(new Parameter(key.Value.ToString(), value.Value.ToString()));
+            }
+
+            return result;
+        }
+
         private static List<Parameter> SetParameterSettings(IFormCollection form)
         {
-            return form.Where(x => !string.IsNullOrWhiteSpace(x.Value))
+            return form.Where(x => !string.IsNullOrWhiteSpace(x.Key))
                        .Select(x => new Parameter(x.Key, x.Value.ToString()))
                        .ToList();
         }

@@ -33,6 +33,12 @@
     <Folder Include="Styles\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Content\Forms\FormFieldTemplateEditKeyAndValue.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
     <Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
 	    <Exec Command="sass --version" ContinueOnError="true">
 		    <Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
