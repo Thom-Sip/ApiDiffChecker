@@ -37,7 +37,16 @@ namespace RefactorHelper.UIGenerator
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
-            sb.Append(_sideBarDownloadTemplate);
+
+            sb.Append(_sideBarDownloadTemplate
+                .Replace("[TEXT]", "View"));
+
+            sb.Append(_sideBarGroupItemTemplate
+              .Replace("[CSS_CLASS]", "request-item")
+              .Replace("[GET_URL]", Url.Fragment.SaveSettingsToDisk)
+              .Replace("[SET_URL]", Url.Page.Root)
+              .Replace("[HX_TARGET]", Section.MainContent)
+              .Replace("[TEXT]", "Save to disk"));
 
             sb.Append(_sideBarGroupItemTemplate
               .Replace("[CSS_CLASS]", "request-item")
@@ -45,13 +54,6 @@ namespace RefactorHelper.UIGenerator
               .Replace("[SET_URL]", Url.Page.Root)
               .Replace("[HX_TARGET]", Section.MainContent)
               .Replace("[TEXT]", "Apply Settings"));
-
-            sb.Append(_sideBarGroupItemTemplate
-              .Replace("[CSS_CLASS]", "request-item")
-              .Replace("[GET_URL]", Url.Fragment.SaveSettingsToDisk)
-              .Replace("[SET_URL]", Url.Page.Root)
-              .Replace("[HX_TARGET]", Section.MainContent)
-              .Replace("[TEXT]", "Save Settings"));
 
             sb.Append("</ul>");
             return sb.ToString();
