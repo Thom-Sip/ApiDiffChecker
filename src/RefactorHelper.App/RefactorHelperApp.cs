@@ -4,6 +4,7 @@ using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
+using Newtonsoft.Json;
 
 namespace RefactorHelper.App
 {
@@ -88,6 +89,25 @@ namespace RefactorHelper.App
 
             // Get Content Block to display in page
             return UIGeneratorService.GetTestResultFragment();
+        }
+
+        public void AddRun() => Settings.Runs.Add(new());
+
+        public void DuplicateRun(int? runId)
+        {
+            if (runId == null)
+            {
+                Settings.Runs.Add(CopyItem(Settings.DefaultRunSettings));
+                return;
+            }
+
+            Settings.Runs.Add(CopyItem(Settings.Runs[runId.Value]));
+        }
+
+        public T CopyItem<T>(T item)
+        {
+            var json = JsonConvert.SerializeObject(item);
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));

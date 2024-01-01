@@ -195,7 +195,22 @@ namespace RefactorHelper.App
             // Run single request and return html to replace result in page
             app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
             {
-                myApp.Settings.Runs.Add(new());
+                myApp.AddRun();
+                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void DuplicateRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context, int? runId) =>
+            {
+                myApp.DuplicateRun(runId);
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
 
                 await context.Response
