@@ -36,7 +36,7 @@ namespace RefactorHelper.UIGenerator
 
             return GetForm(
                     GetFormData(formType, runId),
-                    GetDefaultValues(formType),
+                    GetDefaultValues(formType, runId),
                     getUrl, putUrl, allowEdit, 
                     AllowAdd: formType == FormType.Replacevalues,
                     addRowUrl: addUrl,
@@ -65,13 +65,13 @@ namespace RefactorHelper.UIGenerator
             };
         }
 
-        private List<Parameter> GetDefaultValues(FormType formType)
+        private List<Parameter> GetDefaultValues(FormType formType, int? runId)
         {
             return formType switch
             {
                 FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
                 FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
-                FormType.Replacevalues => Settings.DefaultRunSettings.PropertiesToReplace,
+                FormType.Replacevalues => runId == null ? Settings.DefaultRunSettings.PropertiesToReplace : Settings.Runs[runId.Value].PropertiesToReplace,
                 _ => throw new NotImplementedException()
             }; ;
         }
@@ -141,9 +141,7 @@ namespace RefactorHelper.UIGenerator
                     break;
 
                 case FormType.Replacevalues:
-                    run.PropertiesToReplace.Add(new Parameter(
-                        $"key{run.PropertiesToReplace.Count}",
-                        $"value{run.PropertiesToReplace.Count}"));
+                    run.PropertiesToReplace.Add(new Parameter("", ""));
                     break;
             }
         }
