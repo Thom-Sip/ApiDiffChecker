@@ -45,10 +45,14 @@ namespace RefactorHelper.App
             app.RequestsSideBarFragment(myApp);
             app.SettingsFragment(myApp);
             app.SettingsRunByIdFragment(myApp);
+            app.AddNewRunFragment(myApp);
+            app.DuplicateRunFragment(myApp);
             app.SettingsSideBarFragment(myApp);
-            app.AddRunSettingsSideBarFragment(myApp);
+            app.ApplySettingsFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
+            app.AddRowToFormFragment(myApp);
+            app.DeleteRowFromFormFragment(myApp);
             app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
@@ -127,7 +131,7 @@ namespace RefactorHelper.App
             {
                 var result = await myApp.RunAll();
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -140,7 +144,7 @@ namespace RefactorHelper.App
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -153,7 +157,7 @@ namespace RefactorHelper.App
             {
                 var result = await myApp.RetryCurrentRequestFragment();
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -168,7 +172,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -183,8 +187,52 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void AddNewRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
+            {
+                myApp.AddRun();
+                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void DuplicateRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet(Url.Fragment.CopyRun, async (HttpContext context, int? runId) =>
+            {
+                myApp.DuplicateRun(runId);
+                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void ApplySettingsFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet(Url.Fragment.ApplySettings, async (HttpContext context, int? runId = null) =>
+            {
+                await myApp.Reset();
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
@@ -195,10 +243,45 @@ namespace RefactorHelper.App
             app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, int? runId, HttpContext context) =>
             {
                 await myApp.Initialize();
+                myApp.ClearEmptyReplaceValues(runId);
                 var result = myApp.Formbuilder.GetFormFragment(formType, allowEdit, runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
+        }
+
+        private static void AddRowToFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapPut($"{Url.Fragment.FormPut}/{{formType}}/add", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
+            {
+                myApp.Formbuilder.SaveForm(formType, formData, runId);
+                myApp.Formbuilder.AddRow(formType, runId);
+                myApp.ProcessSettings();
+                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
+        }
+
+        private static void DeleteRowFromFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapDelete($"{Url.Fragment.FormDeleteRow}/{{formType}}", async (HttpContext context, FormType formType, int? runId, int rowId, IFormCollection formData) =>
+            {
+                myApp.Formbuilder.SaveForm(formType, formData, runId);
+                myApp.Formbuilder.DeleteRow(formType, runId, rowId);
+                myApp.ProcessSettings();
+                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
         }
 
         private static void SaveFormFragment(this WebApplication app, RefactorHelperApp myApp)
@@ -211,7 +294,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -234,18 +317,6 @@ namespace RefactorHelper.App
             app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context) =>
             {
                 var result = myApp.SidebarGeneratorService.GetSettingsSideBarFragment();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void AddRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettingsAddRun, async (HttpContext context) =>
-            {
-                myApp.Settings.Runs.Add(new());
-                var result = myApp.SidebarGeneratorService.GenerateSettingsSideBarFragment(null);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();

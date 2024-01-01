@@ -4,6 +4,7 @@ using RefactorHelper.UIGenerator;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
+using Newtonsoft.Json;
 
 namespace RefactorHelper.App
 {
@@ -39,6 +40,10 @@ namespace RefactorHelper.App
 
         public async Task Reset()
         {
+            // State
+            State.CurrentRequest = 0;
+            State.CurrentRun = null;
+
             // Process Swagger
             var result = await Settings.HttpClient1.GetAsync(Settings.GetSwaggerUrl());
             State.SwaggerJson = await result.Content.ReadAsStringAsync();
@@ -84,6 +89,41 @@ namespace RefactorHelper.App
 
             // Get Content Block to display in page
             return UIGeneratorService.GetTestResultFragment();
+        }
+
+        public void ClearEmptyReplaceValues(int? runId)
+        {
+            if (runId == null)
+            {
+                Settings.DefaultRunSettings.PropertiesToReplace = 
+                    Settings.DefaultRunSettings.PropertiesToReplace
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Key)).ToList();
+
+                return;
+            } 
+
+            Settings.Runs[runId.Value].PropertiesToReplace = 
+                Settings.Runs[runId.Value].PropertiesToReplace
+                .Where(x => !string.IsNullOrWhiteSpace(x.Key)).ToList();
+        }
+
+        public void AddRun() => Settings.Runs.Add(new());
+
+        public void DuplicateRun(int? runId)
+        {
+            if (runId == null)
+            {
+                Settings.Runs.Add(CopyItem(Settings.DefaultRunSettings));
+                return;
+            }
+
+            Settings.Runs.Add(CopyItem(Settings.Runs[runId.Value]));
+        }
+
+        public T CopyItem<T>(T item)
+        {
+            var json = JsonConvert.SerializeObject(item);
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public string GetContentFile(string filename) => File.ReadAllText(Path.Combine(Settings.ContentFolder, filename));

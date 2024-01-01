@@ -32,6 +32,7 @@
     background-color: var(--main-color-lighter);
     padding: var(--border-width-large);
     margin: var(--margin);
+    cursor: pointer;
 }
 
 .form-row {
@@ -44,4 +45,16 @@
     flex: 1;
     padding: var(--padding-small);
     background-color: var(--main-color-lightest);
+}
+
+.form-field-delete {
+    flex: 0 0 0;
+    margin: auto;
+    padding: 5px;
+    color: darkred;
+    font-weight: 600;
+}
+
+input {
+    width: calc(100% - (3 * var(--padding-small)));
 }

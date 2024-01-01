@@ -11,14 +11,12 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // Get Settings from json
-                var settingsFromJson = RefactorHelperSettings.GetSettingsFromJson(
-                    jsonPath: GetSettingsJsonPath(),
-                    baseUrl1: "https://localhost:44371",
-                    baseUrl2: "https://localhost:44371");
-
                 // RefactorHelper Dependency Injection
-                builder.Services.AddRefactorHelper(settingsFromJson);
+                builder.Services.AddRefactorHelper(
+                    RefactorHelperSettings.GetSettingsFromJson(
+                    jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
+                    baseUrl1: "https://localhost:44371",
+                    baseUrl2: "https://localhost:44371"));
             } 
 
             builder.Services.AddControllers();
@@ -39,14 +37,6 @@ namespace Basic_Setup_Demo
             app.UseAuthorization();
             app.MapControllers();
             app.Run();
-        }
-
-        private static string GetSettingsJsonPath()
-        {
-            return Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                AppDomain.CurrentDomain.RelativeSearchPath ?? "",
-                "refactorHelperSettings.json");
         }
     }
 }

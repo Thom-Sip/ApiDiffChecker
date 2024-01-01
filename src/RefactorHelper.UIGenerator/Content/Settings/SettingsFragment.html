@@ -1,7 +1,14 @@
 <div class="result-container-header-element">
     <h1>[TITLE]</h1>
     <div>[TEXT]</div>
-    <div><button>[BUTTON-TEXT]</button></div>
+    <div>
+        <button hx-get="[GET_URL]"
+                hx-replace-url="[SET_URL]"
+                hx-swap="innerHTML"
+                hx-target="[HX_TARGET]">
+            [BUTTON-TEXT]
+        </button>
+    </div>
 </div>
 
 <div class="result-container">

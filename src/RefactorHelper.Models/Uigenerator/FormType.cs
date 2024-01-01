@@ -3,6 +3,7 @@
     public enum FormType
     {
         UrlParameters,
-        QueryParameters
+        QueryParameters,
+        Replacevalues
     }
 }
