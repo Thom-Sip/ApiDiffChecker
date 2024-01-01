@@ -96,36 +96,17 @@ namespace RefactorHelper.UIGenerator
             switch (formType)
             {
                 case FormType.UrlParameters:
-                    run.UrlParameters = SetParameterSettings(run.UrlParameters, form);
+                    run.UrlParameters = SetParameterSettings(form);
                     break;
 
                 case FormType.QueryParameters:
-                    run.QueryParameters = SetParameterSettings(run.QueryParameters, form);
+                    run.QueryParameters = SetParameterSettings(form);
                     break;
 
                 case FormType.Replacevalues:
-                    run.PropertiesToReplace = SetParameterSettings(run.PropertiesToReplace, form);
+                    run.PropertiesToReplace = SetParameterSettings(form);
                     break;
             }
-        }
-
-        private static List<Parameter> SetParameterSettings(List<Parameter> parameters, IFormCollection form)
-        {
-            parameters.Clear();
-            foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
-            {
-                var param = parameters.FirstOrDefault(x => x.Key == formfield.Key);
-
-                if (param != null)
-                {
-                    param.Value = formfield.Value.ToString();
-                    continue;
-                }
-
-                parameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
-            }
-
-            return parameters;
         }
 
         private Run GetRun(int? runId)
@@ -134,6 +115,13 @@ namespace RefactorHelper.UIGenerator
                 return Settings.DefaultRunSettings;
 
             return Settings.Runs[runId.Value];
+        }
+
+        private static List<Parameter> SetParameterSettings(IFormCollection form)
+        {
+            return form.Where(x => !string.IsNullOrWhiteSpace(x.Value))
+                       .Select(x => new Parameter(x.Key, x.Value.ToString()))
+                       .ToList();
         }
     }
 }
