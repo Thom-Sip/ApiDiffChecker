@@ -344,6 +344,7 @@ body, html {
   background-color: var(--main-color-lighter);
   padding: var(--border-width-large);
   margin: var(--margin);
+  cursor: pointer;
 }
 
 .form-row {
