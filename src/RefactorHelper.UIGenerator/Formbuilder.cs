@@ -96,53 +96,36 @@ namespace RefactorHelper.UIGenerator
             switch (formType)
             {
                 case FormType.UrlParameters:
-                    run.UrlParameters.Clear();
-                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
-                    {
-                        var param = run.UrlParameters.FirstOrDefault(x => x.Key == formfield.Key);
-
-                        if (param != null)
-                        {
-                            param.Value = formfield.Value.ToString();
-                            continue;
-                        }
-
-                        run.UrlParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
-                    }
+                    run.UrlParameters = SetParameterSettings(run.UrlParameters, form);
                     break;
 
                 case FormType.QueryParameters:
-                    run.QueryParameters.Clear();
-                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
-                    {
-                        var param = run.QueryParameters.FirstOrDefault(x => x.Key == formfield.Key);
-
-                        if (param != null)
-                        {
-                            param.Value = formfield.Value.ToString();
-                            continue;
-                        }
-
-                        run.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
-                    }
+                    run.QueryParameters = SetParameterSettings(run.QueryParameters, form);
                     break;
 
                 case FormType.Replacevalues:
-                    run.PropertiesToReplace.Clear();
-                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
-                    {
-                        var param = run.PropertiesToReplace.FirstOrDefault(x => x.Key == formfield.Key);
-
-                        if (param != null)
-                        {
-                            param.Value = formfield.Value.ToString();
-                            continue;
-                        }
-
-                        run.PropertiesToReplace.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
-                    }
+                    run.PropertiesToReplace = SetParameterSettings(run.PropertiesToReplace, form);
                     break;
             }
+        }
+
+        private static List<Parameter> SetParameterSettings(List<Parameter> parameters, IFormCollection form)
+        {
+            parameters.Clear();
+            foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
+            {
+                var param = parameters.FirstOrDefault(x => x.Key == formfield.Key);
+
+                if (param != null)
+                {
+                    param.Value = formfield.Value.ToString();
+                    continue;
+                }
+
+                parameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+            }
+
+            return parameters;
         }
 
         private Run GetRun(int? runId)
