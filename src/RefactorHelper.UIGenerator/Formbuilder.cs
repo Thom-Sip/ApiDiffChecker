@@ -31,7 +31,7 @@ namespace RefactorHelper.UIGenerator
             {
                 getUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}";
                 putUrl = $"{Url.Fragment.FormGet}/{formType}?runId={runId}&allowEdit={!allowEdit}";
-                addUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}&add";
+                addUrl = $"{Url.Fragment.FormPut}/{formType}/add?runId={runId}";
             }
 
             return GetForm(
