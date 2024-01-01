@@ -1,4 +1,4 @@
-using Large_Project.Model;
+using Large_Project.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Large_Project.Controllers

@@ -1,6 +1,6 @@
 ﻿using Large_Project.Models;
 
-namespace Large_Project.Model
+namespace Large_Project.Models
 {
     public class Customer
     {

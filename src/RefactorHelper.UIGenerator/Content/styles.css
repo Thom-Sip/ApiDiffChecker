@@ -119,8 +119,17 @@ body, html {
   margin: 0px;
   padding: 0px;
 }
+.side-bar-group-content .status-code {
+  display: flex;
+  background-color: black;
+  color: green;
+  flex: 0 0 2.5em;
+  padding: var(--padding-small);
+  flex-wrap: wrap;
+  align-items: center;
+}
 .side-bar-group-content > ul > li {
-  display: block;
+  display: flex;
   border: var(--border);
   border-top: 0px;
 }
@@ -132,8 +141,10 @@ body, html {
 }
 .side-bar-group-content .side-bar-item {
   display: flex;
+  flex: 1;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
+  flex-wrap: wrap;
 }
 .side-bar-group-content .side-bar-item .request-item-content {
   cursor: pointer;
@@ -152,7 +163,6 @@ body, html {
   padding: var(--padding);
 }
 .side-bar-group-content .request-item {
-  display: block;
   background-color: var(--main-color-lighter);
 }
 .side-bar-group-content .request-item a {

@@ -2,20 +2,44 @@
 {
     public class Order
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public DateTime OrderData { get; set; }
+        public string Label { get; set; }
+
+        public DateTime OrderDate { get; set; }
 
         public List<OrderItem> Items { get; set; }
 
         public decimal ShippingCost { get; set; }
 
         public decimal TotalPrice { get; set; }
+
+        public static Order GetOrder(string label, string orderId)
+        {
+            return new Order
+            {
+                Id = orderId,
+                Label = label,
+                OrderDate = DateTime.Today.AddDays(-31),
+                ShippingCost = 14.99m,
+                TotalPrice = 100m,
+                Items =
+                [
+                    new OrderItem
+                    {
+                        Id = 87771,
+                        Name = "Pen",
+                        Description = "A nice pen",
+                        Price = 15
+                    }
+                ]
+            };
+        }
     }
 
     public class OrderItem
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

@@ -86,8 +86,18 @@
         padding: 0px;
     }
 
+    .status-code {
+        display: flex;
+        background-color: black;
+        color: green;
+        flex: 0 0 2.5em;
+        padding: var(--padding-small);
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
     & > ul > li {
-        display: block;
+        display: flex;
         border: var(--border);
         border-top: 0px;
 
@@ -102,8 +112,10 @@
 
     .side-bar-item {
         display: flex;
+        flex: 1;
         flex-direction: row;
-        align-items: center;
+        align-items: stretch;
+        flex-wrap: wrap;
 
         .request-item-content {
             cursor: pointer;
@@ -125,7 +137,6 @@
     }
 
     .request-item {
-        display: block;
         background-color: var(--main-color-lighter);
 
         a {

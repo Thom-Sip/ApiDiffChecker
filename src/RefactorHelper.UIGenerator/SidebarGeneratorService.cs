@@ -136,7 +136,7 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[SET_URL]", $"{Url.Page.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
+                    .Replace("[TEXT]", item.Request.Path));
             }
 
             sb.Append("</ul>");
