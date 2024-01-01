@@ -82,6 +82,7 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[HX_TARGET]", Section.MainContent)
                 .Replace("[URL_PARAMETERS]", Formbuilder.GetFormFragment(FormType.UrlParameters, false, runId))
                 .Replace("[QUERY_PARAMETERS]", Formbuilder.GetFormFragment(FormType.QueryParameters, false, runId))
+                .Replace("[REPLACE_VALUES]", Formbuilder.GetFormFragment(FormType.Replacevalues, false, runId))
                 .Replace("[TITLE]", GetSettingsTitle(runId))
                 .Replace("[TEXT]", GetSettingsText(runId))
                 .Replace("[BUTTON-TEXT]", GetSettingsCopyButtontext(runId)

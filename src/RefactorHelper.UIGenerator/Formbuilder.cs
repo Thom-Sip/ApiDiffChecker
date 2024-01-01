@@ -44,6 +44,7 @@ namespace RefactorHelper.UIGenerator
                 {
                     FormType.QueryParameters => Settings.Runs[runId.Value].QueryParameters,
                     FormType.UrlParameters => Settings.Runs[runId.Value].UrlParameters,
+                    FormType.Replacevalues => Settings.Runs[runId.Value].PropertiesToReplace,
                     _ => throw new NotImplementedException()
                 };
             }
@@ -52,6 +53,7 @@ namespace RefactorHelper.UIGenerator
             {
                 FormType.QueryParameters => Settings.DefaultRunSettings.QueryParameters,
                 FormType.UrlParameters => Settings.DefaultRunSettings.UrlParameters,
+                FormType.Replacevalues => Settings.DefaultRunSettings.PropertiesToReplace,
                 _ => throw new NotImplementedException()
             };
         }
@@ -62,6 +64,7 @@ namespace RefactorHelper.UIGenerator
             {
                 FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
                 FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
+                FormType.Replacevalues => Settings.DefaultRunSettings.PropertiesToReplace,
                 _ => throw new NotImplementedException()
             }; ;
         }
@@ -121,6 +124,22 @@ namespace RefactorHelper.UIGenerator
                         }
 
                         run.QueryParameters.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
+                    }
+                    break;
+
+                case FormType.Replacevalues:
+                    run.PropertiesToReplace.Clear();
+                    foreach (var formfield in form.Where(x => !string.IsNullOrWhiteSpace(x.Value)))
+                    {
+                        var param = run.PropertiesToReplace.FirstOrDefault(x => x.Key == formfield.Key);
+
+                        if (param != null)
+                        {
+                            param.Value = formfield.Value.ToString();
+                            continue;
+                        }
+
+                        run.PropertiesToReplace.Add(new Parameter(formfield.Key, formfield.Value.ToString()));
                     }
                     break;
             }
