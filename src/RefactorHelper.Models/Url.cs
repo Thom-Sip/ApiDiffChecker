@@ -31,6 +31,8 @@
 
             public static string AddNewRun { get; } = "/run-refactor-helper/fragment/settings/add";
 
+            public static string CopyRun { get; } = "/run-refactor-helper/fragment/settings/copy";
+
             public static string FormGet { get; } = "/run-refactor-helper/fragment/settings/forms";
 
             public static string FormPut { get; } = "/run-refactor-helper/fragment/forms/save";

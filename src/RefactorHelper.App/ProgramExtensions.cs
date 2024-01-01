@@ -46,6 +46,7 @@ namespace RefactorHelper.App
             app.SettingsFragment(myApp);
             app.SettingsRunByIdFragment(myApp);
             app.AddNewRunFragment(myApp);
+            app.DuplicateRunFragment(myApp);
             app.SettingsSideBarFragment(myApp);
             app.ApplySettingsFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
@@ -208,7 +209,7 @@ namespace RefactorHelper.App
         private static void DuplicateRunFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context, int? runId) =>
+            app.MapGet(Url.Fragment.CopyRun, async (HttpContext context, int? runId) =>
             {
                 myApp.DuplicateRun(runId);
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
