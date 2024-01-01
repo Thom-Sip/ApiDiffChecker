@@ -103,7 +103,7 @@ namespace RefactorHelper.UIGenerator
 
         private static string GetAddRowButton(string url)
         {
-            return $"<button hx-put=\"{url}\">New</button>";
+            return $"<div class=\"form-button-container\"><button hx-put=\"{url}\">New</button></div><br/>";
         }
 
         private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit, string editTemplate, string removeRowUrl)
