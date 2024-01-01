@@ -11,6 +11,38 @@ namespace Large_Project.Model
         public ContactDetails ContactDetails { get; set; }
 
         public List<Order> Orders { get; set; } = [];
+
+        public Guid TraceId { get; set; } = Guid.NewGuid();
+
+        public static Customer FromIds(int customerId, int accountId)
+        {
+            return new Customer
+            {
+                CustomerId = customerId,
+                AccountId = accountId,
+                ContactDetails = new ContactDetails
+                {
+                    Name = "John",
+                    Surname = "Doe",
+                    Addresses =
+                    [
+                        new()
+                        {
+                            Street = "Molenstraat",
+                            Country = "Nederland",
+                            HouseNumber = 13,
+                        },
+                        new()
+                        {
+                            Street = "Riverstreet",
+                            Country = "United Kingdom",
+                            HouseNumber = 21,
+                            HouseNumberSuffix = "C"
+                        }
+                    ]
+                }
+            };
+        }
     }
 
     public class ContactDetails

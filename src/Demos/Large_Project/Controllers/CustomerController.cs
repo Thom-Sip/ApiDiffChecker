@@ -20,35 +20,10 @@ namespace Large_Project.Controllers
         }
 
         [HttpGet]
-        [Route("customer/{customerId}")]
-        public Customer Get(int customerId)
+        [Route("{customerId}/account/{accountId}")]
+        public Customer Get(int customerId, int accountId)
         {
-            return new Customer
-            {
-                CustomerId = customerId,
-                AccountId = 1,
-                ContactDetails = new ContactDetails
-                {
-                    Name = "John",
-                    Surname = "Doe",
-                    Addresses =
-                    [
-                        new()
-                        {
-                            Street = "Molenstraat",
-                            Country = "Nederland",
-                            HouseNumber = 13,
-                        },
-                        new()
-                        {
-                            Street = "Riverstreet",
-                            Country = "United Kingdom",
-                            HouseNumber = 21,
-                            HouseNumberSuffix = "C"
-                        }
-                    ]
-                }
-            };
+            return Customer.FromIds(customerId, accountId);
         }
     }
 }

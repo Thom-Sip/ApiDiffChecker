@@ -64,11 +64,7 @@ namespace RefactorHelper.UIGenerator
 
             for (int i = 0; i < Settings.Runs.Count; i++)
             {
-                var template = i == 0
-                    ? _sideBarGroupItemTemplate
-                    : _sideBarGroupItemTemplateWithDelete;
-
-                sb.Append(template
+                sb.Append(_sideBarGroupItemTemplateWithDelete
                     .Replace("[CSS_CLASS]", runId == i ? "request-item-active" : "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
                     .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
