@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic_Setup_Demo", "demos\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Diff_UI", "Demos\Test_Diff_UI\Test_Diff_UI.csproj", "{32C9C72C-3F2E-47A8-AD62-90351652E625}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Large_Project", "Demos\Large_Project\Large_Project.csproj", "{8E533C57-DD10-4366-B100-C80574B7B642}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{32C9C72C-3F2E-47A8-AD62-90351652E625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C9C72C-3F2E-47A8-AD62-90351652E625}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C9C72C-3F2E-47A8-AD62-90351652E625}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E533C57-DD10-4366-B100-C80574B7B642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E533C57-DD10-4366-B100-C80574B7B642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E533C57-DD10-4366-B100-C80574B7B642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E533C57-DD10-4366-B100-C80574B7B642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5887A155-758C-4916-84DC-9D69FB33BFD9} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 		{32C9C72C-3F2E-47A8-AD62-90351652E625} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
+		{8E533C57-DD10-4366-B100-C80574B7B642} = {03AAAA8B-097E-481D-9BF7-CC87F03A79F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {61113866-D81D-46DA-862C-5B84B0671527}

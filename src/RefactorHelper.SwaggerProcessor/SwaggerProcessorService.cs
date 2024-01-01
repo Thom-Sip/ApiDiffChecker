@@ -56,7 +56,7 @@ namespace RefactorHelper.SwaggerProcessor
 
             var request = new List<RequestDetails>();
 
-            foreach (var run in Settings.Runs)
+            foreach (var run in Settings.Runs.Count > 0 ? Settings.Runs : new List<Run> { Settings.DefaultRunSettings })
                 request.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
 
             request = request.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList();
