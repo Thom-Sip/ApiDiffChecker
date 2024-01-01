@@ -23,17 +23,21 @@ namespace RefactorHelper.UIGenerator
         {
             var getUrl = $"{Url.Fragment.FormPut}/{formType}";
             var putUrl = $"{Url.Fragment.FormGet}/{formType}?allowEdit={!allowEdit}";
+            var addUrl = $"{Url.Fragment.FormPut}/{formType}/add";
 
             if (runId != null)
             {
                 getUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}";
                 putUrl = $"{Url.Fragment.FormGet}/{formType}?runId={runId}&allowEdit={!allowEdit}";
+                addUrl = $"{Url.Fragment.FormPut}/{formType}?runId={runId}&add";
             }
 
             return GetForm(
                     GetFormData(formType, runId),
                     GetDefaultValues(formType),
-                    getUrl, putUrl, allowEdit);
+                    getUrl, putUrl, allowEdit, 
+                    AllowAdd: formType == FormType.Replacevalues,
+                    addRowUrl: addUrl);
         }
 
         private List<Parameter> GetFormData(FormType formType, int? runId)
@@ -69,15 +73,21 @@ namespace RefactorHelper.UIGenerator
             }; ;
         }
 
-        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit)
+        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl)
         {
             var text = (allowEdit ? _formTemplateEdit : _formTemplate)
                 .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", getUrl)
                 .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit))))
-                .Replace("[DISABLED]", allowEdit ? "" : "disabled");
+                .Replace("[DISABLED]", allowEdit ? "" : "disabled")
+                .Replace("[ADD_NEW_BUTTON]", AllowAdd ? GetAddRowButton(addRowUrl) : "");
 
             return text;
+        }
+
+        private static string GetAddRowButton(string url)
+        {
+            return $"<button hx-put=\"{url}\">New</button>";
         }
 
         private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit)
@@ -105,6 +115,26 @@ namespace RefactorHelper.UIGenerator
 
                 case FormType.Replacevalues:
                     run.PropertiesToReplace = SetParameterSettings(form);
+                    break;
+            }
+        }
+
+        public void AddRow(FormType formType, IFormCollection form, int? runId)
+        {
+            var run = GetRun(runId);
+
+            switch (formType)
+            {
+                case FormType.Replacevalues:
+                    run.PropertiesToReplace.Add(new Parameter("", ""));
+                    break;
+
+                case FormType.UrlParameters:
+                    run.UrlParameters.Add(new Parameter("", ""));
+                    break;
+
+                case FormType.QueryParameters:
+                    run.QueryParameters.Add(new Parameter("", ""));
                     break;
             }
         }

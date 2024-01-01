@@ -51,6 +51,7 @@ namespace RefactorHelper.App
             app.ApplySettingsFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
+            app.AddRowToFormFragment(myApp);
             app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
@@ -245,6 +246,22 @@ namespace RefactorHelper.App
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
+        }
+
+        private static void AddRowToFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapPut($"{Url.Fragment.FormPut}/{{formType}}/add", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
+            {
+                myApp.Formbuilder.AddRow(formType, formData, runId);
+                myApp.ProcessSettings();
+                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
         }
 
         private static void SaveFormFragment(this WebApplication app, RefactorHelperApp myApp)
