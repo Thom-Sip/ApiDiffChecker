@@ -91,6 +91,22 @@ namespace RefactorHelper.App
             return UIGeneratorService.GetTestResultFragment();
         }
 
+        public void ClearEmptyReplaceValues(int? runId)
+        {
+            if (runId == null)
+            {
+                Settings.DefaultRunSettings.PropertiesToReplace = 
+                    Settings.DefaultRunSettings.PropertiesToReplace
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Key)).ToList();
+
+                return;
+            } 
+
+            Settings.Runs[runId.Value].PropertiesToReplace = 
+                Settings.Runs[runId.Value].PropertiesToReplace
+                .Where(x => !string.IsNullOrWhiteSpace(x.Key)).ToList();
+        }
+
         public void AddRun() => Settings.Runs.Add(new());
 
         public void DuplicateRun(int? runId)

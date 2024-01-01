@@ -37,6 +37,8 @@
 
             public static string FormPut { get; } = "/run-refactor-helper/fragment/forms/save";
 
+            public static string FormDeleteRow { get; } = "/run-refactor-helper/fragment/forms/remove-row";
+
             public static string SideBarRequests { get; } = "/run-refactor-helper/fragment/request-list";
 
             public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";

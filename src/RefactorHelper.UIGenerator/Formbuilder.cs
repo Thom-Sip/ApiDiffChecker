@@ -40,7 +40,8 @@ namespace RefactorHelper.UIGenerator
                     getUrl, putUrl, allowEdit, 
                     AllowAdd: formType == FormType.Replacevalues,
                     addRowUrl: addUrl,
-                    formType == FormType.Replacevalues ? _formFieldTemplateEditWithKey : _formFieldTemplateEdit);
+                    formType == FormType.Replacevalues ? _formFieldTemplateEditWithKey : _formFieldTemplateEdit,
+                    removeRowUrl: $"{Url.Fragment.FormDeleteRow}/{formType}?rowId=");
         }
 
         private List<Parameter> GetFormData(FormType formType, int? runId)
@@ -76,12 +77,12 @@ namespace RefactorHelper.UIGenerator
             }; ;
         }
 
-        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl, string editTemplate)
+        public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl, string editTemplate, string removeRowUrl)
         {
             var text = (allowEdit ? _formTemplateEdit : _formTemplate)
                 .Replace("[PUT_URL]", putUrl)
                 .Replace("[GET_URL]", getUrl)
-                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit, editTemplate))))
+                .Replace("[FORM_FIELDS]", string.Join(Environment.NewLine, savedParams.Select(x => GetFormField(x, parameters, allowEdit, editTemplate, removeRowUrl))))
                 .Replace("[DISABLED]", allowEdit ? "" : "disabled")
                 .Replace("[ADD_NEW_BUTTON]", AllowAdd ? GetAddRowButton(addRowUrl) : "");
 
@@ -93,7 +94,7 @@ namespace RefactorHelper.UIGenerator
             return $"<button hx-put=\"{url}\">New</button>";
         }
 
-        private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit, string editTemplate)
+        private string GetFormField(Parameter parameter, List<Parameter> parameters, bool allowEdit, string editTemplate, string removeRowUrl)
         {
             var existingSettings = parameters.FirstOrDefault(x => x.Key == parameter.Key);
 
@@ -103,7 +104,8 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[VALUE_KEY]", $"value_{parameters.IndexOf(parameter)}")
                 .Replace("[VALUE_VALUE]", existingSettings?.Value ?? string.Empty)
                 .Replace("[KEY]", parameter.Key)
-                .Replace("[VALUE]", existingSettings?.Value ?? string.Empty);
+                .Replace("[VALUE]", existingSettings?.Value ?? string.Empty)
+                .Replace("[DELETE_ROW_URL]", $"{removeRowUrl}{parameters.IndexOf(parameter)}");
         }
 
         public void SaveForm(FormType formType, IFormCollection form, int? runId)
@@ -142,6 +144,26 @@ namespace RefactorHelper.UIGenerator
 
                 case FormType.Replacevalues:
                     run.PropertiesToReplace.Add(new Parameter("", ""));
+                    break;
+            }
+        }
+
+        public void DeleteRow(FormType formType, int? runId, int rowId)
+        {
+            var run = GetRun(runId);
+
+            switch (formType)
+            {
+                case FormType.UrlParameters:
+                    run.UrlParameters.RemoveAt(rowId);
+                    break;
+
+                case FormType.QueryParameters:
+                    run.QueryParameters.RemoveAt(rowId);
+                    break;
+
+                case FormType.Replacevalues:
+                    run.PropertiesToReplace.RemoveAt(rowId);
                     break;
             }
         }

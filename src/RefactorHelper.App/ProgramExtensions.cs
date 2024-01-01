@@ -52,6 +52,7 @@ namespace RefactorHelper.App
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
             app.AddRowToFormFragment(myApp);
+            app.DeleteRowFromFormFragment(myApp);
             app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
@@ -242,6 +243,7 @@ namespace RefactorHelper.App
             app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, int? runId, HttpContext context) =>
             {
                 await myApp.Initialize();
+                myApp.ClearEmptyReplaceValues(runId);
                 var result = myApp.Formbuilder.GetFormFragment(formType, allowEdit, runId);
                 await context.Response.WriteHtmlResponse(result);
 
@@ -255,6 +257,23 @@ namespace RefactorHelper.App
             {
                 myApp.Formbuilder.SaveForm(formType, formData, runId);
                 myApp.Formbuilder.AddRow(formType, runId);
+                myApp.ProcessSettings();
+                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription().DisableAntiforgery();
+        }
+
+        private static void DeleteRowFromFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapDelete($"{Url.Fragment.FormDeleteRow}/{{formType}}", async (HttpContext context, FormType formType, int? runId, int rowId, IFormCollection formData) =>
+            {
+                myApp.Formbuilder.SaveForm(formType, formData, runId);
+                myApp.Formbuilder.DeleteRow(formType, runId, rowId);
                 myApp.ProcessSettings();
                 var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
 
