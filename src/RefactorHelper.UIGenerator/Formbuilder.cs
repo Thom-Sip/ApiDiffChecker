@@ -36,7 +36,7 @@ namespace RefactorHelper.UIGenerator
 
             return GetForm(
                     GetFormData(formType, runId),
-                    GetDefaultValues(formType, runId),
+                    GetDefaultValues(formType, allowEdit, runId),
                     getUrl, putUrl, allowEdit, 
                     AllowAdd: formType == FormType.Replacevalues,
                     addRowUrl: addUrl,
@@ -66,15 +66,27 @@ namespace RefactorHelper.UIGenerator
             };
         }
 
-        private List<Parameter> GetDefaultValues(FormType formType, int? runId)
+        private List<Parameter> GetDefaultValues(FormType formType, bool allowEdit, int? runId)
         {
             return formType switch
             {
                 FormType.QueryParameters => State.SwaggerOutput.QueryParameters,
                 FormType.UrlParameters => State.SwaggerOutput.UrlParameters,
-                FormType.Replacevalues => runId == null ? Settings.DefaultRunSettings.PropertiesToReplace : Settings.Runs[runId.Value].PropertiesToReplace,
+                FormType.Replacevalues => GetReplaceValues(runId, allowEdit),
                 _ => throw new NotImplementedException()
             }; ;
+        }
+
+        private List<Parameter> GetReplaceValues(int? runId, bool allowEdit)
+        {
+            var result = runId == null 
+                ? Settings.DefaultRunSettings.PropertiesToReplace 
+                : Settings.Runs[runId.Value].PropertiesToReplace;
+
+            if (result.Count == 0 && allowEdit)
+                result.Add(new Parameter("", ""));
+
+            return result;
         }
 
         public string GetForm(List<Parameter> parameters, List<Parameter> savedParams, string putUrl, string getUrl, bool allowEdit, bool AllowAdd, string addRowUrl, string editTemplate, string removeRowUrl)
