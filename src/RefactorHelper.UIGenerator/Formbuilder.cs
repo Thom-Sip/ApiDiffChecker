@@ -98,6 +98,10 @@ namespace RefactorHelper.UIGenerator
             var existingSettings = parameters.FirstOrDefault(x => x.Key == parameter.Key);
 
             return (allowEdit ? editTemplate : _formFieldTemplate)
+                .Replace("[KEY_KEY]", $"key_{parameters.IndexOf(parameter)}")
+                .Replace("[KEY_VALUE]", existingSettings?.Key ?? string.Empty)
+                .Replace("[VALUE_KEY]", $"value_{parameters.IndexOf(parameter)}")
+                .Replace("[VALUE_VALUE]", existingSettings?.Value ?? string.Empty)
                 .Replace("[KEY]", parameter.Key)
                 .Replace("[VALUE]", existingSettings?.Value ?? string.Empty);
         }
