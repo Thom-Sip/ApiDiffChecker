@@ -27,6 +27,8 @@
 
             public static string RunSettings { get; } = "/run-refactor-helper/fragment/settings/runs";
 
+            public static string ApplySettings { get; } = "/run-refactor-helper/fragment/settings/apply";
+
             public static string FormGet { get; } = "/run-refactor-helper/fragment/settings/forms";
 
             public static string FormPut { get; } = "/run-refactor-helper/fragment/forms/save";

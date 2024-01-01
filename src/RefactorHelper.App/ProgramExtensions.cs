@@ -46,6 +46,7 @@ namespace RefactorHelper.App
             app.SettingsFragment(myApp);
             app.SettingsRunByIdFragment(myApp);
             app.SettingsSideBarFragment(myApp);
+            app.ApplySettingsFragment(myApp);
             app.AddRunSettingsSideBarFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
@@ -127,7 +128,7 @@ namespace RefactorHelper.App
             {
                 var result = await myApp.RunAll();
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -140,7 +141,7 @@ namespace RefactorHelper.App
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -153,7 +154,7 @@ namespace RefactorHelper.App
             {
                 var result = await myApp.RetryCurrentRequestFragment();
                 await context.Response
-                    .SetHxTriggerHeader("refresh-request-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -168,7 +169,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -183,8 +184,22 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void ApplySettingsFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet(Url.Fragment.ApplySettings, async (HttpContext context, int? runId = null) =>
+            {
+                await myApp.Reset();
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
@@ -211,7 +226,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader("refresh-settings-list")
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();

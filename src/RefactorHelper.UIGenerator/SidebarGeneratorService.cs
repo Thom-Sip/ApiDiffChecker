@@ -1,6 +1,7 @@
 ﻿using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using System.Text;
+using System;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -36,6 +37,14 @@ namespace RefactorHelper.UIGenerator
             var sb = new StringBuilder();
             sb.Append("<ul>");
             sb.Append(_sideBarDownloadTemplate);
+
+            sb.Append(_sideBarGroupItemTemplate
+              .Replace("[CSS_CLASS]", "request-item")
+              .Replace("[GET_URL]", Url.Fragment.ApplySettings)
+              .Replace("[SET_URL]", Url.Page.Root)
+              .Replace("[HX_TARGET]", Section.MainContent)
+              .Replace("[TEXT]", "Apply Settings"));
+
             sb.Append("</ul>");
             return sb.ToString();
         }

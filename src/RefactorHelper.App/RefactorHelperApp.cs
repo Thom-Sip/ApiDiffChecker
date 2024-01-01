@@ -39,6 +39,10 @@ namespace RefactorHelper.App
 
         public async Task Reset()
         {
+            // State
+            State.CurrentRequest = 0;
+            State.CurrentRun = null;
+
             // Process Swagger
             var result = await Settings.HttpClient1.GetAsync(Settings.GetSwaggerUrl());
             State.SwaggerJson = await result.Content.ReadAsStringAsync();
