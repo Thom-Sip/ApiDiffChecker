@@ -2,6 +2,7 @@
 using RefactorHelper.Models;
 using System.Text;
 using System;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -80,9 +81,9 @@ namespace RefactorHelper.UIGenerator
 
             sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", "request-item")
-                    .Replace("[GET_URL]", Url.Fragment.SideBarSettingsAddRun)
-                    .Replace("[SET_URL]", "")
-                    .Replace("[HX_TARGET]", Section.SideBar)
+                    .Replace("[GET_URL]", Url.Fragment.AddNewRun)
+                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{Settings.Runs.Count}")
+                    .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[TEXT]", $"<b>+</b> Add Run"));
 
             sb.Append("</ul>");

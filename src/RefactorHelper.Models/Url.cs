@@ -29,6 +29,8 @@
 
             public static string ApplySettings { get; } = "/run-refactor-helper/fragment/settings/apply";
 
+            public static string AddNewRun { get; } = "/run-refactor-helper/fragment/settings/add";
+
             public static string FormGet { get; } = "/run-refactor-helper/fragment/settings/forms";
 
             public static string FormPut { get; } = "/run-refactor-helper/fragment/forms/save";
@@ -36,8 +38,6 @@
             public static string SideBarRequests { get; } = "/run-refactor-helper/fragment/request-list";
 
             public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";
-
-            public static string SideBarSettingsAddRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/add";
 
             public static string SideBarSettingsRemoveRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/remove";
         }

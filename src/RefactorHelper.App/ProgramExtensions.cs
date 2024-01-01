@@ -257,11 +257,14 @@ namespace RefactorHelper.App
         private static void AddRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettingsAddRun, async (HttpContext context) =>
+            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
             {
                 myApp.Settings.Runs.Add(new());
-                var result = myApp.SidebarGeneratorService.GenerateSettingsSideBarFragment(null);
-                await context.Response.WriteHtmlResponse(result);
+                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
