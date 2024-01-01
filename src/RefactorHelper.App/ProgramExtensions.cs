@@ -45,9 +45,9 @@ namespace RefactorHelper.App
             app.RequestsSideBarFragment(myApp);
             app.SettingsFragment(myApp);
             app.SettingsRunByIdFragment(myApp);
+            app.AddNewRunFragment(myApp);
             app.SettingsSideBarFragment(myApp);
             app.ApplySettingsFragment(myApp);
-            app.AddRunSettingsSideBarFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
             app.SaveFormFragment(myApp);
@@ -190,6 +190,21 @@ namespace RefactorHelper.App
             }).ExcludeFromDescription();
         }
 
+        private static void AddNewRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
+            {
+                myApp.Settings.Runs.Add(new());
+                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+
         private static void ApplySettingsFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
@@ -250,21 +265,6 @@ namespace RefactorHelper.App
             {
                 var result = myApp.SidebarGeneratorService.GetSettingsSideBarFragment();
                 await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void AddRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
-            {
-                myApp.Settings.Runs.Add(new());
-                var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
-
-                await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
-                    .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
