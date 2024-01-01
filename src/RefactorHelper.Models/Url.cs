@@ -29,6 +29,8 @@
 
             public static string ApplySettings { get; } = "/run-refactor-helper/fragment/settings/apply";
 
+            public static string SaveSettingsToDisk { get; } = "/run-refactor-helper/fragment/settings/save-to-disk";
+
             public static string AddNewRun { get; } = "/run-refactor-helper/fragment/settings/add";
 
             public static string CopyRun { get; } = "/run-refactor-helper/fragment/settings/copy";

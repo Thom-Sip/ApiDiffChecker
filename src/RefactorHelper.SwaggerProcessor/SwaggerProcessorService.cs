@@ -93,15 +93,14 @@ namespace RefactorHelper.SwaggerProcessor
             {
                 if(param.@in == "path")
                 {
-                    if(TryGetValue(param.name, out var result, run.UrlParameters))
+                    if(TryGetValue(param.name, out var result, run.UrlParameters) && !string.IsNullOrWhiteSpace(result))
                     {
                         template = ReplaceUrlParam(template, param, result);
                     }
-                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.UrlParameters))
+                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.UrlParameters) && !string.IsNullOrWhiteSpace(result2))
                     {
                         template = ReplaceUrlParam(template, param, result2);
                     }
-
                 }
                 if(param.@in == "query")
                 {

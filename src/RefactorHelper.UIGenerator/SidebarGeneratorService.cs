@@ -46,6 +46,13 @@ namespace RefactorHelper.UIGenerator
               .Replace("[HX_TARGET]", Section.MainContent)
               .Replace("[TEXT]", "Apply Settings"));
 
+            sb.Append(_sideBarGroupItemTemplate
+              .Replace("[CSS_CLASS]", "request-item")
+              .Replace("[GET_URL]", Url.Fragment.SaveSettingsToDisk)
+              .Replace("[SET_URL]", Url.Page.Root)
+              .Replace("[HX_TARGET]", Section.MainContent)
+              .Replace("[TEXT]", "Save Settings"));
+
             sb.Append("</ul>");
             return sb.ToString();
         }

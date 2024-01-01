@@ -1,0 +1,63 @@
+{
+  "RunOnStart": false,
+  "ContentFolder": "D:\\git\\RefactorHelper\\src\\Demos\\Large_Project\\bin\\Debug\\net8.0\\Content",
+  "SwaggerUrl": "",
+  "DefaultRunSettings": {
+    "UrlParameters": [
+      {
+        "Key": "customerId",
+        "Value": "138273"
+      },
+      {
+        "Key": "accountId",
+        "Value": ""
+      }
+    ],
+    "QueryParameters": [],
+    "PropertiesToReplace": []
+  },
+  "Runs": [
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": ""
+        },
+        {
+          "Key": "accountId",
+          "Value": "3"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": ""
+        },
+        {
+          "Key": "accountId",
+          "Value": "4"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": ""
+        },
+        {
+          "Key": "accountId",
+          "Value": "6"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    }
+  ]
+}

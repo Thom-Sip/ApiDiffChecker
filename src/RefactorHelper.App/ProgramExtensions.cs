@@ -56,6 +56,7 @@ namespace RefactorHelper.App
             app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
+            app.SaveSettingsToDisk(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
             app.AddStaticFileEndpoint(myApp, "htmx.min.js");
@@ -335,7 +336,7 @@ namespace RefactorHelper.App
         }
         #endregion
 
-        #region Download
+        #region Download and Save
         private static void DownloadSettings(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
@@ -343,6 +344,21 @@ namespace RefactorHelper.App
             {
                 var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
                 await context.Response.SetResponseHeader("ContentType", "application/json").WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void SaveSettingsToDisk(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet(Url.Fragment.SaveSettingsToDisk, async (HttpContext context) =>
+            {
+                var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
+                File.WriteAllText($"{Environment.CurrentDirectory}/refactorHelperSettings.json", result);
+
+                await context.Response
+                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
