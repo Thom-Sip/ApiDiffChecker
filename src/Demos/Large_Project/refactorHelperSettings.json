@@ -5,27 +5,53 @@
   "DefaultRunSettings": {
     "UrlParameters": [
       {
+        "Key": "label",
+        "Value": "Bol"
+      },
+      {
         "Key": "customerId",
-        "Value": "138273"
+        "Value": "14009"
       },
       {
         "Key": "accountId",
-        "Value": ""
+        "Value": "1"
       }
     ],
-    "QueryParameters": [],
-    "PropertiesToReplace": []
+    "QueryParameters": [
+      {
+        "Key": "name",
+        "Value": "Dave"
+      },
+      {
+        "Key": "results",
+        "Value": "2"
+      }
+    ],
+    "PropertiesToReplace": [
+      {
+        "Key": "traceId",
+        "Value": "[REPLACED_TRACE_ID]"
+      },
+      {
+        "Key": "timestamp",
+        "Value": "[REPLACED_TIMESTAMP]"
+      }
+    ]
   },
   "Runs": [
     {
       "UrlParameters": [
         {
+          "Key": "label",
+          "Value": "Bol"
+        },
+        {
           "Key": "customerId",
-          "Value": ""
+          "Value": "14009"
         },
         {
           "Key": "accountId",
-          "Value": "3"
+          "Value": "2"
         }
       ],
       "QueryParameters": [],
@@ -34,12 +60,16 @@
     {
       "UrlParameters": [
         {
+          "Key": "label",
+          "Value": "Bol"
+        },
+        {
           "Key": "customerId",
-          "Value": ""
+          "Value": "14009"
         },
         {
           "Key": "accountId",
-          "Value": "4"
+          "Value": "5"
         }
       ],
       "QueryParameters": [],
@@ -48,12 +78,52 @@
     {
       "UrlParameters": [
         {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
           "Key": "customerId",
-          "Value": ""
+          "Value": "699871"
         },
         {
           "Key": "accountId",
-          "Value": "6"
+          "Value": "2"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699871"
+        },
+        {
+          "Key": "accountId",
+          "Value": "7"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699871"
+        },
+        {
+          "Key": "accountId",
+          "Value": "14"
         }
       ],
       "QueryParameters": [],

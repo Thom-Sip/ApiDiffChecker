@@ -73,11 +73,26 @@ namespace RefactorHelper.RequestHandler
                             }
                         }
                     }
+
+                    if (responseObj1 is JObject obj)
+                    {
+                        foreach (JProperty attributeProperty in obj.Properties())
+                        {
+                            var replaceProp = Settings.DefaultRunSettings.PropertiesToReplace.FirstOrDefault(x =>
+                                x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
+
+                            if (replaceProp != null)
+                            {
+                                var attribute = obj[attributeProperty.Name];
+                                attributeProperty.Value = replaceProp.Value;
+                            }
+                        }
+                    }
                 }
 
                 response = JsonConvert.SerializeObject(responseObj1, Formatting.Indented);
             }
-            catch
+            catch(Exception ex)
             {
 
             }

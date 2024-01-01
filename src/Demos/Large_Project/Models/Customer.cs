@@ -8,18 +8,23 @@ namespace Large_Project.Model
 
         public int AccountId { get; set; }
 
+        public string Label { get; set; }
+
         public ContactDetails ContactDetails { get; set; }
 
         public List<Order> Orders { get; set; } = [];
 
         public Guid TraceId { get; set; } = Guid.NewGuid();
 
-        public static Customer FromIds(int customerId, int accountId)
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+
+        public static Customer FromIds(string label, int customerId, int accountId)
         {
             return new Customer
             {
                 CustomerId = customerId,
                 AccountId = accountId,
+                Label = label,
                 ContactDetails = new ContactDetails
                 {
                     Name = "John",
@@ -42,6 +47,43 @@ namespace Large_Project.Model
                     ]
                 }
             };
+        }
+
+        public static List<Customer> FindByName(string label, string name, int count)
+        {
+            var result = new List<Customer>();
+            for(int i = 0; i < count; i ++)
+            {
+                result.Add(new Customer
+                {
+                    CustomerId = 1000 + i,
+                    AccountId = 2 + i,
+                    Label = label,
+                    ContactDetails = new ContactDetails
+                    {
+                        Name = name,
+                        Surname = "Doe",
+                        Addresses =
+                    [
+                        new()
+                        {
+                            Street = "Molenstraat",
+                            Country = "Nederland",
+                            HouseNumber = 13,
+                        },
+                        new()
+                        {
+                            Street = "Riverstreet",
+                            Country = "United Kingdom",
+                            HouseNumber = 21,
+                            HouseNumberSuffix = "C"
+                        }
+                    ]
+                    }
+                });
+            }
+
+            return result;
         }
     }
 

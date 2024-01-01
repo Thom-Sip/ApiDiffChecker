@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Large_Project.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("{label}/[controller]")]
     public class CustomerController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -21,9 +21,16 @@ namespace Large_Project.Controllers
 
         [HttpGet]
         [Route("{customerId}/account/{accountId}")]
-        public Customer Get(int customerId, int accountId)
+        public Customer Get(string label, int customerId, int accountId)
         {
-            return Customer.FromIds(customerId, accountId);
+            return Customer.FromIds(label, customerId, accountId);
+        }
+
+        [HttpGet]
+        [Route("Find")]
+        public List<Customer> Find(string label, string name, int results)
+        {
+            return Customer.FindByName(label, name, results);
         }
     }
 }

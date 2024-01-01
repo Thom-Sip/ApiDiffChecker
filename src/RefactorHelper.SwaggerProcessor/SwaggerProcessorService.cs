@@ -34,7 +34,7 @@ namespace RefactorHelper.SwaggerProcessor
                 .Distinct()
                 .ToList();
 
-            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).ToList();
+            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).DistinctBy(x => x.Key).ToList();
         }
 
         private static List<RequestDetails> GetGetRequests(SwaggerDocument doc)
