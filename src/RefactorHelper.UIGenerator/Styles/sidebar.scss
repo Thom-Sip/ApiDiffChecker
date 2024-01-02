@@ -89,12 +89,19 @@
     .status-code {
         display: flex;
         background-color: var(--main-color-darker);
-        color: green;
         flex: 0 0 2.5em;
         padding: var(--padding-small);
         align-items: center;
         justify-content: center;
         font-weight: 600;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .failed {
+        color: red;
     }
 
     & > ul > li {

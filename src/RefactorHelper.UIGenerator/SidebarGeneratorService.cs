@@ -46,14 +46,16 @@ namespace RefactorHelper.UIGenerator
               .Replace("[GET_URL]", Url.Fragment.SaveSettingsToDisk)
               .Replace("[SET_URL]", Url.Page.Root)
               .Replace("[HX_TARGET]", Section.MainContent)
-              .Replace("[TEXT]", "Save to disk"));
+              .Replace("[TEXT]", "Save to disk")
+              .Replace("[STATUS_CODE]", ""));
 
             sb.Append(_sideBarGroupItemTemplate
               .Replace("[CSS_CLASS]", "request-item")
               .Replace("[GET_URL]", Url.Fragment.ApplySettings)
               .Replace("[SET_URL]", Url.Page.Root)
               .Replace("[HX_TARGET]", Section.MainContent)
-              .Replace("[TEXT]", "Apply Settings"));
+              .Replace("[TEXT]", "Apply Settings")
+              .Replace("[STATUS_CODE]", ""));
 
             sb.Append("</ul>");
             return sb.ToString();
@@ -69,7 +71,8 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[GET_URL]", Url.Fragment.Settings)
                 .Replace("[SET_URL]", Url.Page.Settings)
                 .Replace("[HX_TARGET]", Section.MainContent)
-                .Replace("[TEXT]", "Default Values"));
+                .Replace("[TEXT]", "Default Values")
+                .Replace("[STATUS_CODE]", ""));
 
             for (int i = 0; i < Settings.Runs.Count; i++)
             {
@@ -81,7 +84,8 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[HX_DELETE_TARGET]", Section.SideBar)
                     .Replace("[LI-ID]", $"run-button-{i}")
-                    .Replace("[TEXT]", $"Run {i}"));
+                    .Replace("[TEXT]", $"Run {i}")
+                    .Replace("[STATUS_CODE]", ""));
             }
 
             sb.Append(_sideBarGroupItemTemplate
@@ -89,7 +93,8 @@ namespace RefactorHelper.UIGenerator
                     .Replace("[GET_URL]", Url.Fragment.AddNewRun)
                     .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{Settings.Runs.Count}")
                     .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", $"<b>+</b> Add Run"));
+                    .Replace("[TEXT]", $"<b>+</b> Add Run")
+                    .Replace("[STATUS_CODE]", ""));
 
             sb.Append("</ul>");
             return sb.ToString();
@@ -131,12 +136,19 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var item in resultPairs)
             {
+                var response1 = item.CompareResultPair?.Result1?.Response;
+                var resultCode = "...";
+                if (response1 != null)
+                    resultCode = ((int)response1.StatusCode).ToString();
+                var successClass = response1?.IsSuccessStatusCode == true ? "success" : "failed";
+
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", item.Id == State.CurrentRequest ? "request-item-active" : "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[SET_URL]", $"{Url.Page.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", item.Request.Path));
+                    .Replace("[TEXT]", item.Request.Path)
+                    .Replace("[STATUS_CODE]", $"<div class=\"status-code {successClass}\">{resultCode}</div>"));
             }
 
             sb.Append("</ul>");
