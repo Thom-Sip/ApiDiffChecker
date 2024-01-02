@@ -1,8 +1,6 @@
 ﻿using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using System.Text;
-using System;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace RefactorHelper.UIGenerator
 {
