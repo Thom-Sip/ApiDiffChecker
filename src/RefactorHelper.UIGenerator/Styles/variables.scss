@@ -29,6 +29,7 @@ body, html {
     --border-radius: 6px;
     --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
     --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
+    --border-radius-bottom-left: 0 0 0 calc(var(--border-radius) * .66);
     --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
     --border-radius-right: 0 var(--border-radius) var(--border-radius) 0;
     

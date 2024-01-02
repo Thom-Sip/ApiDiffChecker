@@ -88,12 +88,13 @@
 
     .status-code {
         display: flex;
-        background-color: black;
+        background-color: var(--main-color-darker);
         color: green;
         flex: 0 0 2.5em;
         padding: var(--padding-small);
-        flex-wrap: wrap;
         align-items: center;
+        justify-content: center;
+        font-weight: 600;
     }
 
     & > ul > li {
@@ -107,6 +108,10 @@
 
         &:last-child {
             border-radius: var(--border-radius-bottom);
+
+            .status-code {
+                border-radius: var(--border-radius-bottom-left);
+            }
         }
     }
 
@@ -116,14 +121,6 @@
         flex-direction: row;
         align-items: stretch;
         flex-wrap: wrap;
-
-        .request-item-content {
-            cursor: pointer;
-            font-family: Arial;
-            border: none;
-            flex: 1;
-            padding: var(--padding);
-        }
 
         .request-item-delete-button {
             flex: 0 0 1em;
@@ -138,6 +135,7 @@
 
     .request-item {
         background-color: var(--main-color-lighter);
+        flex-wrap: nowrap;
 
         a {
             color: var(--text-color-dark);
@@ -148,5 +146,15 @@
     .request-item-active {
         background-color: var(--main-color-lightest);
         font-weight: bolder;
+    }
+
+    .request-item-content {
+        display: flex;
+        cursor: pointer;
+        font-family: Arial;
+        border: none;
+        flex: 1;
+        padding: var(--padding);
+        overflow-wrap: anywhere;
     }
 }

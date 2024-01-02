@@ -123,7 +123,7 @@ namespace RefactorHelper.UIGenerator
               .Replace("[TITLE]", $"{title} ({wrappers.Count})")
               .Replace("[CONTENT]", GetSidebarContent(wrappers));
         }
-
+        
         private string GetSidebarContent(List<RequestWrapper> resultPairs)
         {
             var sb = new StringBuilder();

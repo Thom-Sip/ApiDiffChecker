@@ -21,6 +21,7 @@ body, html {
   --border-radius: 6px;
   --border-radius-top: var(--border-radius) var(--border-radius) 0 0;
   --border-radius-bottom: 0 0 var(--border-radius) var(--border-radius);
+  --border-radius-bottom-left: 0 0 0 calc(var(--border-radius) * .66);
   --border-radius-left: var(--border-radius) 0 0 var(--border-radius);
   --border-radius-right: 0 var(--border-radius) var(--border-radius) 0;
   height: 100%;
@@ -121,12 +122,13 @@ body, html {
 }
 .side-bar-group-content .status-code {
   display: flex;
-  background-color: black;
+  background-color: var(--main-color-darker);
   color: green;
   flex: 0 0 2.5em;
   padding: var(--padding-small);
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  font-weight: 600;
 }
 .side-bar-group-content > ul > li {
   display: flex;
@@ -139,19 +141,15 @@ body, html {
 .side-bar-group-content > ul > li:last-child {
   border-radius: var(--border-radius-bottom);
 }
+.side-bar-group-content > ul > li:last-child .status-code {
+  border-radius: var(--border-radius-bottom-left);
+}
 .side-bar-group-content .side-bar-item {
   display: flex;
   flex: 1;
   flex-direction: row;
   align-items: stretch;
   flex-wrap: wrap;
-}
-.side-bar-group-content .side-bar-item .request-item-content {
-  cursor: pointer;
-  font-family: Arial;
-  border: none;
-  flex: 1;
-  padding: var(--padding);
 }
 .side-bar-group-content .side-bar-item .request-item-delete-button {
   flex: 0 0 1em;
@@ -164,6 +162,7 @@ body, html {
 }
 .side-bar-group-content .request-item {
   background-color: var(--main-color-lighter);
+  flex-wrap: nowrap;
 }
 .side-bar-group-content .request-item a {
   color: var(--text-color-dark);
@@ -172,6 +171,15 @@ body, html {
 .side-bar-group-content .request-item-active {
   background-color: var(--main-color-lightest);
   font-weight: bolder;
+}
+.side-bar-group-content .request-item-content {
+  display: flex;
+  cursor: pointer;
+  font-family: Arial;
+  border: none;
+  flex: 1;
+  padding: var(--padding);
+  overflow-wrap: anywhere;
 }
 
 /* Main content*/
