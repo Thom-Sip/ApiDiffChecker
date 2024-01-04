@@ -33,11 +33,11 @@
     ],
     "PropertiesToReplace": [
       {
-        "Key": "traceId",
+        "Key": "traceId_",
         "Value": "[REPLACED_TRACE_ID]"
       },
       {
-        "Key": "timestamp",
+        "Key": "timestamp_",
         "Value": "[REPLACED_TIMESTAMP]"
       }
     ]
@@ -51,7 +51,7 @@
         },
         {
           "Key": "customerId",
-          "Value": "14009"
+          "Value": "14009a"
         },
         {
           "Key": "accountId",

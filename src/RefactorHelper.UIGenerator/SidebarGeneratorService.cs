@@ -134,7 +134,7 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var item in resultPairs)
             {
-                var response1 = item.CompareResultPair?.Result1?.Response;
+                var response1 = item.TestResult?.Result1.ResponseObject;
                 var resultCode = "...";
                 if (response1 != null)
                     resultCode = ((int)response1.StatusCode).ToString();

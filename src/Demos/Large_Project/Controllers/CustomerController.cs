@@ -21,15 +21,17 @@ namespace Large_Project.Controllers
 
         [HttpGet]
         [Route("{customerId}/account/{accountId}")]
-        public Customer Get(string label, int customerId, int accountId)
+        public async Task<Customer> Get(string label, int customerId, int accountId)
         {
+            await Task.Delay(Random.Shared.Next(500, 5000));
             return Customer.FromIds(label, customerId, accountId);
         }
 
         [HttpGet]
         [Route("Find")]
-        public List<Customer> Find(string label, string name, int results)
+        public async Task<List<Customer>> Find(string label, string name, int results)
         {
+            await Task.Delay(Random.Shared.Next(500, 5000));
             return Customer.FindByName(label, name, results);
         }
     }

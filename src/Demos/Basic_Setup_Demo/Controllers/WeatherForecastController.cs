@@ -20,8 +20,10 @@ namespace Basic_Setup_Demo.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            await Task.Delay(Random.Shared.Next(500, 5000));
+
             return Enumerable.Range(1,  1 + Random.Shared.Next(5)).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
