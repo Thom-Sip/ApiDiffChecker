@@ -8,6 +8,8 @@ namespace RefactorHelper.Models
     {
         public required int Id { get; set; }
 
+        public required RequestState State { get; set; }
+
         public bool Changed { get; set; }
 
         public bool Executed => TestResult != null;

@@ -187,6 +187,24 @@ body, html {
   overflow-wrap: anywhere;
 }
 
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spinner:before {
+  content: "";
+  box-sizing: border-box;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--text-color-light);
+  border-top-color: var(--text-color-dark);
+  animation: spinner 0.5s linear infinite;
+}
+
 /* Main content*/
 .main-box {
   flex: 1;

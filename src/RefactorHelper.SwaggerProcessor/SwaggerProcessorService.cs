@@ -69,6 +69,7 @@ namespace RefactorHelper.SwaggerProcessor
                 {
                     Id = i,
                     Request = request[i],
+                    State = RequestState.Pending
                 });
             }
 

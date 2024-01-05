@@ -20,6 +20,8 @@ namespace RefactorHelper.RequestHandler
 
         public async Task SetResponses(RequestWrapper requestWrapper)
         {
+            requestWrapper.State = RequestState.Running;
+
             var request1 = Settings.HttpClient1.GetAsync(requestWrapper.Request.Path);
             var request2 = Settings.HttpClient2.GetAsync(requestWrapper.Request.Path);
 
@@ -37,6 +39,8 @@ namespace RefactorHelper.RequestHandler
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
             };
+
+            requestWrapper.State = RequestState.Finished;
         }
 
         private static RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)

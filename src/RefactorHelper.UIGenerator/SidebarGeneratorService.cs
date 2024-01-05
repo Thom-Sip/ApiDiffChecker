@@ -32,7 +32,7 @@ namespace RefactorHelper.UIGenerator
 
             var result = _sidebarFragment
                 .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{sidebarType}")
-                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .25s" : "never")
+                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .5s" : "never")
                 .Replace("[CONTENT]", GetRequestListFragment());
 
             return result;
@@ -174,6 +174,13 @@ namespace RefactorHelper.UIGenerator
                 if (response1 != null)
                     resultCode = ((int)response1.StatusCode).ToString();
                 var successClass = response1?.IsSuccessStatusCode == true ? "success" : "failed";
+
+                if (item.State == RequestState.Running)
+                {
+                    resultCode = ""; // "<div class=\"spinner\"></div>";
+                    successClass = "spinner";
+                }
+                    
 
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", item.Id == State.CurrentRequest ? "request-item-active" : "request-item")
