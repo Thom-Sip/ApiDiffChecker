@@ -173,14 +173,16 @@ namespace RefactorHelper.UIGenerator
                 var resultCode = "...";
                 if (response1 != null)
                     resultCode = ((int)response1.StatusCode).ToString();
-                var successClass = response1?.IsSuccessStatusCode == true ? "success" : "failed";
+
+                var successClass = "pending";
+                if (response1 != null)
+                    successClass = response1?.IsSuccessStatusCode == true ? "success" : "failed";
 
                 if (item.State == RequestState.Running)
                 {
-                    resultCode = ""; // "<div class=\"spinner\"></div>";
+                    resultCode = "";
                     successClass = "spinner";
                 }
-                    
 
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", item.Id == State.CurrentRequest ? "request-item-active" : "request-item")

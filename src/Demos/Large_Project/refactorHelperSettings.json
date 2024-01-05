@@ -33,11 +33,11 @@
     ],
     "PropertiesToReplace": [
       {
-        "Key": "traceId_",
+        "Key": "traceId",
         "Value": "[REPLACED_TRACE_ID]"
       },
       {
-        "Key": "timestamp_",
+        "Key": "timestamp",
         "Value": "[REPLACED_TIMESTAMP]"
       }
     ]
@@ -153,6 +153,37 @@
         {
           "Key": "orderId",
           "Value": " Q1_coolblue_sufd816723"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Jordan"
+        },
+        {
+          "Key": "results",
+          "Value": "1"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699872"
+        },
+        {
+          "Key": "accountId",
+          "Value": "4"
+        },
+        {
+          "Key": "orderId",
+          "Value": " Q4_coolblue_sufd816723"
         }
       ],
       "QueryParameters": [

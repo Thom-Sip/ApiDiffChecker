@@ -168,10 +168,10 @@ namespace RefactorHelper.App
             // Run single requst and return html to replace result in page
             app.MapGet(Url.Fragment.RetryCurrentRequest, async (HttpContext context) =>
             {
-                var result = await myApp.RetryCurrentRequestFragment();
+                var result = myApp.RetryCurrentRequestFragment();
                 await context.Response
-                    .SetSidebar(SidebarType.Requests)
-                    .WriteHtmlResponse(result);
+                    .SetSidebar(SidebarType.RequestsPolling)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }

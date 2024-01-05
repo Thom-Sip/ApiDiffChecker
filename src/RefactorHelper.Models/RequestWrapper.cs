@@ -20,6 +20,11 @@ namespace RefactorHelper.Models
 
         public CompareResultPair? CompareResultPair { get; set; }
 
-        public string ResultHtml { get; set; } = string.Empty;
+        public void Clear()
+        {
+            TestResult = null;
+            CompareResultPair = null;
+            State = RequestState.Pending;
+        }
     }
 }

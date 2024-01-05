@@ -104,6 +104,10 @@
         color: red;
     }
 
+    .pending {
+        color: var(--text-color-light);
+    }
+
     & > ul > li {
         display: flex;
         border: var(--border);
@@ -120,6 +124,21 @@
                 border-radius: var(--border-radius-bottom-left);
             }
         }
+    }
+
+    & > ul > a > li {
+        display: flex;
+        border: var(--border);
+        border-top: 0px;
+
+        &:hover {
+            background-color: var(--main-color-lightest);
+        }
+    }
+
+    a {
+        color: var(--text-color-dark);
+        text-decoration: none;
     }
 
     .side-bar-item {
@@ -143,11 +162,6 @@
     .request-item {
         background-color: var(--main-color-lighter);
         flex-wrap: nowrap;
-
-        a {
-            color: var(--text-color-dark);
-            text-decoration: none;
-        }
     }
 
     .request-item-active {
