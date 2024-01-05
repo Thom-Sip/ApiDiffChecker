@@ -147,7 +147,7 @@ namespace RefactorHelper.App
             {
                 var result = myApp.RunAll();
                 await context.Response
-                    .SetHxTriggerHeader($"{{\"loadSidebar\":\"{Url.Fragment.Sidebar}/{SidebarType.RequestsPolling}\"}}")
+                    .SetSidebar(SidebarType.RequestsPolling)
                     .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
@@ -160,7 +160,7 @@ namespace RefactorHelper.App
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -173,7 +173,7 @@ namespace RefactorHelper.App
             {
                 var result = await myApp.RetryCurrentRequestFragment();
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -188,7 +188,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -203,7 +203,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -218,7 +218,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -233,7 +233,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -247,7 +247,7 @@ namespace RefactorHelper.App
                 await myApp.Reset();
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
@@ -277,7 +277,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -294,7 +294,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -310,7 +310,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -372,7 +372,7 @@ namespace RefactorHelper.App
                 File.WriteAllText($"{Environment.CurrentDirectory}/refactorHelperSettings.json", result);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
@@ -396,6 +396,9 @@ namespace RefactorHelper.App
 
         public static HttpResponse SetHtmlHeader(this HttpResponse response) => 
             response.SetResponseHeader("ContentType", "text/html");
+
+        public static HttpResponse SetSidebar(this HttpResponse response, SidebarType sidebarType) =>
+            response.SetHxTriggerHeader($"{{\"loadSidebar\":\"{Url.Fragment.Sidebar}/{sidebarType}\"}}");
 
         public static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
             response.SetResponseHeader("HX-Trigger", trigger);

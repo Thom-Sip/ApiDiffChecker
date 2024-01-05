@@ -20,7 +20,7 @@ namespace RefactorHelper.UIGenerator
             {
                 SidebarType.Requests => GetSidebarRequestList(sidebarType),
                 SidebarType.RequestsPolling => GetSidebarRequestList(sidebarType),
-                SidebarType.Settings => "",
+                SidebarType.Settings => GetSidebarSettings(),
                 _ => throw new NotImplementedException()
             };
         }
@@ -34,6 +34,16 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{sidebarType}")
                 .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .25s" : "")
                 .Replace("[CONTENT]", GetRequestListFragment());
+
+            return result;
+        }
+
+        private string GetSidebarSettings()
+        {
+            var result = _sidebarFragment
+                .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{SidebarType.Settings}")
+                .Replace("[TRIGGER]", "")
+                .Replace("[CONTENT]", GetSettingsSideBarFragment());
 
             return result;
         }

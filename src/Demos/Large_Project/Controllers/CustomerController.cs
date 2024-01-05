@@ -23,7 +23,7 @@ namespace Large_Project.Controllers
         [Route("{customerId}/account/{accountId}")]
         public async Task<Customer> Get(string label, int customerId, int accountId)
         {
-            await Task.Delay(Random.Shared.Next(500, 5000));
+            await Task.Delay(Random.Shared.Next(100, 3000));
             return Customer.FromIds(label, customerId, accountId);
         }
 
@@ -31,7 +31,7 @@ namespace Large_Project.Controllers
         [Route("Find")]
         public async Task<List<Customer>> Find(string label, string name, int results)
         {
-            await Task.Delay(Random.Shared.Next(500, 5000));
+            await Task.Delay(Random.Shared.Next(100, 3000));
             return Customer.FindByName(label, name, results);
         }
     }
