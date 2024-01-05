@@ -44,12 +44,10 @@ namespace RefactorHelper.App
             app.RunAllFragment(myApp);
             app.ResultFragment(myApp);
             app.RetryRequestFragment(myApp);
-            app.RequestsSideBarFragment(myApp);
             app.SettingsFragment(myApp);
             app.SettingsRunByIdFragment(myApp);
             app.AddNewRunFragment(myApp);
             app.DuplicateRunFragment(myApp);
-            app.SettingsSideBarFragment(myApp);
             app.ApplySettingsFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
@@ -129,7 +127,6 @@ namespace RefactorHelper.App
         #region Sidebar
         private static void SidebarFragment(this WebApplication app, RefactorHelperApp myApp)
         {
-            // Run single request and return html to replace result in page
             app.MapGet($"{Url.Fragment.Sidebar}/{{sidebarType}}", async (HttpContext context, SidebarType sidebarType) =>
             {
                 var result = myApp.SidebarGeneratorService.GetSideBarFragment(sidebarType);
@@ -314,28 +311,6 @@ namespace RefactorHelper.App
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
-        }
-
-        private static void RequestsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarRequests, async (HttpContext context) =>
-            {
-                var result = myApp.SidebarGeneratorService.GetRequestListFragment();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void SettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context) =>
-            {
-                var result = myApp.SidebarGeneratorService.GetSettingsSideBarFragment();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
         }
 
         private static void RemoveRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)

@@ -32,7 +32,7 @@ namespace RefactorHelper.UIGenerator
 
             var result = _sidebarFragment
                 .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{sidebarType}")
-                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .25s" : "")
+                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .25s" : "never")
                 .Replace("[CONTENT]", GetRequestListFragment());
 
             return result;
@@ -42,7 +42,7 @@ namespace RefactorHelper.UIGenerator
         {
             var result = _sidebarFragment
                 .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{SidebarType.Settings}")
-                .Replace("[TRIGGER]", "")
+                .Replace("[TRIGGER]", "never")
                 .Replace("[CONTENT]", GetSettingsSideBarFragment());
 
             return result;
