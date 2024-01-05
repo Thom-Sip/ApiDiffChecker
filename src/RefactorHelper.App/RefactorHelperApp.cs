@@ -67,6 +67,14 @@ namespace RefactorHelper.App
 
         public async Task<string> RunAll()
         {
+            // Clear previous run
+            State.Data.ForEach(x =>
+            {
+                x.CompareResultPair = null;
+                x.TestResult = null;
+                x.State = RequestState.Pending;
+            });
+
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
 
