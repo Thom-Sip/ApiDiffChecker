@@ -1,5 +1,12 @@
 ﻿namespace RefactorHelper.Models
 {
+    public enum SidebarType
+    {
+        Requests,
+        RequestsPolling,
+        Settings
+    }
+
     public static class Url
     {
         public static class Page
@@ -46,6 +53,8 @@
             public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";
 
             public static string SideBarSettingsRemoveRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/remove";
+
+            public static string Sidebar { get; } = "/run-refactor-helper/fragment/sidebar";
         }
 
         public static class Download

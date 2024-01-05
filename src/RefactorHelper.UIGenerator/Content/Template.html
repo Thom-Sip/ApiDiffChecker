@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="htmx-invisble-trigger"
+            <!--<div class="htmx-invisble-trigger"
                  hx-get="[SETTINGS_LIST_URL]"
                  hx-swap="innerHtml"
                  hx-target="#side-bar-content"
@@ -45,8 +45,8 @@
                  hx-get="[REQUEST_LIST_URL]"
                  hx-swap="innerHtml"
                  hx-target="#side-bar-content"
-                 hx-trigger="refresh-request-list from:body, every 1s">
-            </div>
+                 hx-trigger="refresh-request-list from:body">
+            </div>-->
 
             <div id="side-bar-content">
                 [SIDEBAR_CONTENT]
@@ -100,6 +100,10 @@
             var content = e.nextElementSibling;
             content.classList.toggle("item-hidden");
         }
+
+        document.body.addEventListener("loadSidebar", function (evt) {
+            htmx.ajax('GET', evt.detail.value, '#side-bar-content')
+        })
 
     </script>
 

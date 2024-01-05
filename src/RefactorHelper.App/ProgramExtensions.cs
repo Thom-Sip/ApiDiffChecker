@@ -39,6 +39,8 @@ namespace RefactorHelper.App
             app.SettingsPage(myApp);
             app.RunSettingsPage(myApp);
 
+            app.SidebarFragment(myApp);
+
             app.RunAllFragment(myApp);
             app.ResultFragment(myApp);
             app.RetryRequestFragment(myApp);
@@ -124,16 +126,29 @@ namespace RefactorHelper.App
         }
         #endregion
 
+        #region Sidebar
+        private static void SidebarFragment(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run single request and return html to replace result in page
+            app.MapGet($"{Url.Fragment.Sidebar}/{{sidebarType}}", async (HttpContext context, SidebarType sidebarType) =>
+            {
+                var result = myApp.SidebarGeneratorService.GetSideBarFragment(sidebarType);
+                await context.Response.WriteHtmlResponse(result);
+
+            }).ExcludeFromDescription();
+        }
+        #endregion
+
         #region Fragments
         private static void RunAllFragment(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.RunAll, async (HttpContext context) =>
             {
-                var result = await myApp.RunAll();
+                var result = myApp.RunAll();
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
-                    .WriteHtmlResponse(result);
+                    .SetHxTriggerHeader($"{{\"loadSidebar\":\"{Url.Fragment.Sidebar}/{SidebarType.RequestsPolling}\"}}")
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }

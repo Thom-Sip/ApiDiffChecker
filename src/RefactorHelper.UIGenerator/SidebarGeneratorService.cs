@@ -12,6 +12,31 @@ namespace RefactorHelper.UIGenerator
         protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
         protected string _sideBarGroupItemTemplateWithDelete { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
         protected string _sideBarDownloadTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
+        protected string _sidebarFragment { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarFragment.html");
+
+        public string GetSideBarFragment(SidebarType sidebarType)
+        {
+            return sidebarType switch
+            {
+                SidebarType.Requests => GetSidebarRequestList(sidebarType),
+                SidebarType.RequestsPolling => GetSidebarRequestList(sidebarType),
+                SidebarType.Settings => "",
+                _ => throw new NotImplementedException()
+            };
+        }
+
+        private string GetSidebarRequestList(SidebarType sidebarType)
+        {
+            if(sidebarType == SidebarType.RequestsPolling && State.Data.All(x => x.CompareResultPair != null))
+                sidebarType = SidebarType.Requests;
+
+            var result = _sidebarFragment
+                .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{sidebarType}")
+                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .25s" : "")
+                .Replace("[CONTENT]", GetRequestListFragment());
+
+            return result;
+        }
 
         public string GetSettingsSideBarFragment() =>
             GenerateSettingsSideBarFragment(State.CurrentRun);
