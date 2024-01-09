@@ -33,7 +33,7 @@
     ],
     "PropertiesToReplace": [
       {
-        "Key": "traceId",
+        "Key": "traceId_",
         "Value": "[REPLACED_TRACE_ID]"
       },
       {

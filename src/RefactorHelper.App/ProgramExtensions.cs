@@ -114,7 +114,7 @@ namespace RefactorHelper.App
         private static void RunSettingsPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet($"{Url.Page.RunSettings}/{{runId}}", async (HttpContext context, int runId) =>
+            app.MapGet(Url.Page.Settings, async (HttpContext context, int runId) =>
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsPage(runId);

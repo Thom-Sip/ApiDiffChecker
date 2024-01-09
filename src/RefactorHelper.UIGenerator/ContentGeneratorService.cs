@@ -76,9 +76,13 @@ namespace RefactorHelper.UIGenerator
                 ? Url.Fragment.CopyRun
                 : $"{Url.Fragment.CopyRun}?runId={runId}";
 
+            var setUrl = runId == null
+                ? Url.Page.Settings
+                : $"{Url.Page.Settings}?run=runId";
+
             var result = _settingsFragmentTemplate
                 .Replace("[GET_URL]", copyRunUrl)
-                .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{runId}")
+                .Replace("[SET_URL]", setUrl)
                 .Replace("[HX_TARGET]", Section.MainContent)
                 .Replace("[URL_PARAMETERS]", Formbuilder.GetFormFragment(FormType.UrlParameters, false, runId))
                 .Replace("[QUERY_PARAMETERS]", Formbuilder.GetFormFragment(FormType.QueryParameters, false, runId))

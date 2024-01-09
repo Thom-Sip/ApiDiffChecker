@@ -111,8 +111,8 @@ namespace RefactorHelper.UIGenerator
             {
                 sb.Append(_sideBarGroupItemTemplateWithDelete
                     .Replace("[CSS_CLASS]", runId == i ? "request-item-active" : "request-item")
-                    .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
-                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
+                    .Replace("[GET_URL]", $"{Url.Fragment.Settings}?runId={i}")
+                    .Replace("[SET_URL]", $"{Url.Page.Settings}?runId={i}")
                     .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
                     .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[HX_DELETE_TARGET]", Section.SideBar)
@@ -124,7 +124,7 @@ namespace RefactorHelper.UIGenerator
             sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", "request-item")
                     .Replace("[GET_URL]", Url.Fragment.AddNewRun)
-                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{Settings.Runs.Count}")
+                    .Replace("[SET_URL]", $"{Url.Page.Settings}?runId={Settings.Runs.Count}")
                     .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[TEXT]", $"<b>+</b> Add Run")
                     .Replace("[STATUS_CODE]", ""));
