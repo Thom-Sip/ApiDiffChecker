@@ -44,7 +44,6 @@ namespace RefactorHelper.App
             app.ResultFragment(myApp);
             app.RetryRequestFragment(myApp);
             app.SettingsFragment(myApp);
-            app.SettingsRunByIdFragment(myApp);
             app.AddNewRunFragment(myApp);
             app.DuplicateRunFragment(myApp);
             app.ApplySettingsFragment(myApp);
@@ -167,21 +166,6 @@ namespace RefactorHelper.App
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.Settings, async (HttpContext context, int? runId = null) =>
-            {
-                await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
-
-                await context.Response
-                    .SetSidebar(SidebarType.Settings)
-                    .WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void SettingsRunByIdFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run all request and open static html in browser
-            app.MapGet($"{Url.Fragment.RunSettings}/{{runId}}", async (HttpContext context, int runId) =>
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
