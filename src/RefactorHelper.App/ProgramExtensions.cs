@@ -37,7 +37,6 @@ namespace RefactorHelper.App
             app.ResultPage(myApp);
             app.ResetPage(myApp);
             app.SettingsPage(myApp);
-            app.RunSettingsPage(myApp);
 
             app.SidebarFragment(myApp);
 
@@ -102,19 +101,7 @@ namespace RefactorHelper.App
         private static void SettingsPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet(Url.Page.Settings, async (HttpContext context) =>
-            {
-                await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsPage();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void RunSettingsPage(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run all request and open static html in browser
-            app.MapGet(Url.Page.Settings, async (HttpContext context, int runId) =>
+            app.MapGet(Url.Page.Settings, async (HttpContext context, int? runId = null) =>
             {
                 await myApp.Initialize();
                 var result = myApp.UIGeneratorService.GetSettingsPage(runId);
