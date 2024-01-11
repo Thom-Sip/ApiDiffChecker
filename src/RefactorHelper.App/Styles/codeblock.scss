@@ -1,0 +1,45 @@
+/* code display */
+.result-container-body {
+    span {
+        white-space: pre-wrap;
+        font-family: 'Courier New', Courier, monospace;
+        overflow-wrap: anywhere;
+        font-size: .8rem;
+        line-height: 10px;
+    }
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: row; /* Stack the content blocks vertically */
+}
+
+.item {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 10px 10px 10px 5px;
+    background-color: #eee;
+    /* overflow-y: scroll; */
+}
+
+.request-item {
+    cursor: pointer;
+}
+
+.addition {
+    background: #87d49c;
+}
+
+.removal {
+    background: #d49696;
+}
+
+.hidden-addition {
+    background: #d49696;
+}
+
+.hidden-removal {
+    background: #87d49c;
+}

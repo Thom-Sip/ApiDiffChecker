@@ -1,0 +1,111 @@
+/* Main content*/
+.main-box {
+    flex: 1; 
+    margin: var(--margin);
+    margin-left: var(--margin-half);
+    display:flex;
+    flex-direction: column;
+}
+
+/* Header */
+.header {
+    height: var(--banner-height);
+    min-height: var(--banner-height);
+    display: flex;
+    flex-direction: row;
+}
+
+.header-title-container {
+    flex: 1;
+    display:flex;
+    background-color: var(--main-color-dark);
+    padding: var(--padding);
+    flex-direction: column;
+    justify-content: center;
+    max-height:fit-content;
+    border: var(--border);
+    border-radius: var(--border-radius-left);
+}
+
+.header-title {
+    color: var(--text-color-light);
+    font-size: 2em;
+    margin-left: .5em;
+}
+
+.header-item {
+    flex: 1;
+    max-width:8em;
+
+    &:last-child > button {
+        border-radius: var(--border-radius-right);
+    }
+}
+
+.content-box {
+    display: flex;
+    column-gap: var(--margin);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.result-container-header-element {
+    flex-basis: 100%;
+    padding: var(--padding);
+
+    h1 {
+        margin: .25em 0 .25em 0;
+    }
+
+    button {
+        cursor: pointer;
+        border: var(--border);
+        border-left: 0px;
+        font-size: larger;
+        font-weight: bolder;
+        background-color: var(--main-color-dark);
+        color: var(--text-color-light);
+        padding: var(--padding);
+        margin-top: var(--margin);
+        border-radius: var(--border-radius);
+
+        &:hover {
+            background-color: var(--main-color-darker);
+        }
+    }
+}
+
+.result-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--margin);
+    margin-bottom: var(--margin);
+}
+
+.result-container-header {
+    border: var(--border);
+    border-bottom: 0px;
+    background-color: var(--main-color-dark);
+    color: var(--text-color-light);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius-top);
+
+    h1 {
+        margin-bottom: 0px;
+    }
+}
+
+.result-container-header h1 {
+    margin-top: 0px;
+}
+
+.result-container-body {
+    border: var(--border); 
+    flex: 1;
+    max-height:fit-content;
+    padding: var(--padding);
+    background-color: var(--main-color-lightest);
+    border-radius: var(--border-radius-bottom)
+}

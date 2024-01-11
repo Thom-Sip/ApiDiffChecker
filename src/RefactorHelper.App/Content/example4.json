@@ -1,0 +1,51 @@
+[
+  "Customer_4007",
+  "Message_Bar",
+  "Orange",
+  "Pear",
+  "Apple"
+], 
+[
+  "Customer_4007",
+  "Message_Bar",
+  "Pear",
+  "Orange",
+  "Strawberry"
+],
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": true,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:19641",
+      "sslPort": 44321
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project With Something",
+      "extraProp": true,
+      "hello": {
+        "what": "Wew"
+      },
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "static-compare",
+      "applicationUrl": "http://localhost:5176",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "static-compare",
+      "applicationUrl": "https://localhost:7215;http://localhost:5176",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

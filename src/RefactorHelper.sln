@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.Models", "RefactorHelper.Models\RefactorHelper.Models.csproj", "{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.UIGenerator", "RefactorHelper.UIGenerator\RefactorHelper.UIGenerator.csproj", "{EB314F61-04E5-4F03-AB1C-96452ED74FCE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper", "RefactorHelper.App\RefactorHelper.csproj", "{10F5C212-8C07-46C3-83A3-0CECDA9471EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B-097E-481D-9BF7-CC87F03A79F8}"
@@ -23,14 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F0F9CB6-40AA-4075-A5C2-EEA123351C9E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB314F61-04E5-4F03-AB1C-96452ED74FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB314F61-04E5-4F03-AB1C-96452ED74FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB314F61-04E5-4F03-AB1C-96452ED74FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB314F61-04E5-4F03-AB1C-96452ED74FCE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10F5C212-8C07-46C3-83A3-0CECDA9471EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
