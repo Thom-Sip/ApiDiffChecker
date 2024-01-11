@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "Create-Nuget-package" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "Create-Nuget-package" ]
+    branches: [ "main" ]
 
 jobs:
   build:
