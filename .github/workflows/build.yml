@@ -25,4 +25,4 @@ jobs:
           dotnet restore "RefactorHelper.csproj"
           dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
           dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package"
-          dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        #   dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
