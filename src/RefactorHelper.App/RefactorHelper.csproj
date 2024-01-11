@@ -29,7 +29,7 @@
 	</ItemGroup>
 
 	<!-- Verify Sass is installed-->
-	<Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
+	<Target Name="SassCheck" BeforeTargets="PreBuild" Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
 		<Exec Command="sass --version" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
 		</Exec>
@@ -37,7 +37,7 @@
 	</Target>
 
 	<!-- Generate .css files based on .scss files -->
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
 		<Exec Command="sass Styles/styles.scss Content/styles.css" />
 	</Target>
 
