@@ -32,7 +32,7 @@ jobs:
       - name: .NET Pack
         working-directory: ./src/RefactorHelper.App
         run: |
-          dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package"
+          dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package" p:PackageVersion=0.0.1
 
       - name: .NET Push
         working-directory: "${{ github.workspace }}/_output/package"
