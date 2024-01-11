@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: .NET Restore
+        working-directory: ./src/RefactorHelper.App
+        run: |
+          dotnet restore "RefactorHelper.csproj"
+
+      - name: .NET Build
+        working-directory: ./src/RefactorHelper.App
+        run: |
+          dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
+
+      - name: .NET Pack
+        working-directory: ./src/RefactorHelper.App
+        run: |
+          dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
+
+      - name: .NET Push
+        working-directory: "${{ github.workspace }}/_output/package"
+        run: |
+          dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

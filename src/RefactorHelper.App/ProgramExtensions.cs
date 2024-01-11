@@ -10,7 +10,7 @@ using RefactorHelper.RequestHandler;
 using RefactorHelper.SwaggerProcessor;
 using RefactorHelper.UIGenerator;
 
-namespace RefactorHelper.App
+namespace RefactorHelper
 {
     public static class ProgramExtensions
     {
