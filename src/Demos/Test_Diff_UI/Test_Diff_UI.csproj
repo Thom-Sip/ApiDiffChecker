@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RefactorHelper.App\RefactorHelper.App.csproj" />
+    <ProjectReference Include="..\..\RefactorHelper.App\RefactorHelper.csproj" />
   </ItemGroup>
 
 </Project>

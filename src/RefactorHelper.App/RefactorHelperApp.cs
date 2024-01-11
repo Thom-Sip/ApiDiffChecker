@@ -6,7 +6,7 @@ using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using Newtonsoft.Json;
 
-namespace RefactorHelper.App
+namespace RefactorHelper
 {
     public class RefactorHelperApp(
         RefactorHelperSettings settings,

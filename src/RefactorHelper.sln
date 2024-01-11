@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.Comparer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.UIGenerator", "RefactorHelper.UIGenerator\RefactorHelper.UIGenerator.csproj", "{EB314F61-04E5-4F03-AB1C-96452ED74FCE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper.App", "RefactorHelper.App\RefactorHelper.App.csproj", "{10F5C212-8C07-46C3-83A3-0CECDA9471EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactorHelper", "RefactorHelper.App\RefactorHelper.csproj", "{10F5C212-8C07-46C3-83A3-0CECDA9471EE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{03AAAA8B-097E-481D-9BF7-CC87F03A79F8}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic_Setup_Demo", "demos\B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Diff_UI", "Demos\Test_Diff_UI\Test_Diff_UI.csproj", "{32C9C72C-3F2E-47A8-AD62-90351652E625}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Large_Project", "Demos\Large_Project\Large_Project.csproj", "{8E533C57-DD10-4366-B100-C80574B7B642}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Large_Project", "Demos\Large_Project\Large_Project.csproj", "{8E533C57-DD10-4366-B100-C80574B7B642}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

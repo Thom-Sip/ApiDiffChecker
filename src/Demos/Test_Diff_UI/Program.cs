@@ -1,4 +1,4 @@
-using RefactorHelper.App;
+using RefactorHelper;
 using RefactorHelper.Models.Config;
 
 namespace Test_Diff_UI
