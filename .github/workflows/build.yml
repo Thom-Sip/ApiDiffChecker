@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [ "Create-Nuget-package" ]
+  pull_request:
+    branches: [ "Create-Nuget-package" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: .NET Restore + Build
+        working-directory: ./src
+        run: |
+          dotnet restore "RefactorHelper.sln"
+          dotnet build "RefactorHelper.sln" -o "${{ github.workspace }}/_output"  --no-restore
+
+    #   - name: Upload a Build Artifact
+    #     uses: actions/upload-artifact@v3.1.3
+    #     with:
+    #       name: buildArtifact
+    #       path: ${{ github.workspace }}/_output
