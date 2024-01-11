@@ -19,10 +19,22 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: .NET Restore + Build + Pack + Push
+      - name: .NET Restore
         working-directory: ./src/RefactorHelper.App
         run: |
           dotnet restore "RefactorHelper.csproj"
+
+      - name: .NET Build
+        working-directory: ./src/RefactorHelper.App
+        run: |
           dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
+
+      - name: .NET Pack
+        working-directory: ./src/RefactorHelper.App
+        run: |
           dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package"
-        #   dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+      - name: .NET Push
+        working-directory: ./src/RefactorHelper.App
+        run: |
+          dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
