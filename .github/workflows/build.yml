@@ -20,10 +20,10 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: .NET Restore + Build
-        working-directory: ./src
+        working-directory: ./src/RefactorHelper.App
         run: |
-          dotnet restore "RefactorHelper.sln"
-          dotnet build "RefactorHelper.sln" -o "${{ github.workspace }}/_output"  --no-restore
+          dotnet restore "RefactorHelper.csproj"
+          dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore
 
     #   - name: Upload a Build Artifact
     #     uses: actions/upload-artifact@v3.1.3
