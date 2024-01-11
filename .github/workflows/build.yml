@@ -35,6 +35,5 @@ jobs:
           dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package"
 
       - name: .NET Push
-        working-directory: ${{ github.workspace }}
         run: |
-          dotnet nuget push /_output/package/RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+          dotnet nuget push "${{ github.workspace }}/_output/package/RefactorHelper.**.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
