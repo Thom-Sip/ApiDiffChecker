@@ -37,4 +37,4 @@ jobs:
       - name: .NET Push
         working-directory: ./src/RefactorHelper.App
         run: |
-          dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+          dotnet nuget push **/RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
