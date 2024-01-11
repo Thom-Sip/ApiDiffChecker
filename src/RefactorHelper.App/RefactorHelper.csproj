@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Package Properties -->
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
 		<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
-		<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">0.1</VersionPrefix>
+		<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">0.2</VersionPrefix>
 		<VersionSuffix Condition="'$(RELEASE_VERSION)' == ''">$([System.DateTime]::UtcNow.ToString(`yyyy-MM-dd-HH-mm`))</VersionSuffix>
 	</PropertyGroup>
 
+	<!-- Include Static files in nuget package -->
 	<ItemGroup Label="Packaging">
 		<Content Include="Content/**">
 			<Pack>true</Pack>
@@ -18,6 +20,7 @@
 		</Content>
 	</ItemGroup>
 
+	<!-- Dependencies -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -25,10 +28,7 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Content\" />
-	</ItemGroup>
-
+	<!-- Verify Sass is installed-->
 	<Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
 		<Exec Command="sass --version" ContinueOnError="true">
 			<Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
@@ -36,6 +36,7 @@
 		<Error Condition="'$(ErrorCodeSass)' != '0'" Text="Dart-sass is required for this project. Install globally with 'npm i -g sass' " />
 	</Target>
 
+	<!-- Generate .css files based on .scss files -->
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
 		<Exec Command="sass Styles/styles.scss Content/styles.css" />
 	</Target>
