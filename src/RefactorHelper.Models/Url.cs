@@ -1,5 +1,12 @@
 ﻿namespace RefactorHelper.Models
 {
+    public enum SidebarType
+    {
+        Requests,
+        RequestsPolling,
+        Settings
+    }
+
     public static class Url
     {
         public static class Page
@@ -9,8 +16,6 @@
             public static string TestResult { get; } = "/run-refactor-helper";
 
             public static string Settings { get; } = "/run-refactor-helper/settings";
-
-            public static string RunSettings { get; } = "/run-refactor-helper/settings/run";
 
             public static string Reset { get; } = "/run-refactor-helper/reset";
         }
@@ -29,6 +34,8 @@
 
             public static string ApplySettings { get; } = "/run-refactor-helper/fragment/settings/apply";
 
+            public static string SaveSettingsToDisk { get; } = "/run-refactor-helper/fragment/settings/save-to-disk";
+
             public static string AddNewRun { get; } = "/run-refactor-helper/fragment/settings/add";
 
             public static string CopyRun { get; } = "/run-refactor-helper/fragment/settings/copy";
@@ -44,6 +51,8 @@
             public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";
 
             public static string SideBarSettingsRemoveRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/remove";
+
+            public static string Sidebar { get; } = "/run-refactor-helper/fragment/sidebar";
         }
 
         public static class Download

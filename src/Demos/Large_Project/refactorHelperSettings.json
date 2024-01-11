@@ -1,0 +1,202 @@
+{
+  "RunOnStart": false,
+  "ContentFolder": "D:\\git\\RefactorHelper\\src\\Demos\\Large_Project\\bin\\Debug\\net8.0\\Content",
+  "SwaggerUrl": "",
+  "DefaultRunSettings": {
+    "UrlParameters": [
+      {
+        "Key": "label",
+        "Value": ""
+      },
+      {
+        "Key": "customerId",
+        "Value": ""
+      },
+      {
+        "Key": "accountId",
+        "Value": ""
+      },
+      {
+        "Key": "orderId",
+        "Value": ""
+      }
+    ],
+    "QueryParameters": [
+      {
+        "Key": "name",
+        "Value": ""
+      },
+      {
+        "Key": "results",
+        "Value": ""
+      }
+    ],
+    "PropertiesToReplace": [
+      {
+        "Key": "traceId_",
+        "Value": "[REPLACED_TRACE_ID]"
+      },
+      {
+        "Key": "timestamp",
+        "Value": "[REPLACED_TIMESTAMP]"
+      }
+    ]
+  },
+  "Runs": [
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Bol"
+        },
+        {
+          "Key": "customerId",
+          "Value": "14009a"
+        },
+        {
+          "Key": "accountId",
+          "Value": "2"
+        },
+        {
+          "Key": "orderId",
+          "Value": "Q1_bol_0111672"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Dave"
+        },
+        {
+          "Key": "results",
+          "Value": "4"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Bol"
+        },
+        {
+          "Key": "customerId",
+          "Value": "14009"
+        },
+        {
+          "Key": "accountId",
+          "Value": "5"
+        },
+        {
+          "Key": "orderId",
+          "Value": " Q1_bol_0111672"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Dave"
+        },
+        {
+          "Key": "results",
+          "Value": "4"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699871"
+        },
+        {
+          "Key": "accountId",
+          "Value": "2"
+        },
+        {
+          "Key": "orderId",
+          "Value": "Q1_coolblue_sufd816723"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Derick"
+        },
+        {
+          "Key": "results",
+          "Value": "3"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699871"
+        },
+        {
+          "Key": "accountId",
+          "Value": "7"
+        },
+        {
+          "Key": "orderId",
+          "Value": " Q1_coolblue_sufd816723"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Jordan"
+        },
+        {
+          "Key": "results",
+          "Value": "1"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "label",
+          "Value": "Coolblue"
+        },
+        {
+          "Key": "customerId",
+          "Value": "699872"
+        },
+        {
+          "Key": "accountId",
+          "Value": "4"
+        },
+        {
+          "Key": "orderId",
+          "Value": " Q4_coolblue_sufd816723"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "name",
+          "Value": "Jordan"
+        },
+        {
+          "Key": "results",
+          "Value": "1"
+        }
+      ],
+      "PropertiesToReplace": []
+    }
+  ]
+}

@@ -37,17 +37,15 @@ namespace RefactorHelper.App
             app.ResultPage(myApp);
             app.ResetPage(myApp);
             app.SettingsPage(myApp);
-            app.RunSettingsPage(myApp);
+
+            app.SidebarFragment(myApp);
 
             app.RunAllFragment(myApp);
             app.ResultFragment(myApp);
             app.RetryRequestFragment(myApp);
-            app.RequestsSideBarFragment(myApp);
             app.SettingsFragment(myApp);
-            app.SettingsRunByIdFragment(myApp);
             app.AddNewRunFragment(myApp);
             app.DuplicateRunFragment(myApp);
-            app.SettingsSideBarFragment(myApp);
             app.ApplySettingsFragment(myApp);
             app.RemoveRunSettingsSideBarFragment(myApp);
             app.FormFragment(myApp);
@@ -56,6 +54,7 @@ namespace RefactorHelper.App
             app.SaveFormFragment(myApp);
 
             app.DownloadSettings(myApp);
+            app.SaveSettingsToDisk(myApp);
 
             app.AddStaticFileEndpoint(myApp, "styles.css");
             app.AddStaticFileEndpoint(myApp, "htmx.min.js");
@@ -101,22 +100,22 @@ namespace RefactorHelper.App
         private static void SettingsPage(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run all request and open static html in browser
-            app.MapGet(Url.Page.Settings, async (HttpContext context) =>
+            app.MapGet(Url.Page.Settings, async (HttpContext context, int? runId = null) =>
             {
                 await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsPage();
+                var result = myApp.UIGeneratorService.GetSettingsPage(runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
         }
+        #endregion
 
-        private static void RunSettingsPage(this WebApplication app, RefactorHelperApp myApp)
+        #region Sidebar
+        private static void SidebarFragment(this WebApplication app, RefactorHelperApp myApp)
         {
-            // Run all request and open static html in browser
-            app.MapGet($"{Url.Page.RunSettings}/{{runId}}", async (HttpContext context, int runId) =>
+            app.MapGet($"{Url.Fragment.Sidebar}/{{sidebarType}}", async (HttpContext context, SidebarType sidebarType) =>
             {
-                await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsPage(runId);
+                var result = myApp.SidebarGeneratorService.GetSideBarFragment(sidebarType);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -129,10 +128,10 @@ namespace RefactorHelper.App
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.RunAll, async (HttpContext context) =>
             {
-                var result = await myApp.RunAll();
+                var result = myApp.RunAll();
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
-                    .WriteHtmlResponse(result);
+                    .SetSidebar(SidebarType.RequestsPolling)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
@@ -144,7 +143,7 @@ namespace RefactorHelper.App
             {
                 var result = myApp.UIGeneratorService.GetTestResultFragment(requestId);
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -155,10 +154,10 @@ namespace RefactorHelper.App
             // Run single requst and return html to replace result in page
             app.MapGet(Url.Fragment.RetryCurrentRequest, async (HttpContext context) =>
             {
-                var result = await myApp.RetryCurrentRequestFragment();
+                var result = myApp.RetryCurrentRequestFragment();
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
-                    .WriteHtmlResponse(result);
+                    .SetSidebar(SidebarType.RequestsPolling)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
@@ -172,22 +171,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
-                    .WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void SettingsRunByIdFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run all request and open static html in browser
-            app.MapGet($"{Url.Fragment.RunSettings}/{{runId}}", async (HttpContext context, int runId) =>
-            {
-                await myApp.Initialize();
-                var result = myApp.UIGeneratorService.GetSettingsFragment(runId);
-
-                await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -202,7 +186,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -217,7 +201,7 @@ namespace RefactorHelper.App
                 var result = myApp.UIGeneratorService.GetSettingsFragment(myApp.Settings.Runs.Count - 1);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -231,7 +215,7 @@ namespace RefactorHelper.App
                 await myApp.Reset();
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshRequestList)
+                    .SetSidebar(SidebarType.Requests)
                     .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
@@ -261,7 +245,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -278,7 +262,7 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
@@ -294,32 +278,10 @@ namespace RefactorHelper.App
                 var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
 
                 await context.Response
-                    .SetHxTriggerHeader(HxTriggers.RefreshSettingsList)
+                    .SetSidebar(SidebarType.Settings)
                     .WriteHtmlResponse(result);
 
             }).ExcludeFromDescription().DisableAntiforgery();
-        }
-
-        private static void RequestsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarRequests, async (HttpContext context) =>
-            {
-                var result = myApp.SidebarGeneratorService.GetRequestListFragment();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
-        }
-
-        private static void SettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
-        {
-            // Run single request and return html to replace result in page
-            app.MapGet(Url.Fragment.SideBarSettings, async (HttpContext context) =>
-            {
-                var result = myApp.SidebarGeneratorService.GetSettingsSideBarFragment();
-                await context.Response.WriteHtmlResponse(result);
-
-            }).ExcludeFromDescription();
         }
 
         private static void RemoveRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
@@ -335,7 +297,7 @@ namespace RefactorHelper.App
         }
         #endregion
 
-        #region Download
+        #region Download and Save
         private static void DownloadSettings(this WebApplication app, RefactorHelperApp myApp)
         {
             // Run single request and return html to replace result in page
@@ -343,6 +305,21 @@ namespace RefactorHelper.App
             {
                 var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
                 await context.Response.SetResponseHeader("ContentType", "application/json").WriteAsync(result);
+
+            }).ExcludeFromDescription();
+        }
+
+        private static void SaveSettingsToDisk(this WebApplication app, RefactorHelperApp myApp)
+        {
+            // Run all request and open static html in browser
+            app.MapGet(Url.Fragment.SaveSettingsToDisk, async (HttpContext context) =>
+            {
+                var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
+                File.WriteAllText($"{Environment.CurrentDirectory}/refactorHelperSettings.json", result);
+
+                await context.Response
+                    .SetSidebar(SidebarType.Requests)
+                    .WriteHtmlResponse("");
 
             }).ExcludeFromDescription();
         }
@@ -365,6 +342,9 @@ namespace RefactorHelper.App
 
         public static HttpResponse SetHtmlHeader(this HttpResponse response) => 
             response.SetResponseHeader("ContentType", "text/html");
+
+        public static HttpResponse SetSidebar(this HttpResponse response, SidebarType sidebarType) =>
+            response.SetHxTriggerHeader($"{{\"loadSidebar\":\"{Url.Fragment.Sidebar}/{sidebarType}\"}}");
 
         public static HttpResponse SetHxTriggerHeader(this HttpResponse response, string trigger) =>
             response.SetResponseHeader("HX-Trigger", trigger);

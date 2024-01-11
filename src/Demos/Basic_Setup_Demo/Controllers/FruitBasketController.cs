@@ -19,8 +19,10 @@ namespace Basic_Setup_Demo.Controllers
         }
 
         [HttpGet("{customerId}/{accountId}")]
-        public IEnumerable<string> GetThings(int customerId, int accountId, [FromQuery] string message = "")
+        public async Task <IEnumerable<string>> GetThings(int customerId, int accountId, [FromQuery] string message = "")
         {
+            await Task.Delay(Random.Shared.Next(500, 5000));
+
             return new List<string>
             {
                 $"Customer_{customerId}",
@@ -32,8 +34,10 @@ namespace Basic_Setup_Demo.Controllers
         }
 
         [HttpGet("random")]
-        public IEnumerable<string> RandomResult()
+        public async Task<IEnumerable<string>> RandomResult()
         {
+            await Task.Delay(Random.Shared.Next(500, 5000));
+
             return new List<string>
             {
                 $"Random_{Random.Shared.Next(2)}",

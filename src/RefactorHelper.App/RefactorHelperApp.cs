@@ -67,6 +67,9 @@ namespace RefactorHelper.App
 
         public async Task<string> RunAll()
         {
+            // Clear previous run
+            State.Data.ForEach(x => x.Clear());
+
             // Perform api Requests
             await RequestHandlerService.QueryApis(State);
 
@@ -81,6 +84,9 @@ namespace RefactorHelper.App
 
         public async Task<string> RetryCurrentRequestFragment()
         {
+            // Clear previous result
+            State.Data[State.CurrentRequest].Clear();
+
             // Perform single api request and update result
             await RequestHandlerService.QueryEndpoint(State.GetCurrentRequest());
 

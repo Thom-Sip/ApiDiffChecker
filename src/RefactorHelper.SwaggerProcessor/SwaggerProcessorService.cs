@@ -34,7 +34,7 @@ namespace RefactorHelper.SwaggerProcessor
                 .Distinct()
                 .ToList();
 
-            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).ToList();
+            return urlParams.Select(x => new Parameter(x.name, $"{{{x.name}}}")).DistinctBy(x => x.Key).ToList();
         }
 
         private static List<RequestDetails> GetGetRequests(SwaggerDocument doc)
@@ -56,7 +56,7 @@ namespace RefactorHelper.SwaggerProcessor
 
             var request = new List<RequestDetails>();
 
-            foreach (var run in Settings.Runs)
+            foreach (var run in Settings.Runs.Count > 0 ? Settings.Runs : new List<Run> { Settings.DefaultRunSettings })
                 request.AddRange(doc.paths.Where(x => x.Value.get != null).Select(p => GetRequestDetails(p, run)).ToList());
 
             request = request.OrderBy(x => x.Path).DistinctBy(x => x.Path).ToList();
@@ -69,6 +69,7 @@ namespace RefactorHelper.SwaggerProcessor
                 {
                     Id = i,
                     Request = request[i],
+                    State = RequestState.Pending
                 });
             }
 
@@ -93,15 +94,14 @@ namespace RefactorHelper.SwaggerProcessor
             {
                 if(param.@in == "path")
                 {
-                    if(TryGetValue(param.name, out var result, run.UrlParameters))
+                    if(TryGetValue(param.name, out var result, run.UrlParameters) && !string.IsNullOrWhiteSpace(result))
                     {
                         template = ReplaceUrlParam(template, param, result);
                     }
-                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.UrlParameters))
+                    else if (TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.UrlParameters) && !string.IsNullOrWhiteSpace(result2))
                     {
                         template = ReplaceUrlParam(template, param, result2);
                     }
-
                 }
                 if(param.@in == "query")
                 {

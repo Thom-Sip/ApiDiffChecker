@@ -86,8 +86,30 @@
         padding: 0px;
     }
 
+    .status-code {
+        display: flex;
+        background-color: var(--main-color-darker);
+        flex: 0 0 2.5em;
+        padding: var(--padding-small);
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .failed {
+        color: red;
+    }
+
+    .pending {
+        color: var(--text-color-light);
+    }
+
     & > ul > li {
-        display: block;
+        display: flex;
         border: var(--border);
         border-top: 0px;
 
@@ -97,21 +119,34 @@
 
         &:last-child {
             border-radius: var(--border-radius-bottom);
+
+            .status-code {
+                border-radius: var(--border-radius-bottom-left);
+            }
         }
+    }
+
+    & > ul > a > li {
+        display: flex;
+        border: var(--border);
+        border-top: 0px;
+
+        &:hover {
+            background-color: var(--main-color-lightest);
+        }
+    }
+
+    a {
+        color: var(--text-color-dark);
+        text-decoration: none;
     }
 
     .side-bar-item {
         display: flex;
+        flex: 1;
         flex-direction: row;
-        align-items: center;
-
-        .request-item-content {
-            cursor: pointer;
-            font-family: Arial;
-            border: none;
-            flex: 1;
-            padding: var(--padding);
-        }
+        align-items: stretch;
+        flex-wrap: wrap;
 
         .request-item-delete-button {
             flex: 0 0 1em;
@@ -125,17 +160,41 @@
     }
 
     .request-item {
-        display: block;
         background-color: var(--main-color-lighter);
-
-        a {
-            color: var(--text-color-dark);
-            text-decoration: none;
-        }
+        flex-wrap: nowrap;
     }
 
     .request-item-active {
         background-color: var(--main-color-lightest);
         font-weight: bolder;
     }
+
+    .request-item-content {
+        display: flex;
+        cursor: pointer;
+        font-family: Arial;
+        border: none;
+        flex: 1;
+        padding: var(--padding);
+        overflow-wrap: anywhere;
+    }
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner:before {
+    content: '';
+    box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--text-color-light);
+    border-top-color: var(--text-color-dark);
+    animation: spinner .5s linear infinite;
 }

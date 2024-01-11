@@ -1,53 +1,63 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 
-  <ItemGroup>
-    <Compile Remove="Content\Output\**" />
-    <Compile Remove="wwwroot\**" />
-    <EmbeddedResource Remove="Content\Output\**" />
-    <EmbeddedResource Remove="wwwroot\**" />
-    <None Remove="Content\Output\**" />
-    <None Remove="wwwroot\**" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
+		<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
+		<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">0.1</VersionPrefix>
+		<VersionSuffix Condition="'$(RELEASE_VERSION)' == ''">$([System.DateTime]::UtcNow.ToString(`yyyy-MM-dd-HH-mm`))</VersionSuffix>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RefactorHelper.Models\RefactorHelper.Models.csproj" />
-  </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup Label="Packaging">
+		<Content Include="Content/**">
+			<Pack>true</Pack>
+		</Content>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RefactorHelper.Models\RefactorHelper.Models.csproj" />
+	</ItemGroup>
+
+	<!--<ItemGroup>
     <None Update="Content\**">
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  </ItemGroup>-->
 
-  <ItemGroup>
-    <Folder Include="Styles\" />
-  </ItemGroup>
+	<!--<ItemGroup>
+		<None Include="contentFiles\**" Pack="True" PackageCopyToOutput="true" CopyToOutputDirectory="always" PackagePath="contentFiles\" Visible="true" />
+	</ItemGroup>-->
 
-  <ItemGroup>
-    <None Update="Content\Forms\FormFieldTemplateEditKeyAndValue.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<!--<ItemGroup>
+		<None Include="ContentAaa\**" Pack="True" PackagePath="Content\" Visible="true" />
+	</ItemGroup>-->
 
-    <Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
-	    <Exec Command="sass --version" ContinueOnError="true">
-		    <Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
-	    </Exec>
-	    <Error Condition="'$(ErrorCodeSass)' != '0'" Text="Dart-sass is required for this project. Install globally with 'npm i -g sass' " />
-    </Target>
+	<!--<ItemGroup Label="Packaging">
+		<Content Include="build/RefactorHelper.UIGenerator.targets" PackagePath="build/RefactorHelper.UIGenerator.targets" />
+		<Content Include="Content/**">
+			<Pack>true</Pack>
+		</Content>
+	</ItemGroup>-->
 
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	    <Exec Command="sass Styles/styles.scss Content/styles.css" />
-    </Target>
+	<Target Name="SassCheck" BeforeTargets="PreBuild" Condition="'$(PublishProtocol)'==''">
+		<Exec Command="sass --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCodeSass" />
+		</Exec>
+		<Error Condition="'$(ErrorCodeSass)' != '0'" Text="Dart-sass is required for this project. Install globally with 'npm i -g sass' " />
+	</Target>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="sass Styles/styles.scss Content/styles.css" />
+	</Target>
 
 </Project>

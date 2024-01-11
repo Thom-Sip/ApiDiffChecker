@@ -1,8 +1,6 @@
 ﻿using RefactorHelper.Models.Config;
 using RefactorHelper.Models;
 using System.Text;
-using System;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace RefactorHelper.UIGenerator
 {
@@ -14,6 +12,41 @@ namespace RefactorHelper.UIGenerator
         protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
         protected string _sideBarGroupItemTemplateWithDelete { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
         protected string _sideBarDownloadTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
+        protected string _sidebarFragment { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarFragment.html");
+
+        public string GetSideBarFragment(SidebarType sidebarType)
+        {
+            return sidebarType switch
+            {
+                SidebarType.Requests => GetSidebarRequestList(sidebarType),
+                SidebarType.RequestsPolling => GetSidebarRequestList(sidebarType),
+                SidebarType.Settings => GetSidebarSettings(),
+                _ => throw new NotImplementedException()
+            };
+        }
+
+        private string GetSidebarRequestList(SidebarType sidebarType)
+        {
+            if(sidebarType == SidebarType.RequestsPolling && State.Data.All(x => x.CompareResultPair != null))
+                sidebarType = SidebarType.Requests;
+
+            var result = _sidebarFragment
+                .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{sidebarType}")
+                .Replace("[TRIGGER]", sidebarType == SidebarType.RequestsPolling ? "every .5s" : "never")
+                .Replace("[CONTENT]", GetRequestListFragment());
+
+            return result;
+        }
+
+        private string GetSidebarSettings()
+        {
+            var result = _sidebarFragment
+                .Replace("[CONTENT_URL]", $"{Url.Fragment.Sidebar}/{SidebarType.Settings}")
+                .Replace("[TRIGGER]", "never")
+                .Replace("[CONTENT]", GetSettingsSideBarFragment());
+
+            return result;
+        }
 
         public string GetSettingsSideBarFragment() =>
             GenerateSettingsSideBarFragment(State.CurrentRun);
@@ -37,14 +70,25 @@ namespace RefactorHelper.UIGenerator
         {
             var sb = new StringBuilder();
             sb.Append("<ul>");
-            sb.Append(_sideBarDownloadTemplate);
+
+            sb.Append(_sideBarDownloadTemplate
+                .Replace("[TEXT]", "View"));
+
+            sb.Append(_sideBarGroupItemTemplate
+              .Replace("[CSS_CLASS]", "request-item")
+              .Replace("[GET_URL]", Url.Fragment.SaveSettingsToDisk)
+              .Replace("[SET_URL]", Url.Page.Root)
+              .Replace("[HX_TARGET]", Section.MainContent)
+              .Replace("[TEXT]", "Save to disk")
+              .Replace("[STATUS_CODE]", ""));
 
             sb.Append(_sideBarGroupItemTemplate
               .Replace("[CSS_CLASS]", "request-item")
               .Replace("[GET_URL]", Url.Fragment.ApplySettings)
               .Replace("[SET_URL]", Url.Page.Root)
               .Replace("[HX_TARGET]", Section.MainContent)
-              .Replace("[TEXT]", "Apply Settings"));
+              .Replace("[TEXT]", "Apply Settings")
+              .Replace("[STATUS_CODE]", ""));
 
             sb.Append("</ul>");
             return sb.ToString();
@@ -60,31 +104,30 @@ namespace RefactorHelper.UIGenerator
                 .Replace("[GET_URL]", Url.Fragment.Settings)
                 .Replace("[SET_URL]", Url.Page.Settings)
                 .Replace("[HX_TARGET]", Section.MainContent)
-                .Replace("[TEXT]", "Default Values"));
+                .Replace("[TEXT]", "Default Values")
+                .Replace("[STATUS_CODE]", ""));
 
             for (int i = 0; i < Settings.Runs.Count; i++)
             {
-                var template = i == 0
-                    ? _sideBarGroupItemTemplate
-                    : _sideBarGroupItemTemplateWithDelete;
-
-                sb.Append(template
+                sb.Append(_sideBarGroupItemTemplateWithDelete
                     .Replace("[CSS_CLASS]", runId == i ? "request-item-active" : "request-item")
-                    .Replace("[GET_URL]", $"{Url.Fragment.RunSettings}/{i}")
-                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{i}")
+                    .Replace("[GET_URL]", $"{Url.Fragment.Settings}?runId={i}")
+                    .Replace("[SET_URL]", $"{Url.Page.Settings}?runId={i}")
                     .Replace("[DELETE_URL]", $"{Url.Fragment.SideBarSettingsRemoveRun}/{i}")
                     .Replace("[HX_TARGET]", Section.MainContent)
                     .Replace("[HX_DELETE_TARGET]", Section.SideBar)
                     .Replace("[LI-ID]", $"run-button-{i}")
-                    .Replace("[TEXT]", $"Run {i}"));
+                    .Replace("[TEXT]", $"Run {i}")
+                    .Replace("[STATUS_CODE]", ""));
             }
 
             sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", "request-item")
                     .Replace("[GET_URL]", Url.Fragment.AddNewRun)
-                    .Replace("[SET_URL]", $"{Url.Page.RunSettings}/{Settings.Runs.Count}")
+                    .Replace("[SET_URL]", $"{Url.Page.Settings}?runId={Settings.Runs.Count}")
                     .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", $"<b>+</b> Add Run"));
+                    .Replace("[TEXT]", $"<b>+</b> Add Run")
+                    .Replace("[STATUS_CODE]", ""));
 
             sb.Append("</ul>");
             return sb.ToString();
@@ -118,7 +161,7 @@ namespace RefactorHelper.UIGenerator
               .Replace("[TITLE]", $"{title} ({wrappers.Count})")
               .Replace("[CONTENT]", GetSidebarContent(wrappers));
         }
-
+        
         private string GetSidebarContent(List<RequestWrapper> resultPairs)
         {
             var sb = new StringBuilder();
@@ -126,12 +169,28 @@ namespace RefactorHelper.UIGenerator
 
             foreach (var item in resultPairs)
             {
+                var response1 = item.TestResult?.Result1.ResponseObject;
+                var resultCode = "...";
+                if (response1 != null)
+                    resultCode = ((int)response1.StatusCode).ToString();
+
+                var successClass = "pending";
+                if (response1 != null)
+                    successClass = response1?.IsSuccessStatusCode == true ? "success" : "failed";
+
+                if (item.State == RequestState.Running)
+                {
+                    resultCode = "";
+                    successClass = "spinner";
+                }
+
                 sb.Append(_sideBarGroupItemTemplate
                     .Replace("[CSS_CLASS]", item.Id == State.CurrentRequest ? "request-item-active" : "request-item")
                     .Replace("[GET_URL]", $"{Url.Fragment.TestResult}/{item.Id}")
                     .Replace("[SET_URL]", $"{Url.Page.TestResult}/{item.Id}")
                     .Replace("[HX_TARGET]", Section.MainContent)
-                    .Replace("[TEXT]", $"{GetResultCode(item.TestResult?.Result1)} {item.Request.Path}"));
+                    .Replace("[TEXT]", item.Request.Path)
+                    .Replace("[STATUS_CODE]", $"<div class=\"status-code {successClass}\">{resultCode}</div>"));
             }
 
             sb.Append("</ul>");

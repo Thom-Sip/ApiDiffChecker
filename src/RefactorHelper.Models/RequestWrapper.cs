@@ -8,6 +8,8 @@ namespace RefactorHelper.Models
     {
         public required int Id { get; set; }
 
+        public required RequestState State { get; set; }
+
         public bool Changed { get; set; }
 
         public bool Executed => TestResult != null;
@@ -18,6 +20,11 @@ namespace RefactorHelper.Models
 
         public CompareResultPair? CompareResultPair { get; set; }
 
-        public string ResultHtml { get; set; } = string.Empty;
+        public void Clear()
+        {
+            TestResult = null;
+            CompareResultPair = null;
+            State = RequestState.Pending;
+        }
     }
 }
