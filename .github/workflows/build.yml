@@ -19,14 +19,10 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: .NET Restore + Build
+      - name: .NET Restore + Build + Pack + Push
         working-directory: ./src/RefactorHelper.App
         run: |
           dotnet restore "RefactorHelper.csproj"
-          dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore
-
-    #   - name: Upload a Build Artifact
-    #     uses: actions/upload-artifact@v3.1.3
-    #     with:
-    #       name: buildArtifact
-    #       path: ${{ github.workspace }}/_output
+          dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
+          dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package"
+          dotnet nuget push RefactorHelper.**.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
