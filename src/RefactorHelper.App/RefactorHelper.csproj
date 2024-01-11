@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RefactorHelper.SwaggerProcessor\RefactorHelper.SwaggerProcessor.csproj" />
     <ProjectReference Include="..\RefactorHelper.UIGenerator\RefactorHelper.UIGenerator.csproj" />
   </ItemGroup>
 
