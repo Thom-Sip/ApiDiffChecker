@@ -27,9 +27,6 @@
 		<PackageReference Include="Swashbuckle" Version="5" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Models\Comparer\" />
-	</ItemGroup>
 
 	<!-- Verify Sass is installed-->
 	<Target Name="SassCheck" BeforeTargets="PreBuild" Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">

@@ -1,6 +1,6 @@
 ﻿using ApiDiffChecker.Comparer;
-using ApiDiffChecker.Models.RequestHandler;
 using ApiDiffChecker.Models.SwaggerProcessor;
+using ApiDiffChecker.RequestHandler;
 
 namespace ApiDiffChecker.Models
 {

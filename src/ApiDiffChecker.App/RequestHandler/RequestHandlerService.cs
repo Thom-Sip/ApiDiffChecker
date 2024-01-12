@@ -1,6 +1,5 @@
 ﻿using ApiDiffChecker.Models;
 using Newtonsoft.Json;
-using ApiDiffChecker.Models.RequestHandler;
 using ApiDiffChecker.Models.Config;
 using Newtonsoft.Json.Linq;
 

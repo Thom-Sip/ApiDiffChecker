@@ -1,6 +1,6 @@
 ﻿using ApiDiffChecker.Models.Config;
 using ApiDiffChecker.Models;
-using ApiDiffChecker.Models.RequestHandler;
+using ApiDiffChecker.RequestHandler;
 
 namespace ApiDiffChecker.UIGenerator
 {
