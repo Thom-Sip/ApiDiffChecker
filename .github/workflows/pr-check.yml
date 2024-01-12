@@ -5,7 +5,7 @@ on:
     types: [opened, reopened]
 
 jobs:
-  build:
+  pr-check:
 
     runs-on: ubuntu-latest
 
