@@ -10,7 +10,7 @@ namespace ApiDiffChecker
 {
     public class RefactorHelperApp(
         RefactorHelperSettings settings,
-        RefactorHelperState state,
+        ApiDiffCheckerState state,
         SwaggerProcessorService swaggerProcessorService,
         RequestHandlerService requestHandlerService,
         CompareService compareService,
@@ -19,7 +19,7 @@ namespace ApiDiffChecker
         Formbuilder formbuilder)
     {
         public RefactorHelperSettings Settings { get; set; } = settings;
-        public RefactorHelperState State { get; set; } = state;
+        public ApiDiffCheckerState State { get; set; } = state;
         public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
         public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;
         public CompareService CompareService { get; set; } = compareService;

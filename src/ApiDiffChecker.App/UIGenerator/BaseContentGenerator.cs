@@ -4,9 +4,9 @@ using ApiDiffChecker.Models.RequestHandler;
 
 namespace ApiDiffChecker.UIGenerator
 {
-    public class BaseContentGenerator(RefactorHelperSettings settings, RefactorHelperState state)
+    public class BaseContentGenerator(RefactorHelperSettings settings, ApiDiffCheckerState state)
     {
-        protected RefactorHelperState State { get; } = state;
+        protected ApiDiffCheckerState State { get; } = state;
 
         protected RefactorHelperSettings Settings { get; } = settings;
 

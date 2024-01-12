@@ -17,7 +17,7 @@ namespace ApiDiffChecker
         public static IServiceCollection AddRefactorHelper(this IServiceCollection services, RefactorHelperSettings settings)
         {
             services.AddSingleton(settings);
-            services.AddSingleton<RefactorHelperState>();
+            services.AddSingleton<ApiDiffCheckerState>();
             services.AddSingleton<RefactorHelperApp>();
             services.AddSingleton<SwaggerProcessorService>();
             services.AddSingleton<RequestHandlerService>();

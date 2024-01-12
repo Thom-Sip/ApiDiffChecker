@@ -6,7 +6,7 @@ namespace ApiDiffChecker.UIGenerator
 {
     public class SidebarGeneratorService(
         RefactorHelperSettings settings,
-        RefactorHelperState state) : BaseContentGenerator(settings, state)
+        ApiDiffCheckerState state) : BaseContentGenerator(settings, state)
     {
         protected string _sideBarGroupTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
         protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");

@@ -9,7 +9,7 @@ namespace ApiDiffChecker.UIGenerator
 {
     public class ContentGeneratorService(
         RefactorHelperSettings settings,
-        RefactorHelperState state,
+        ApiDiffCheckerState state,
         SidebarGeneratorService sidebarGeneratorService,
         Formbuilder formBuilder) : BaseContentGenerator(settings, state)
     {
@@ -21,7 +21,7 @@ namespace ApiDiffChecker.UIGenerator
         protected Formbuilder Formbuilder { get; } = formBuilder;
         protected SidebarGeneratorService SidebarGeneratorService { get; } = sidebarGeneratorService;
 
-        public void GenerateBaseUI(RefactorHelperState state)
+        public void GenerateBaseUI(ApiDiffCheckerState state)
         {
             SidebarGeneratorService.GenerateRequestSideBarHtml(state.Data);
             SidebarGeneratorService.GenerateSettingsSideBarFragment(null);

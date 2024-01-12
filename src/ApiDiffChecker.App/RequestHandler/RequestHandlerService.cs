@@ -10,7 +10,7 @@ namespace ApiDiffChecker.RequestHandler
     {
         private RefactorHelperSettings Settings { get; } = settings;
 
-        public async Task QueryApis(RefactorHelperState state)
+        public async Task QueryApis(ApiDiffCheckerState state)
         {
             var tasks = state.Data.Select(SetResponses).ToList();
             await Task.WhenAll(tasks);

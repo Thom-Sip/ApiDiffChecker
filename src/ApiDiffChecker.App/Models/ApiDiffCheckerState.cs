@@ -3,7 +3,7 @@ using ApiDiffChecker.Models.Uigenerator;
 
 namespace ApiDiffChecker.Models
 {
-    public class RefactorHelperState
+    public class ApiDiffCheckerState
     {
         public bool Initialized { get; set; }
 
