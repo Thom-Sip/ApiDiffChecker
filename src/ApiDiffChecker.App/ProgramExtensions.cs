@@ -15,7 +15,7 @@ namespace ApiDiffChecker
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddRefactorHelper(this IServiceCollection services, ApiDiffCheckerSettings settings)
+        public static IServiceCollection AddApiDiffChecker(this IServiceCollection services, ApiDiffCheckerSettings settings)
         {
             services.AddSingleton(settings);
             services.AddSingleton<ApiDiffCheckerState>();
@@ -30,7 +30,7 @@ namespace ApiDiffChecker
             return services;
         }   
 
-        public static void AddRefactorHelperEndpoints(this WebApplication app)
+        public static void AddApiDiffCheckerEndpoints(this WebApplication app)
         {
             var myApp = app.Services.GetRequiredService<RefactorHelperApp>();
 
