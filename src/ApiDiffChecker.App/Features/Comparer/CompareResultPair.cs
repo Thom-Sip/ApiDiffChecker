@@ -1,7 +1,6 @@
-﻿using ApiDiffChecker.Models.Comparer;
-using ApiDiffChecker.Models.External;
+﻿using ApiDiffChecker.Features.External;
 
-namespace ApiDiffChecker.Comparer
+namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareResultPair
     {

@@ -1,8 +1,7 @@
-﻿using ApiDiffChecker.Models;
-using ApiDiffChecker.Models.Comparer;
-using ApiDiffChecker.Models.External;
+﻿using ApiDiffChecker.Features.External;
+using ApiDiffChecker.Models;
 
-namespace ApiDiffChecker.Comparer
+namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareService
     {
@@ -15,14 +14,14 @@ namespace ApiDiffChecker.Comparer
 
         public void CompareResponses(ApiDiffCheckerState state)
         {
-            foreach(var testresultPair in state.Data)
+            foreach (var testresultPair in state.Data)
                 CompareResponse(testresultPair);
         }
 
         public void CompareResponse(RequestWrapper wrapper)
         {
             wrapper.CompareResultPair = GetCompareResultPair(
-                wrapper.TestResult.Result1.Response, 
+                wrapper.TestResult.Result1.Response,
                 wrapper.TestResult.Result2.Response,
                 wrapper.TestResult.Result1.ResponseObject,
                 wrapper.TestResult.Result2.ResponseObject);

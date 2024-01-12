@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.Swagger;
 
-namespace ApiDiffChecker.SwaggerProcessor
+namespace ApiDiffChecker.Features.SwaggerProcessor
 {
     public class RequestDetails
     {

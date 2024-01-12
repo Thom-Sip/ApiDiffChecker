@@ -1,8 +1,8 @@
 ﻿using ApiDiffChecker.Models.Config;
 using ApiDiffChecker.Models;
-using ApiDiffChecker.RequestHandler;
+using ApiDiffChecker.Features.RequestHandler;
 
-namespace ApiDiffChecker.UIGenerator
+namespace ApiDiffChecker.Features.UIGenerator
 {
     public class BaseContentGenerator(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {

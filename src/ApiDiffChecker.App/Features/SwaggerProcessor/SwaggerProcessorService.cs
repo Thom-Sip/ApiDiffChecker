@@ -4,7 +4,7 @@ using ApiDiffChecker.Models.Config;
 using Swashbuckle.Swagger;
 using Parameter = ApiDiffChecker.Models.Config.Parameter;
 
-namespace ApiDiffChecker.SwaggerProcessor
+namespace ApiDiffChecker.Features.SwaggerProcessor
 {
     public class SwaggerProcessorService(ApiDiffCheckerSettings settings)
     {
@@ -77,7 +77,7 @@ namespace ApiDiffChecker.SwaggerProcessor
 
         private RequestDetails GetRequestDetails(KeyValuePair<string, PathItem> path, Run run)
         {
-            return new RequestDetails 
+            return new RequestDetails
             {
                 Template = path.Key.ToLower(),
                 Operation = path.Value.get,
@@ -89,11 +89,11 @@ namespace ApiDiffChecker.SwaggerProcessor
         {
             var queryParams = new List<string>();
 
-            foreach(var param in operation?.parameters ?? new List<Swashbuckle.Swagger.Parameter>())
+            foreach (var param in operation?.parameters ?? new List<Swashbuckle.Swagger.Parameter>())
             {
-                if(param.@in == "path")
+                if (param.@in == "path")
                 {
-                    if(TryGetValue(param.name, out var result, run.UrlParameters) && !string.IsNullOrWhiteSpace(result))
+                    if (TryGetValue(param.name, out var result, run.UrlParameters) && !string.IsNullOrWhiteSpace(result))
                     {
                         template = ReplaceUrlParam(template, param, result);
                     }
@@ -102,17 +102,17 @@ namespace ApiDiffChecker.SwaggerProcessor
                         template = ReplaceUrlParam(template, param, result2);
                     }
                 }
-                if(param.@in == "query")
+                if (param.@in == "query")
                 {
                     var hasRunValue = TryGetValue(param.name, out var result, run.QueryParameters);
                     var hasDefaultValue = TryGetValue(param.name, out var result2, Settings.DefaultRunSettings.QueryParameters);
 
-                    if(hasRunValue || hasDefaultValue)
+                    if (hasRunValue || hasDefaultValue)
                         queryParams.Add($"{param.name}={result ?? result2}");
                 }
             }
 
-            if(queryParams.Any())
+            if (queryParams.Any())
                 template = $"{template}?{string.Join('&', queryParams)}";
 
             return template;

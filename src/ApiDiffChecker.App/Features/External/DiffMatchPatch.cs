@@ -23,8 +23,11 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using ApiDiffChecker;
+using ApiDiffChecker.Features.External;
+using ApiDiffChecker.Models;
 
-namespace ApiDiffChecker.Models.External
+namespace ApiDiffChecker.Features.External
 {
     internal static class CompatibilityExtensions
     {

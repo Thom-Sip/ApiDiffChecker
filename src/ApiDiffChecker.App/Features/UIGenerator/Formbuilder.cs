@@ -2,7 +2,7 @@
 using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Config;
 
-namespace ApiDiffChecker.UIGenerator
+namespace ApiDiffChecker.Features.UIGenerator
 {
     public class Formbuilder(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
@@ -36,7 +36,7 @@ namespace ApiDiffChecker.UIGenerator
             return GetForm(
                     GetFormData(formType, runId),
                     GetDefaultValues(formType, allowEdit, runId),
-                    getUrl, putUrl, allowEdit, 
+                    getUrl, putUrl, allowEdit,
                     AllowAdd: formType == FormType.Replacevalues,
                     addRowUrl: addUrl,
                     formType == FormType.Replacevalues ? _formFieldTemplateEditWithKey : _formFieldTemplateEdit,
@@ -78,8 +78,8 @@ namespace ApiDiffChecker.UIGenerator
 
         private List<Parameter> GetReplaceValues(int? runId, bool allowEdit)
         {
-            var result = runId == null 
-                ? Settings.DefaultRunSettings.PropertiesToReplace 
+            var result = runId == null
+                ? Settings.DefaultRunSettings.PropertiesToReplace
                 : Settings.Runs[runId.Value].PropertiesToReplace;
 
             if (result.Count == 0 && allowEdit)
@@ -190,7 +190,7 @@ namespace ApiDiffChecker.UIGenerator
         private static List<Parameter> SetParameterSettingsWithKeys(IFormCollection form)
         {
             var result = new List<Parameter>();
-            for (int i = 0; i < form.Count; i +=2)
+            for (int i = 0; i < form.Count; i += 2)
             {
                 var key = form.Skip(i).FirstOrDefault();
                 var value = form.Skip(i + 1).FirstOrDefault();

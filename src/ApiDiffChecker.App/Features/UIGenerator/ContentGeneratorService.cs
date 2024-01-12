@@ -1,11 +1,10 @@
-﻿using ApiDiffChecker.Comparer;
+﻿using ApiDiffChecker.Features.Comparer;
+using ApiDiffChecker.Features.External;
 using ApiDiffChecker.Models;
-using ApiDiffChecker.Models.Comparer;
 using ApiDiffChecker.Models.Config;
-using ApiDiffChecker.Models.External;
 using System.Text;
 
-namespace ApiDiffChecker.UIGenerator
+namespace ApiDiffChecker.Features.UIGenerator
 {
     public class ContentGeneratorService(
         ApiDiffCheckerSettings settings,
@@ -91,7 +90,7 @@ namespace ApiDiffChecker.UIGenerator
                 .Replace("[TEXT]", GetSettingsText(runId))
                 .Replace("[BUTTON-TEXT]", GetSettingsCopyButtontext(runId)
                 );
-                
+
 
             return result;
         }
@@ -144,7 +143,7 @@ namespace ApiDiffChecker.UIGenerator
                 switch (aDiff.operation)
                 {
                     case Operation.INSERT:
-                        if(operations.Contains(Operation.INSERT))
+                        if (operations.Contains(Operation.INSERT))
                             sb.Append("<span class=\"addition\">").Append(text).Append("</span>");
                         break;
                     case Operation.DELETE:

@@ -1,6 +1,6 @@
 ﻿using ApiDiffChecker.Models.Config;
 
-namespace ApiDiffChecker.SwaggerProcessor
+namespace ApiDiffChecker.Features.SwaggerProcessor
 {
     public class SwaggerProcessorOutput
     {

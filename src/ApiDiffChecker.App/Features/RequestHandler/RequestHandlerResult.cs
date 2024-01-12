@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.RequestHandler
+﻿namespace ApiDiffChecker.Features.RequestHandler
 {
     public class RequestHandlerResult
     {

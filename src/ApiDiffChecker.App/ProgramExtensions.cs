@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using ApiDiffChecker.Comparer;
 using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Config;
-using ApiDiffChecker.RequestHandler;
-using ApiDiffChecker.SwaggerProcessor;
-using ApiDiffChecker.UIGenerator;
+using ApiDiffChecker.Features.Comparer;
+using ApiDiffChecker.Features.RequestHandler;
+using ApiDiffChecker.Features.SwaggerProcessor;
+using ApiDiffChecker.Features.UIGenerator;
 
 namespace ApiDiffChecker
 {

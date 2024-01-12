@@ -1,5 +1,5 @@
-﻿using ApiDiffChecker.SwaggerProcessor;
-using ApiDiffChecker.UIGenerator;
+﻿using ApiDiffChecker.Features.SwaggerProcessor;
+using ApiDiffChecker.Features.UIGenerator;
 
 namespace ApiDiffChecker.Models
 {

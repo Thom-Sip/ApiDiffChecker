@@ -1,10 +1,10 @@
-﻿using ApiDiffChecker.Comparer;
-using ApiDiffChecker.RequestHandler;
-using ApiDiffChecker.UIGenerator;
-using ApiDiffChecker.SwaggerProcessor;
-using ApiDiffChecker.Models.Config;
+﻿using ApiDiffChecker.Models.Config;
 using ApiDiffChecker.Models;
 using Newtonsoft.Json;
+using ApiDiffChecker.Features.Comparer;
+using ApiDiffChecker.Features.RequestHandler;
+using ApiDiffChecker.Features.SwaggerProcessor;
+using ApiDiffChecker.Features.UIGenerator;
 
 namespace ApiDiffChecker
 {

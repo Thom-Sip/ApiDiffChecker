@@ -2,7 +2,7 @@
 using ApiDiffChecker.Models;
 using System.Text;
 
-namespace ApiDiffChecker.UIGenerator
+namespace ApiDiffChecker.Features.UIGenerator
 {
     public class SidebarGeneratorService(
         ApiDiffCheckerSettings settings,
@@ -27,7 +27,7 @@ namespace ApiDiffChecker.UIGenerator
 
         private string GetSidebarRequestList(SidebarType sidebarType)
         {
-            if(sidebarType == SidebarType.RequestsPolling && State.Data.All(x => x.CompareResultPair != null))
+            if (sidebarType == SidebarType.RequestsPolling && State.Data.All(x => x.CompareResultPair != null))
                 sidebarType = SidebarType.Requests;
 
             var result = _sidebarFragment
@@ -161,7 +161,7 @@ namespace ApiDiffChecker.UIGenerator
               .Replace("[TITLE]", $"{title} ({wrappers.Count})")
               .Replace("[CONTENT]", GetSidebarContent(wrappers));
         }
-        
+
         private string GetSidebarContent(List<RequestWrapper> resultPairs)
         {
             var sb = new StringBuilder();

@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.Models.Comparer
+﻿namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareResult
     {

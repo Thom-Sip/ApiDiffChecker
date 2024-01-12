@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using ApiDiffChecker.Models.Config;
 using Newtonsoft.Json.Linq;
 
-namespace ApiDiffChecker.RequestHandler
+namespace ApiDiffChecker.Features.RequestHandler
 {
     public class RequestHandlerService(ApiDiffCheckerSettings settings)
     {
@@ -59,13 +59,13 @@ namespace ApiDiffChecker.RequestHandler
 
                 if (Settings.DefaultRunSettings.PropertiesToReplace.Count > 0)
                 {
-                    if(responseObj1 is JArray arr)
+                    if (responseObj1 is JArray arr)
                     {
                         foreach (var item in arr)
                         {
                             foreach (JProperty attributeProperty in item.Cast<JProperty>())
                             {
-                                var replaceProp = Settings.DefaultRunSettings.PropertiesToReplace.FirstOrDefault(x => 
+                                var replaceProp = Settings.DefaultRunSettings.PropertiesToReplace.FirstOrDefault(x =>
                                     x.Key.Equals(attributeProperty.Name, StringComparison.OrdinalIgnoreCase));
 
                                 if (replaceProp != null)
@@ -95,7 +95,7 @@ namespace ApiDiffChecker.RequestHandler
 
                 response = JsonConvert.SerializeObject(responseObj1, Formatting.Indented);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
