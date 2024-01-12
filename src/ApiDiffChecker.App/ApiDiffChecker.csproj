@@ -6,6 +6,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 
+		<Authors>Thom Sip</Authors>
+		<Company>ThomSip.NET</Company>
+		<PackageDescription>An API Testing tool to easily compare api results from 2 sources</PackageDescription>
+		<RepositoryUrl>https://github.com/Thom-Sip/ApiDiffChecker</RepositoryUrl>
+
 		<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
 		<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">0.2</VersionPrefix>
 		<VersionSuffix Condition="'$(RELEASE_VERSION)' == ''">$([System.DateTime]::UtcNow.ToString(`yyyy-MM-dd-HH-mm`))</VersionSuffix>
