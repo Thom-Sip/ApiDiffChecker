@@ -4,53 +4,53 @@
     {
         public static class Page
         {
-            public static string Root { get; } = "/run-refactor-helper";
+            public static string Root { get; } = "/api-diff-checker";
 
-            public static string TestResult { get; } = "/run-refactor-helper";
+            public static string TestResult { get; } = "/api-diff-checker";
 
-            public static string Settings { get; } = "/run-refactor-helper/settings";
+            public static string Settings { get; } = "/api-diff-checker/settings";
 
-            public static string Reset { get; } = "/run-refactor-helper/reset";
+            public static string Reset { get; } = "/api-diff-checker/reset";
         }
 
         public static class Fragment
         {
-            public static string RunAll { get; } = "/run-refactor-helper/fragment/run-all";
+            public static string RunAll { get; } = "/api-diff-checker/fragment/run-all";
 
-            public static string TestResult { get; } = "/run-refactor-helper/fragment";
+            public static string TestResult { get; } = "/api-diff-checker/fragment";
 
-            public static string RetryCurrentRequest { get; } = "/run-refactor-helper/fragment/retry";
+            public static string RetryCurrentRequest { get; } = "/api-diff-checker/fragment/retry";
 
-            public static string Settings { get; } = "/run-refactor-helper/fragment/settings";
+            public static string Settings { get; } = "/api-diff-checker/fragment/settings";
 
-            public static string RunSettings { get; } = "/run-refactor-helper/fragment/settings/runs";
+            public static string RunSettings { get; } = "/api-diff-checker/fragment/settings/runs";
 
-            public static string ApplySettings { get; } = "/run-refactor-helper/fragment/settings/apply";
+            public static string ApplySettings { get; } = "/api-diff-checker/fragment/settings/apply";
 
-            public static string SaveSettingsToDisk { get; } = "/run-refactor-helper/fragment/settings/save-to-disk";
+            public static string SaveSettingsToDisk { get; } = "/api-diff-checker/fragment/settings/save-to-disk";
 
-            public static string AddNewRun { get; } = "/run-refactor-helper/fragment/settings/add";
+            public static string AddNewRun { get; } = "/api-diff-checker/fragment/settings/add";
 
-            public static string CopyRun { get; } = "/run-refactor-helper/fragment/settings/copy";
+            public static string CopyRun { get; } = "/api-diff-checker/fragment/settings/copy";
 
-            public static string FormGet { get; } = "/run-refactor-helper/fragment/settings/forms";
+            public static string FormGet { get; } = "/api-diff-checker/fragment/settings/forms";
 
-            public static string FormPut { get; } = "/run-refactor-helper/fragment/forms/save";
+            public static string FormPut { get; } = "/api-diff-checker/fragment/forms/save";
 
-            public static string FormDeleteRow { get; } = "/run-refactor-helper/fragment/forms/remove-row";
+            public static string FormDeleteRow { get; } = "/api-diff-checker/fragment/forms/remove-row";
 
-            public static string SideBarRequests { get; } = "/run-refactor-helper/fragment/request-list";
+            public static string SideBarRequests { get; } = "/api-diff-checker/fragment/request-list";
 
-            public static string SideBarSettings { get; } = "/run-refactor-helper/fragment/sidebar/settings";
+            public static string SideBarSettings { get; } = "/api-diff-checker/fragment/sidebar/settings";
 
-            public static string SideBarSettingsRemoveRun { get; } = "/run-refactor-helper/fragment/sidebar/settings/remove";
+            public static string SideBarSettingsRemoveRun { get; } = "/api-diff-checker/fragment/sidebar/settings/remove";
 
-            public static string Sidebar { get; } = "/run-refactor-helper/fragment/sidebar";
+            public static string Sidebar { get; } = "/api-diff-checker/fragment/sidebar";
         }
 
         public static class Download
         {
-            public static string Settings { get; } = "/run-refactor-helper/download/refactorHelperSettings.json";
+            public static string Settings { get; } = "/api-diff-checker/download/refactorHelperSettings.json";
         }
     }
 }
