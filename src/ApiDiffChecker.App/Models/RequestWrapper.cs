@@ -16,7 +16,7 @@ namespace ApiDiffChecker.Models
 
         public required RequestDetails Request { get; set; }
 
-        public RefactorTestResultPair? TestResult { get; set; }
+        public RequestHandlerResultPair? TestResult { get; set; }
 
         public CompareResultPair? CompareResultPair { get; set; }
 

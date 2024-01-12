@@ -1,6 +1,6 @@
 ﻿namespace ApiDiffChecker.Models.RequestHandler
 {
-    public class RefactorTestResultPair
+    public class RequestHandlerResultPair
     {
         public required RequestHandlerResult Result1 { get; init; }
 

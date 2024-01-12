@@ -34,7 +34,7 @@ namespace ApiDiffChecker.RequestHandler
             response2 = TryFormatResponse(response2);
 
             requestWrapper.Changed = response1 != response2;
-            requestWrapper.TestResult = new RefactorTestResultPair
+            requestWrapper.TestResult = new RequestHandlerResultPair
             {
                 Result1 = GetRefactorTestResult(response1, request1.Result),
                 Result2 = GetRefactorTestResult(response2, request2.Result),
