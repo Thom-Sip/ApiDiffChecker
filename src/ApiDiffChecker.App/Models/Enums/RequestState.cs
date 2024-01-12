@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.Models
+﻿namespace ApiDiffChecker.Models.Enums
 {
     public enum RequestState
     {

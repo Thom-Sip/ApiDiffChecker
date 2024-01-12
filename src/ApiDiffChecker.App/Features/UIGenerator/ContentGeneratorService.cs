@@ -1,7 +1,7 @@
 ﻿using ApiDiffChecker.Features.Comparer;
-using ApiDiffChecker.Features.External;
 using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Config;
+using ApiDiffChecker.Models.State;
 using System.Text;
 
 namespace ApiDiffChecker.Features.UIGenerator

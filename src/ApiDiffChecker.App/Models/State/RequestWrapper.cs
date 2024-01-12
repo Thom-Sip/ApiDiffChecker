@@ -1,8 +1,9 @@
 ﻿using ApiDiffChecker.Features.Comparer;
 using ApiDiffChecker.Features.RequestHandler;
 using ApiDiffChecker.Features.SwaggerProcessor;
+using ApiDiffChecker.Models.Enums;
 
-namespace ApiDiffChecker.Models
+namespace ApiDiffChecker.Models.State
 {
     public class RequestWrapper
     {

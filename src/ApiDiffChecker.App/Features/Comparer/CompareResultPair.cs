@@ -1,6 +1,4 @@
-﻿using ApiDiffChecker.Features.External;
-
-namespace ApiDiffChecker.Features.Comparer
+﻿namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareResultPair
     {

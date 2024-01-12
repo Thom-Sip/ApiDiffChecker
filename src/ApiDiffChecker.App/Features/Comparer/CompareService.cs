@@ -1,5 +1,4 @@
-﻿using ApiDiffChecker.Features.External;
-using ApiDiffChecker.Models;
+﻿using ApiDiffChecker.Models.State;
 
 namespace ApiDiffChecker.Features.Comparer
 {

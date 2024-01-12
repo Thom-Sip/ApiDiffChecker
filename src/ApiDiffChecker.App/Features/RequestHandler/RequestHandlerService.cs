@@ -1,7 +1,8 @@
-﻿using ApiDiffChecker.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ApiDiffChecker.Models.Config;
 using Newtonsoft.Json.Linq;
+using ApiDiffChecker.Models.State;
+using ApiDiffChecker.Models.Enums;
 
 namespace ApiDiffChecker.Features.RequestHandler
 {

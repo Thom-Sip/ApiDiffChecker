@@ -1,7 +1,7 @@
 ﻿using ApiDiffChecker.Features.SwaggerProcessor;
 using ApiDiffChecker.Features.UIGenerator;
 
-namespace ApiDiffChecker.Models
+namespace ApiDiffChecker.Models.State
 {
     public class ApiDiffCheckerState
     {

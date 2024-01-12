@@ -1,6 +1,8 @@
 ﻿using ApiDiffChecker.Models.Config;
 using ApiDiffChecker.Models;
 using System.Text;
+using ApiDiffChecker.Models.State;
+using ApiDiffChecker.Models.Enums;
 
 namespace ApiDiffChecker.Features.UIGenerator
 {

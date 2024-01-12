@@ -1,12 +1,5 @@
 ﻿namespace ApiDiffChecker.Models
 {
-    public enum SidebarType
-    {
-        Requests,
-        RequestsPolling,
-        Settings
-    }
-
     public static class Url
     {
         public static class Page

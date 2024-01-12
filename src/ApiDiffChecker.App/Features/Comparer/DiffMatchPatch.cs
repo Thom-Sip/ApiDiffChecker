@@ -24,10 +24,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using ApiDiffChecker;
-using ApiDiffChecker.Features.External;
+using ApiDiffChecker.Features;
+using ApiDiffChecker.Features.Comparer;
 using ApiDiffChecker.Models;
 
-namespace ApiDiffChecker.Features.External
+namespace ApiDiffChecker.Features.Comparer
 {
     internal static class CompatibilityExtensions
     {
