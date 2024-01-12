@@ -10,11 +10,19 @@
 		<Company>ThomSip.NET</Company>
 		<PackageDescription>An API Testing tool to easily compare api results from 2 sources</PackageDescription>
 		<RepositoryUrl>https://github.com/Thom-Sip/ApiDiffChecker</RepositoryUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 
 		<Version Condition="'$(RELEASE_VERSION)' != ''">$(RELEASE_VERSION)</Version>
 		<VersionPrefix Condition="'$(RELEASE_VERSION)' == ''">0.2</VersionPrefix>
 		<VersionSuffix Condition="'$(RELEASE_VERSION)' == ''">$([System.DateTime]::UtcNow.ToString(`yyyy-MM-dd-HH-mm`))</VersionSuffix>
 	</PropertyGroup>
+
+	<!-- README & LICENSE -->
+	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\LICENSE" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 
 	<!-- Include Static files in nuget package -->
 	<ItemGroup Label="Packaging">
