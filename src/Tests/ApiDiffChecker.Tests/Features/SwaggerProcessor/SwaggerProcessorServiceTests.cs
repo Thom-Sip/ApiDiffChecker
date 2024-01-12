@@ -13,7 +13,7 @@ namespace ApiDiffChecker.Tests.Features.SwaggerProcessor
         [Fact]
         public void Test1()
         {
-            "hello".Should().Be("hello");
+            "hello".Should().Be("hello!");
         }
     }
 }
