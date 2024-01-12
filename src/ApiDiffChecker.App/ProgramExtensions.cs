@@ -23,7 +23,7 @@ namespace ApiDiffChecker
             services.AddSingleton<SwaggerProcessorService>();
             services.AddSingleton<RequestHandlerService>();
             services.AddSingleton<CompareService>();
-            services.AddSingleton<Formbuilder>();
+            services.AddSingleton<FormGeneratorService>();
             services.AddSingleton<ContentGeneratorService>();
             services.AddSingleton<SidebarGeneratorService>();
 
@@ -229,7 +229,7 @@ namespace ApiDiffChecker
             {
                 await myApp.Initialize();
                 myApp.ClearEmptyReplaceValues(runId);
-                var result = myApp.Formbuilder.GetFormFragment(formType, allowEdit, runId);
+                var result = myApp.FormGeneratorService.GetFormFragment(formType, allowEdit, runId);
                 await context.Response.WriteHtmlResponse(result);
 
             }).ExcludeFromDescription();
@@ -240,10 +240,10 @@ namespace ApiDiffChecker
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}/add", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
             {
-                myApp.Formbuilder.SaveForm(formType, formData, runId);
-                myApp.Formbuilder.AddRow(formType, runId);
+                myApp.FormGeneratorService.SaveForm(formType, formData, runId);
+                myApp.FormGeneratorService.AddRow(formType, runId);
                 myApp.ProcessSettings();
-                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+                var result = myApp.FormGeneratorService.GetFormFragment(formType, true, runId);
 
                 await context.Response
                     .SetSidebar(SidebarType.Settings)
@@ -257,10 +257,10 @@ namespace ApiDiffChecker
             // Run single request and return html to replace result in page
             app.MapDelete($"{Url.Fragment.FormDeleteRow}/{{formType}}", async (HttpContext context, FormType formType, int? runId, int rowId, IFormCollection formData) =>
             {
-                myApp.Formbuilder.SaveForm(formType, formData, runId);
-                myApp.Formbuilder.DeleteRow(formType, runId, rowId);
+                myApp.FormGeneratorService.SaveForm(formType, formData, runId);
+                myApp.FormGeneratorService.DeleteRow(formType, runId, rowId);
                 myApp.ProcessSettings();
-                var result = myApp.Formbuilder.GetFormFragment(formType, true, runId);
+                var result = myApp.FormGeneratorService.GetFormFragment(formType, true, runId);
 
                 await context.Response
                     .SetSidebar(SidebarType.Settings)
@@ -274,9 +274,9 @@ namespace ApiDiffChecker
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
             {
-                myApp.Formbuilder.SaveForm(formType, formData, runId);
+                myApp.FormGeneratorService.SaveForm(formType, formData, runId);
                 myApp.ProcessSettings();
-                var result = myApp.Formbuilder.GetFormFragment(formType, false, runId);
+                var result = myApp.FormGeneratorService.GetFormFragment(formType, false, runId);
 
                 await context.Response
                     .SetSidebar(SidebarType.Settings)

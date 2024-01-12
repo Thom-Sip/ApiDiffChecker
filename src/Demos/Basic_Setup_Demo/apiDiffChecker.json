@@ -19,7 +19,12 @@
         "Value": "Hello"
       }
     ],
-    "PropertiesToReplace": []
+    "PropertiesToReplace": [
+      {
+        "Key": "requestId",
+        "Value": "[requestId]"
+      }
+    ]
   },
   "Runs": [
     {
