@@ -1,8 +1,8 @@
-name: Build
+name: pr-check
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   build:
@@ -27,12 +27,7 @@ jobs:
         run: |
           dotnet build "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
 
-      - name: .NET Pack
+      - name: .NET Test
         working-directory: ./src/ApiDiffChecker.App
         run: |
-          dotnet pack "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
-
-      - name: .NET Push
-        working-directory: "${{ github.workspace }}/_output/package"
-        run: |
-          dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+          dotnet test "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/test"
