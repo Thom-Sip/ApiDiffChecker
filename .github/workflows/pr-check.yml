@@ -5,7 +5,7 @@ on:
     types: [opened, reopened]
 
 jobs:
-  build:
+  pr-check:
 
     runs-on: ubuntu-latest
 
@@ -28,6 +28,6 @@ jobs:
           dotnet build "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
 
       - name: .NET Test
-        working-directory: ./src
+        working-directory: ./src/Tests/ApiDiffChecker.Tests
         run: |
-          dotnet test "ApiDiffChecker.sln" -o "${{ github.workspace }}/_output/test"
+          dotnet test "ApiDiffChecker.Tests.csproj" -o "${{ github.workspace }}/_output/test"
