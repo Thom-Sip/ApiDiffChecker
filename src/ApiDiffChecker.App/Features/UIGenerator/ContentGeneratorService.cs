@@ -11,14 +11,14 @@ namespace ApiDiffChecker.Features.UIGenerator
         ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state,
         SidebarGeneratorService sidebarGeneratorService,
-        Formbuilder formBuilder) : BaseContentGenerator(settings, state)
+        FormGeneratorService formBuilder) : BaseContentGenerator(settings, state)
     {
         protected string _template { get; } = File.ReadAllText($"{settings.MainContentFolder}/Template.html");
         protected string _contentTemplate { get; } = File.ReadAllText($"{settings.MainContentFolder}/ContentTemplate.html");
         protected string _diffBoxTemplate { get; } = File.ReadAllText($"{settings.MainContentFolder}/DiffBoxTemplate.html");
         protected string _settingsFragmentTemplate { get; } = File.ReadAllText($"{settings.MainContentFolder}/SettingsFragment.html");
 
-        protected Formbuilder Formbuilder { get; } = formBuilder;
+        protected FormGeneratorService Formbuilder { get; } = formBuilder;
         protected SidebarGeneratorService SidebarGeneratorService { get; } = sidebarGeneratorService;
 
         public void GenerateBaseUI()

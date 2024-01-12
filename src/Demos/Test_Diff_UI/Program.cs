@@ -18,13 +18,13 @@ namespace Test_Diff_UI
             var builder = WebApplication.CreateBuilder(args);
 
             // Setup DI
-            builder.Services.AddRefactorHelper(settings);
+            builder.Services.AddApiDiffChecker(settings);
             WebApplication app = builder.Build();
 
             if (app.Environment.IsDevelopment())
             {
                 // Setup all endpoints required for RefactorHelper to work
-                app.AddRefactorHelperEndpoints();
+                app.AddApiDiffCheckerEndpoints();
 
                 // Run all request and open static html in browser
                 app.MapGet("/static-compare", async (HttpContext context) =>

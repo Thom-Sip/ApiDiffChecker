@@ -6,7 +6,7 @@ using ApiDiffChecker.Models.Enums;
 
 namespace ApiDiffChecker.Features.UIGenerator
 {
-    public class Formbuilder(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
+    public class FormGeneratorService(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
         protected string _formTemplate { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormTemplate.html");
 

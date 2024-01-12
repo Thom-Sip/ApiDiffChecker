@@ -1,0 +1,38 @@
+name: merge-main
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: .NET Restore
+        working-directory: ./src/ApiDiffChecker.App
+        run: |
+          dotnet restore "ApiDiffChecker.csproj"
+
+      - name: .NET Build
+        working-directory: ./src/ApiDiffChecker.App
+        run: |
+          dotnet build "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
+
+      - name: .NET Pack
+        working-directory: ./src/ApiDiffChecker.App
+        run: |
+          dotnet pack "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
+
+      - name: .NET Push
+        working-directory: "${{ github.workspace }}/_output/package"
+        run: |
+          dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

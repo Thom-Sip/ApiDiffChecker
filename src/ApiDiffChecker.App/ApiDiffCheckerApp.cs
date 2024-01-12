@@ -16,7 +16,7 @@ namespace ApiDiffChecker
         CompareService compareService,
         ContentGeneratorService uiGeneratorService,
         SidebarGeneratorService sidebarGeneratorService,
-        Formbuilder formbuilder)
+        FormGeneratorService formGeneratorService)
     {
         public ApiDiffCheckerSettings Settings { get; set; } = settings;
         public ApiDiffCheckerState State { get; set; } = state;
@@ -25,7 +25,7 @@ namespace ApiDiffChecker
         public CompareService CompareService { get; set; } = compareService;
         public ContentGeneratorService UIGeneratorService { get; set; } = uiGeneratorService;
         public SidebarGeneratorService SidebarGeneratorService { get; set; } = sidebarGeneratorService;
-        public Formbuilder Formbuilder { get; set; } = formbuilder;
+        public FormGeneratorService FormGeneratorService { get; set; } = formGeneratorService;
 
         public async Task Initialize()
         {
