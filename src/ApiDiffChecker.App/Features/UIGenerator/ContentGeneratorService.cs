@@ -1,6 +1,7 @@
 ﻿using ApiDiffChecker.Features.Comparer;
 using ApiDiffChecker.Models;
-using ApiDiffChecker.Models.Config;
+using ApiDiffChecker.Models.Settings;
+using ApiDiffChecker.Models.Enums;
 using ApiDiffChecker.Models.State;
 using System.Text;
 
@@ -20,12 +21,12 @@ namespace ApiDiffChecker.Features.UIGenerator
         protected Formbuilder Formbuilder { get; } = formBuilder;
         protected SidebarGeneratorService SidebarGeneratorService { get; } = sidebarGeneratorService;
 
-        public void GenerateBaseUI(ApiDiffCheckerState state)
+        public void GenerateBaseUI()
         {
-            SidebarGeneratorService.GenerateRequestSideBarHtml(state.Data);
+            SidebarGeneratorService.GenerateRequestSideBarHtml(State.Data);
             SidebarGeneratorService.GenerateSettingsSideBarFragment(null);
 
-            state.BaseHtmlTemplate = new HtmlTemplate
+            State.BaseHtmlTemplate = new HtmlTemplate
             {
                 Html = _template
                     .Replace("[RETRY_REQUEST_URL]", Url.Fragment.RetryCurrentRequest)

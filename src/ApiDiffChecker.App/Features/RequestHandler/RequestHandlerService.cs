@@ -1,18 +1,20 @@
 ﻿using Newtonsoft.Json;
-using ApiDiffChecker.Models.Config;
+using ApiDiffChecker.Models.Settings;
 using Newtonsoft.Json.Linq;
 using ApiDiffChecker.Models.State;
 using ApiDiffChecker.Models.Enums;
 
 namespace ApiDiffChecker.Features.RequestHandler
 {
-    public class RequestHandlerService(ApiDiffCheckerSettings settings)
+    public class RequestHandlerService(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
         private ApiDiffCheckerSettings Settings { get; } = settings;
 
-        public async Task QueryApis(ApiDiffCheckerState state)
+        private ApiDiffCheckerState State { get; } = state;
+
+        public async Task QueryApis()
         {
-            var tasks = state.Data.Select(SetResponses).ToList();
+            var tasks = State.Data.Select(SetResponses).ToList();
             await Task.WhenAll(tasks);
         }
 

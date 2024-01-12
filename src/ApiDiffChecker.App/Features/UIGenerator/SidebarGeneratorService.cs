@@ -1,4 +1,4 @@
-﻿using ApiDiffChecker.Models.Config;
+﻿using ApiDiffChecker.Models.Settings;
 using ApiDiffChecker.Models;
 using System.Text;
 using ApiDiffChecker.Models.State;

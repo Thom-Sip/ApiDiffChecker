@@ -1,19 +1,22 @@
-﻿using ApiDiffChecker.Models.State;
+﻿using ApiDiffChecker.Models.Settings;
+using ApiDiffChecker.Models.State;
 
 namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareService
     {
+        private ApiDiffCheckerState State { get; }
         protected diff_match_patch _dmp { get; }
 
-        public CompareService()
+        public CompareService(ApiDiffCheckerState state)
         {
+            State = state;
             _dmp = new diff_match_patch();
         }
 
-        public void CompareResponses(ApiDiffCheckerState state)
+        public void CompareResponses()
         {
-            foreach (var testresultPair in state.Data)
+            foreach (var testresultPair in State.Data)
                 CompareResponse(testresultPair);
         }
 

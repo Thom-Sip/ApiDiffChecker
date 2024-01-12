@@ -1,5 +1,5 @@
 using ApiDiffChecker;
-using ApiDiffChecker.Models.Config;
+using ApiDiffChecker.Models.Settings;
 
 namespace Basic_Setup_Demo
 {

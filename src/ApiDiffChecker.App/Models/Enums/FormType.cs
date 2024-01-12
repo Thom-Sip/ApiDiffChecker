@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.Features.UIGenerator
+﻿namespace ApiDiffChecker.Models.Enums
 {
     public enum FormType
     {

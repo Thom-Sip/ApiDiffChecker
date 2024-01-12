@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.Models.Config
+﻿namespace ApiDiffChecker.Models.Settings
 {
     public class Run
     {

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using ApiDiffChecker.Models.Config;
+using ApiDiffChecker.Models.Settings;
 using Swashbuckle.Swagger;
-using Parameter = ApiDiffChecker.Models.Config.Parameter;
 using ApiDiffChecker.Models.State;
 using ApiDiffChecker.Models.Enums;
+using Parameter = ApiDiffChecker.Models.Settings.Parameter;
 
 namespace ApiDiffChecker.Features.SwaggerProcessor
 {

@@ -1,4 +1,4 @@
-﻿using ApiDiffChecker.Models.Config;
+﻿using ApiDiffChecker.Models.Settings;
 using Newtonsoft.Json;
 using ApiDiffChecker.Features.Comparer;
 using ApiDiffChecker.Features.RequestHandler;
@@ -53,7 +53,7 @@ namespace ApiDiffChecker
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Generate html output
-            UIGeneratorService.GenerateBaseUI(State);
+            UIGeneratorService.GenerateBaseUI();
         }
 
         public void ProcessSettings()
@@ -62,7 +62,7 @@ namespace ApiDiffChecker
             State.Data = SwaggerProcessorService.ProcessSwagger(State.SwaggerJson);
 
             // Generate html output
-            UIGeneratorService.GenerateBaseUI(State);
+            UIGeneratorService.GenerateBaseUI();
         }
 
         public async Task<string> RunAll()
@@ -71,13 +71,13 @@ namespace ApiDiffChecker
             State.Data.ForEach(x => x.Clear());
 
             // Perform api Requests
-            await RequestHandlerService.QueryApis(State);
+            await RequestHandlerService.QueryApis();
 
             // Get diffs on responses
-            CompareService.CompareResponses(State);
+            CompareService.CompareResponses();
 
             // Generate output
-            UIGeneratorService.GenerateBaseUI(State);
+            UIGeneratorService.GenerateBaseUI();
 
             return UIGeneratorService.GetTestResultFragment();
         }

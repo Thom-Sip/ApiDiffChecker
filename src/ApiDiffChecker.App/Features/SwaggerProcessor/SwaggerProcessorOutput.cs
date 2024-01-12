@@ -1,4 +1,4 @@
-﻿using ApiDiffChecker.Models.Config;
+﻿using ApiDiffChecker.Models.Settings;
 
 namespace ApiDiffChecker.Features.SwaggerProcessor
 {
