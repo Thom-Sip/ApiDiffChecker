@@ -1,5 +1,5 @@
-using RefactorHelper;
-using RefactorHelper.Models.Config;
+using ApiDiffChecker;
+using ApiDiffChecker.Models.Settings;
 
 namespace Basic_Setup_Demo
 {
@@ -13,7 +13,7 @@ namespace Basic_Setup_Demo
             {
                 // RefactorHelper Dependency Injection
                 builder.Services.AddRefactorHelper(
-                    RefactorHelperSettings.GetSettingsFromJson(
+                    ApiDiffCheckerSettings.GetSettingsFromJson(
                     jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
                     baseUrl1: "https://localhost:44366",
                     baseUrl2: "https://localhost:44366"));

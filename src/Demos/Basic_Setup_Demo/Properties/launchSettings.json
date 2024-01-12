@@ -9,10 +9,10 @@
     }
   },
   "profiles": {
-    "RefactorUI": {
+    "ApiDiffChecker": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "run-refactor-helper",
+      "launchUrl": "api-diff-checker",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

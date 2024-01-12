@@ -20,19 +20,19 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: .NET Restore
-        working-directory: ./src/RefactorHelper.App
+        working-directory: ./src/ApiDiffChecker.App
         run: |
-          dotnet restore "RefactorHelper.csproj"
+          dotnet restore "ApiDiffChecker.csproj"
 
       - name: .NET Build
-        working-directory: ./src/RefactorHelper.App
+        working-directory: ./src/ApiDiffChecker.App
         run: |
-          dotnet build "RefactorHelper.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
+          dotnet build "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
 
       - name: .NET Pack
-        working-directory: ./src/RefactorHelper.App
+        working-directory: ./src/ApiDiffChecker.App
         run: |
-          dotnet pack "RefactorHelper.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
+          dotnet pack "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
 
       - name: .NET Push
         working-directory: "${{ github.workspace }}/_output/package"

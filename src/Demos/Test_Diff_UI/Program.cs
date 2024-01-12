@@ -1,5 +1,5 @@
-using RefactorHelper;
-using RefactorHelper.Models.Config;
+using ApiDiffChecker;
+using ApiDiffChecker.Models.Settings;
 
 namespace Test_Diff_UI
 {
@@ -8,7 +8,7 @@ namespace Test_Diff_UI
         public static void Main(string[] args)
         {
             // Settings
-            var settings = new RefactorHelperSettings(
+            var settings = new ApiDiffCheckerSettings(
                 baseUrl1: "https://localhost:44371", 
                 baseUrl2: "https://localhost:44371")
             {
@@ -31,7 +31,7 @@ namespace Test_Diff_UI
                 {
                     var result = await app.Services
                         .GetRequiredService<RefactorHelperApp>()
-                        .StaticCompare("example3.json", "example4.json");
+                        .StaticCompare("example1.json", "example2.json");
 
                     await context.Response
                         .SetHtmlHeader()
