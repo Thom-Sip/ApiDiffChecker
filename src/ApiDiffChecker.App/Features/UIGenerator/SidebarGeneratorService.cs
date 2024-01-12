@@ -149,10 +149,10 @@ namespace ApiDiffChecker.Features.UIGenerator
                 result = $"{result}{GenerateRequestList(pendingRequests, "Pending Requests")}";
 
             if (failedRequests.Count > 0)
-                result = $"{result}{GenerateRequestList(failedRequests, "Failed Requests")}";
+                result = $"{result}{GenerateRequestList(failedRequests, "Changed Requests")}";
 
             if (successfulRequest.Count > 0)
-                result = $"{result}{GenerateRequestList(successfulRequest, "Success Requests")}";
+                result = $"{result}{GenerateRequestList(successfulRequest, "Unchanged Requests")}";
 
             return result;
         }
