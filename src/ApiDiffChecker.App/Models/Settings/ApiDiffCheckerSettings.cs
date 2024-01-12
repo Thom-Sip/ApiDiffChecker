@@ -6,7 +6,7 @@ namespace ApiDiffChecker.Models.Settings
     {
         public bool RunOnStart { get; set; }
 
-        public string ContentFolder { get; set; } = Path.Combine(GetBinPath(), "Content");
+        public string ContentFolder { get; set; } = Path.Combine(GetBinPath(), "ApiDiffCheckerContent");
 
         public string SwaggerUrl { get; set; } = string.Empty;
 

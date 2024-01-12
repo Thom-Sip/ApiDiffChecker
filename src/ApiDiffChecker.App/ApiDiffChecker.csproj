@@ -13,7 +13,7 @@
 
 	<!-- Include Static files in nuget package -->
 	<ItemGroup Label="Packaging">
-		<Content Include="Content/**">
+		<Content Include="ApiDiffCheckerContent/**">
 			<Pack>true</Pack>
 			<PackageCopyToOutput>true</PackageCopyToOutput>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
