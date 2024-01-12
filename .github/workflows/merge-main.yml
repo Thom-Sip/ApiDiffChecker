@@ -30,7 +30,7 @@ jobs:
       - name: .NET Pack
         working-directory: ./src/ApiDiffChecker.App
         run: |
-          dotnet pack "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.0.${{github.run_number}}
+          dotnet pack "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/package" -p:PackageVersion=0.1.${{github.run_number}}
 
       - name: .NET Push
         working-directory: "${{ github.workspace }}/_output/package"
