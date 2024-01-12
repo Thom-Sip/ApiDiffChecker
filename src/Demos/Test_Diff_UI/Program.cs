@@ -1,5 +1,5 @@
-using RefactorHelper;
-using RefactorHelper.Models.Config;
+using ApiDiffChecker;
+using ApiDiffChecker.Models.Config;
 
 namespace Test_Diff_UI
 {
