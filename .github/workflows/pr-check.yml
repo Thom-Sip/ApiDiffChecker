@@ -28,6 +28,6 @@ jobs:
           dotnet build "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output"  --no-restore\
 
       - name: .NET Test
-        working-directory: ./src/ApiDiffChecker.App
+        working-directory: ./src
         run: |
-          dotnet test "ApiDiffChecker.csproj" -o "${{ github.workspace }}/_output/test"
+          dotnet test "ApiDiffChecker.sln" -o "${{ github.workspace }}/_output/test"
