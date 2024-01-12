@@ -1,8 +1,6 @@
-﻿using System.Net;
-
-namespace ApiDiffChecker.Models.RequestHandler
+﻿namespace ApiDiffChecker.Models.RequestHandler
 {
-    public class RefactorTestResult
+    public class RequestHandlerResult
     {
         public required HttpResponseMessage ResponseObject { get; init; }
 

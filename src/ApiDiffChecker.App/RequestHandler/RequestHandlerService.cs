@@ -43,9 +43,9 @@ namespace ApiDiffChecker.RequestHandler
             requestWrapper.State = RequestState.Finished;
         }
 
-        private static RefactorTestResult GetRefactorTestResult(string result, HttpResponseMessage response)
+        private static RequestHandlerResult GetRefactorTestResult(string result, HttpResponseMessage response)
         {
-            return new RefactorTestResult
+            return new RequestHandlerResult
             {
                 Response = result,
                 ResponseObject = response

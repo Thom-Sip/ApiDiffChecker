@@ -18,7 +18,7 @@ namespace ApiDiffChecker.UIGenerator
             return "Pending";
         }
 
-        protected static string GetResultCode(RefactorTestResult? result)
+        protected static string GetResultCode(RequestHandlerResult? result)
         {
             var statusCode = result?.ResponseObject?.StatusCode;
             return statusCode != null
@@ -26,7 +26,7 @@ namespace ApiDiffChecker.UIGenerator
                 : "_";
         }
 
-        protected static string GetResultCodeString(RefactorTestResult? result)
+        protected static string GetResultCodeString(RequestHandlerResult? result)
         {
             var statusCode = result?.ResponseObject?.StatusCode;
             return statusCode != null
