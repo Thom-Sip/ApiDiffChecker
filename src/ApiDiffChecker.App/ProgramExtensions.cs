@@ -9,6 +9,7 @@ using ApiDiffChecker.Features.RequestHandler;
 using ApiDiffChecker.Features.SwaggerProcessor;
 using ApiDiffChecker.Features.UIGenerator;
 using ApiDiffChecker.Models.State;
+using ApiDiffChecker.Models.Enums;
 
 namespace ApiDiffChecker
 {
