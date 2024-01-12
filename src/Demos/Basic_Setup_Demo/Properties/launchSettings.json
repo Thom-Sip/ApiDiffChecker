@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "RefactorUI": {
+    "ApiDiffChecker": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "run-refactor-helper",

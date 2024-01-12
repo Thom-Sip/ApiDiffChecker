@@ -38,7 +38,7 @@
 
 	<!-- Generate .css files based on .scss files -->
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition=" '$(BuildingInsideVisualStudio)' == 'true' ">
-		<Exec Command="sass Styles/styles.scss Content/styles.css" />
+		<Exec Command="sass Styles/styles.scss ApiDiffCheckerContent/styles.css" />
 	</Target>
 
 </Project>
