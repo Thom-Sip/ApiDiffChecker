@@ -316,7 +316,7 @@ namespace ApiDiffChecker
             app.MapGet(Url.Fragment.SaveSettingsToDisk, async (HttpContext context) =>
             {
                 var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
-                File.WriteAllText($"{Environment.CurrentDirectory}/refactorHelperSettings.json", result);
+                File.WriteAllText($"{Environment.CurrentDirectory}/apiDiffChecker.json", result);
 
                 await context.Response
                     .SetSidebar(SidebarType.Requests)

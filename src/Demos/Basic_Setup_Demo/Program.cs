@@ -14,7 +14,7 @@ namespace Basic_Setup_Demo
                 // RefactorHelper Dependency Injection
                 builder.Services.AddRefactorHelper(
                     ApiDiffCheckerSettings.GetSettingsFromJson(
-                    jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
+                    jsonPath: $"{Environment.CurrentDirectory}/apiDiffChecker.json",
                     baseUrl1: "https://localhost:44371",
                     baseUrl2: "https://localhost:44371"));
             } 

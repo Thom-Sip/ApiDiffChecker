@@ -1,0 +1,81 @@
+{
+  "RunOnStart": false,
+  "ContentFolder": "D:\\git\\RefactorHelper\\src\\demos\\Basic_Setup_Demo\\bin\\Debug\\net8.0\\ApiDiffCheckerContent",
+  "SwaggerUrl": "",
+  "DefaultRunSettings": {
+    "UrlParameters": [
+      {
+        "Key": "customerId",
+        "Value": "1"
+      },
+      {
+        "Key": "accountId",
+        "Value": "1"
+      }
+    ],
+    "QueryParameters": [
+      {
+        "Key": "message",
+        "Value": "Hello"
+      }
+    ],
+    "PropertiesToReplace": []
+  },
+  "Runs": [
+    {
+      "UrlParameters": [
+        {
+          "Key": "accountId",
+          "Value": "101"
+        }
+      ],
+      "QueryParameters": [],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1001"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run1"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1002"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run2"
+        }
+      ],
+      "PropertiesToReplace": []
+    },
+    {
+      "UrlParameters": [
+        {
+          "Key": "customerId",
+          "Value": "1003"
+        }
+      ],
+      "QueryParameters": [
+        {
+          "Key": "message",
+          "Value": "run3"
+        }
+      ],
+      "PropertiesToReplace": []
+    }
+  ]
+}
