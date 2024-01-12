@@ -14,11 +14,15 @@ namespace ApiDiffChecker.Models.Settings
 
         public List<Run> Runs { get; set; } = [];
 
-        [JsonIgnore]
-        public HttpClient HttpClient1 { get; set; }
+        [JsonIgnore] public HttpClient HttpClient1 { get; set; }
 
-        [JsonIgnore]
-        public HttpClient HttpClient2 { get; set; }
+        [JsonIgnore] public HttpClient HttpClient2 { get; set; }
+
+        [JsonIgnore] public string MainContentFolder { get => $"{ContentFolder}/Components/Main"; }
+
+        [JsonIgnore] public string SidebarContentFolder { get => $"{ContentFolder}/Components/Sidebar"; }
+
+        [JsonIgnore] public string FormsContentFolder { get => $"{ContentFolder}/Components/Forms"; }
 
         public static ApiDiffCheckerSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
         {

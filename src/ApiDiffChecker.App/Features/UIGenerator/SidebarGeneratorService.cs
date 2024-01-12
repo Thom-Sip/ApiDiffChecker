@@ -10,11 +10,11 @@ namespace ApiDiffChecker.Features.UIGenerator
         ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state) : BaseContentGenerator(settings, state)
     {
-        protected string _sideBarGroupTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");
-        protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItem.html");
-        protected string _sideBarGroupItemTemplateWithDelete { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarContainerItemWithDelete.html");
-        protected string _sideBarDownloadTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarDownloadItem.html");
-        protected string _sidebarFragment { get; } = File.ReadAllText($"{settings.ContentFolder}/Components/SidebarFragment.html");
+        protected string _sideBarGroupTemplate { get; } = File.ReadAllText($"{settings.SidebarContentFolder}/SideBarGroup.html");
+        protected string _sideBarGroupItemTemplate { get; } = File.ReadAllText($"{settings.SidebarContentFolder}/SidebarContainerItem.html");
+        protected string _sideBarGroupItemTemplateWithDelete { get; } = File.ReadAllText($"{settings.SidebarContentFolder}/SidebarContainerItemWithDelete.html");
+        protected string _sideBarDownloadTemplate { get; } = File.ReadAllText($"{settings.SidebarContentFolder}/SidebarDownloadItem.html");
+        protected string _sidebarFragment { get; } = File.ReadAllText($"{settings.SidebarContentFolder}/SidebarFragment.html");
 
         public string GetSideBarFragment(SidebarType sidebarType)
         {

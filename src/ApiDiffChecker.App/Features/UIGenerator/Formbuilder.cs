@@ -8,15 +8,15 @@ namespace ApiDiffChecker.Features.UIGenerator
 {
     public class Formbuilder(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
-        protected string _formTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplate.html");
+        protected string _formTemplate { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormTemplate.html");
 
-        protected string _formTemplateEdit { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplateEdit.html");
+        protected string _formTemplateEdit { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormTemplateEdit.html");
 
-        protected string _formFieldTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplate.html");
+        protected string _formFieldTemplate { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormFieldTemplate.html");
 
-        protected string _formFieldTemplateEdit { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEdit.html");
+        protected string _formFieldTemplateEdit { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormFieldTemplateEdit.html");
 
-        protected string _formFieldTemplateEditWithKey { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEditKeyAndValue.html");
+        protected string _formFieldTemplateEditWithKey { get; } = File.ReadAllText($"{settings.FormsContentFolder}/FormFieldTemplateEditKeyAndValue.html");
 
         protected ApiDiffCheckerSettings Settings { get; } = settings;
 
