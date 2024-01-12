@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Config;
-using ApiDiffChecker.Models.Uigenerator;
 
 namespace ApiDiffChecker.UIGenerator
 {

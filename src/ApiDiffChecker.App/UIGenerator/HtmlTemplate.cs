@@ -1,4 +1,4 @@
-﻿namespace ApiDiffChecker.Models.Uigenerator
+﻿namespace ApiDiffChecker.UIGenerator
 {
     public class HtmlTemplate
     {

@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using ApiDiffChecker.Comparer;
 using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Config;
-using ApiDiffChecker.Models.Uigenerator;
 using ApiDiffChecker.RequestHandler;
 using ApiDiffChecker.SwaggerProcessor;
 using ApiDiffChecker.UIGenerator;
