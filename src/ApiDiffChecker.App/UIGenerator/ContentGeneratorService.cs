@@ -1,4 +1,5 @@
-﻿using ApiDiffChecker.Models;
+﻿using ApiDiffChecker.Comparer;
+using ApiDiffChecker.Models;
 using ApiDiffChecker.Models.Comparer;
 using ApiDiffChecker.Models.Config;
 using ApiDiffChecker.Models.External;
