@@ -13,7 +13,7 @@ namespace ApiDiffChecker.Comparer
             _dmp = new diff_match_patch();
         }
 
-        public void CompareResponses(RefactorHelperState state)
+        public void CompareResponses(ApiDiffCheckerState state)
         {
             foreach(var testresultPair in state.Data)
                 CompareResponse(testresultPair);

@@ -5,7 +5,7 @@ using ApiDiffChecker.Models.Uigenerator;
 
 namespace ApiDiffChecker.UIGenerator
 {
-    public class Formbuilder(RefactorHelperSettings settings, ApiDiffCheckerState state)
+    public class Formbuilder(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
         protected string _formTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormTemplate.html");
 
@@ -17,7 +17,7 @@ namespace ApiDiffChecker.UIGenerator
 
         protected string _formFieldTemplateEditWithKey { get; } = File.ReadAllText($"{settings.ContentFolder}/Forms/FormFieldTemplateEditKeyAndValue.html");
 
-        protected RefactorHelperSettings Settings { get; } = settings;
+        protected ApiDiffCheckerSettings Settings { get; } = settings;
 
         protected ApiDiffCheckerState State { get; } = state;
 

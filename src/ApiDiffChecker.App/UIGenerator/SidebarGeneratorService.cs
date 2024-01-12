@@ -5,7 +5,7 @@ using System.Text;
 namespace ApiDiffChecker.UIGenerator
 {
     public class SidebarGeneratorService(
-        RefactorHelperSettings settings,
+        ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state) : BaseContentGenerator(settings, state)
     {
         protected string _sideBarGroupTemplate { get; } = File.ReadAllText($"{settings.ContentFolder}/SideBarGroup.html");

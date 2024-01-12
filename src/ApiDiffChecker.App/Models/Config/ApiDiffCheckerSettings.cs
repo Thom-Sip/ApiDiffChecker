@@ -2,7 +2,7 @@
 
 namespace ApiDiffChecker.Models.Config
 {
-    public class RefactorHelperSettings
+    public class ApiDiffCheckerSettings
     {
         public bool RunOnStart { get; set; }
 
@@ -20,28 +20,28 @@ namespace ApiDiffChecker.Models.Config
         [JsonIgnore]
         public HttpClient HttpClient2 { get; set; }
 
-        public static RefactorHelperSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
+        public static ApiDiffCheckerSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
         {
-            RefactorHelperSettings result = new();
+            ApiDiffCheckerSettings result = new();
 
             if (File.Exists(jsonPath))
             {
                 var json = File.ReadAllText(jsonPath);
-                result = JsonConvert.DeserializeObject<RefactorHelperSettings>(json) ?? new RefactorHelperSettings();
+                result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
             }
 
             return result.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
 
-        private RefactorHelperSettings() { }
+        private ApiDiffCheckerSettings() { }
 
-        public RefactorHelperSettings(HttpClient client1, HttpClient client2)
+        public ApiDiffCheckerSettings(HttpClient client1, HttpClient client2)
         {
             HttpClient1 = client1;
             HttpClient2 = client2;
         }
 
-        public RefactorHelperSettings(string baseUrl1, string baseUrl2)
+        public ApiDiffCheckerSettings(string baseUrl1, string baseUrl2)
         {
             this.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
@@ -59,7 +59,7 @@ namespace ApiDiffChecker.Models.Config
 
     public static class RefactorHelperSettingsExtensions
     {
-        public static RefactorHelperSettings SetClientsFromUrls(this RefactorHelperSettings settings, string baseUrl1, string baseUrl2)
+        public static ApiDiffCheckerSettings SetClientsFromUrls(this ApiDiffCheckerSettings settings, string baseUrl1, string baseUrl2)
         {
             settings.HttpClient1 = new HttpClient
             {

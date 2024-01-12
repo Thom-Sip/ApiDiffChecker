@@ -8,7 +8,7 @@ namespace Test_Diff_UI
         public static void Main(string[] args)
         {
             // Settings
-            var settings = new RefactorHelperSettings(
+            var settings = new ApiDiffCheckerSettings(
                 baseUrl1: "https://localhost:44371", 
                 baseUrl2: "https://localhost:44371")
             {

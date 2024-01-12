@@ -4,11 +4,11 @@ using ApiDiffChecker.Models.RequestHandler;
 
 namespace ApiDiffChecker.UIGenerator
 {
-    public class BaseContentGenerator(RefactorHelperSettings settings, ApiDiffCheckerState state)
+    public class BaseContentGenerator(ApiDiffCheckerSettings settings, ApiDiffCheckerState state)
     {
         protected ApiDiffCheckerState State { get; } = state;
 
-        protected RefactorHelperSettings Settings { get; } = settings;
+        protected ApiDiffCheckerSettings Settings { get; } = settings;
 
         protected static string GetResultCodeHeaderText(RequestWrapper? wrapper)
         {

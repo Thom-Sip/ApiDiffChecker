@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace ApiDiffChecker
 {
     public class RefactorHelperApp(
-        RefactorHelperSettings settings,
+        ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state,
         SwaggerProcessorService swaggerProcessorService,
         RequestHandlerService requestHandlerService,
@@ -18,7 +18,7 @@ namespace ApiDiffChecker
         SidebarGeneratorService sidebarGeneratorService,
         Formbuilder formbuilder)
     {
-        public RefactorHelperSettings Settings { get; set; } = settings;
+        public ApiDiffCheckerSettings Settings { get; set; } = settings;
         public ApiDiffCheckerState State { get; set; } = state;
         public SwaggerProcessorService SwaggerProcessorService { get; set; } = swaggerProcessorService;
         public RequestHandlerService RequestHandlerService { get; set; } = requestHandlerService;

@@ -7,9 +7,9 @@ using Parameter = ApiDiffChecker.Models.Config.Parameter;
 
 namespace ApiDiffChecker.SwaggerProcessor
 {
-    public class SwaggerProcessorService(RefactorHelperSettings settings)
+    public class SwaggerProcessorService(ApiDiffCheckerSettings settings)
     {
-        private RefactorHelperSettings Settings { get; } = settings;
+        private ApiDiffCheckerSettings Settings { get; } = settings;
 
         public static SwaggerProcessorOutput GetQueryParamsFromSwagger(string swaggerJson)
         {

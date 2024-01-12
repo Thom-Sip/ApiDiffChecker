@@ -8,7 +8,7 @@ using System.Text;
 namespace ApiDiffChecker.UIGenerator
 {
     public class ContentGeneratorService(
-        RefactorHelperSettings settings,
+        ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state,
         SidebarGeneratorService sidebarGeneratorService,
         Formbuilder formBuilder) : BaseContentGenerator(settings, state)

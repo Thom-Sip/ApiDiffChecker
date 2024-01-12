@@ -6,9 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace ApiDiffChecker.RequestHandler
 {
-    public class RequestHandlerService(RefactorHelperSettings settings)
+    public class RequestHandlerService(ApiDiffCheckerSettings settings)
     {
-        private RefactorHelperSettings Settings { get; } = settings;
+        private ApiDiffCheckerSettings Settings { get; } = settings;
 
         public async Task QueryApis(ApiDiffCheckerState state)
         {
