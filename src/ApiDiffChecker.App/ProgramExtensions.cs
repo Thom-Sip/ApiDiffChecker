@@ -15,11 +15,11 @@ namespace ApiDiffChecker
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddApiDiffChecker(this IServiceCollection services, ApiDiffCheckerSettings settings)
+        public static IServiceCollection AddApiDiffChecker(this IServiceCollection services, ApiDiffCheckerSettings? settings = null)
         {
-            services.AddSingleton(settings);
+            services.AddSingleton(settings ?? new ApiDiffCheckerSettings());
             services.AddSingleton<ApiDiffCheckerState>();
-            services.AddSingleton<RefactorHelperApp>();
+            services.AddSingleton<ApiDiffCheckerApp>();
             services.AddSingleton<SwaggerProcessorService>();
             services.AddSingleton<RequestHandlerService>();
             services.AddSingleton<CompareService>();
@@ -28,11 +28,15 @@ namespace ApiDiffChecker
             services.AddSingleton<SidebarGeneratorService>();
 
             return services;
-        }   
+        }
 
-        public static void AddApiDiffCheckerEndpoints(this WebApplication app)
+        public static void ApiDiffCheckerInitialize(this WebApplication app, string? settingsJsonPath = null)
         {
-            var myApp = app.Services.GetRequiredService<RefactorHelperApp>();
+            var myApp = app.Services.GetRequiredService<ApiDiffCheckerApp>();
+
+            myApp.Settings.LoadSettingsFromDisk(settingsJsonPath ?? $"{Environment.CurrentDirectory}/apiDiffChecker.json");
+            myApp.Settings.SetUrlDefaults($"https://localhost:{app.Configuration["ASPNETCORE_HTTPS_PORT"]}");
+            myApp.Settings.GenerateClients();
 
             app.DashboardPage(myApp);
             app.ResultPage(myApp);
@@ -62,7 +66,7 @@ namespace ApiDiffChecker
         }
 
         #region Pages
-        private static void DashboardPage(this WebApplication app, RefactorHelperApp myApp)
+        private static void DashboardPage(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Page.Root, async (HttpContext context) =>
@@ -74,7 +78,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void ResultPage(this WebApplication app, RefactorHelperApp myApp)
+        private static void ResultPage(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet($"{Url.Page.TestResult}/{{requestId}}", async (int requestId, HttpContext context) =>
@@ -86,7 +90,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void ResetPage(this WebApplication app, RefactorHelperApp myApp)
+        private static void ResetPage(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Page.Reset, async (HttpContext context) =>
@@ -98,7 +102,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void SettingsPage(this WebApplication app, RefactorHelperApp myApp)
+        private static void SettingsPage(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Page.Settings, async (HttpContext context, int? runId = null) =>
@@ -112,7 +116,7 @@ namespace ApiDiffChecker
         #endregion
 
         #region Sidebar
-        private static void SidebarFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void SidebarFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             app.MapGet($"{Url.Fragment.Sidebar}/{{sidebarType}}", async (HttpContext context, SidebarType sidebarType) =>
             {
@@ -124,7 +128,7 @@ namespace ApiDiffChecker
         #endregion
 
         #region Fragments
-        private static void RunAllFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void RunAllFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.RunAll, async (HttpContext context) =>
@@ -137,7 +141,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void ResultFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void ResultFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Navigate to the results of a request based on its index
             app.MapGet($"{Url.Fragment.TestResult}/{{requestId}}", async (int requestId, HttpContext context) =>
@@ -150,7 +154,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void RetryRequestFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void RetryRequestFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single requst and return html to replace result in page
             app.MapGet(Url.Fragment.RetryCurrentRequest, async (HttpContext context) =>
@@ -163,7 +167,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void SettingsFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void SettingsFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.Settings, async (HttpContext context, int? runId = null) =>
@@ -178,7 +182,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void AddNewRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void AddNewRunFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapGet(Url.Fragment.AddNewRun, async (HttpContext context) =>
@@ -193,7 +197,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void DuplicateRunFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void DuplicateRunFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapGet(Url.Fragment.CopyRun, async (HttpContext context, int? runId) =>
@@ -208,7 +212,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void ApplySettingsFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void ApplySettingsFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.ApplySettings, async (HttpContext context, int? runId = null) =>
@@ -222,7 +226,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void FormFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void FormFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet($"{Url.Fragment.FormGet}/{{formType}}", async (bool allowEdit, FormType formType, int? runId, HttpContext context) =>
@@ -235,7 +239,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void AddRowToFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void AddRowToFormFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}/add", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
@@ -252,7 +256,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription().DisableAntiforgery();
         }
 
-        private static void DeleteRowFromFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void DeleteRowFromFormFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapDelete($"{Url.Fragment.FormDeleteRow}/{{formType}}", async (HttpContext context, FormType formType, int? runId, int rowId, IFormCollection formData) =>
@@ -269,7 +273,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription().DisableAntiforgery();
         }
 
-        private static void SaveFormFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void SaveFormFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapPut($"{Url.Fragment.FormPut}/{{formType}}", async (HttpContext context, FormType formType, int? runId, IFormCollection formData) =>
@@ -285,7 +289,7 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription().DisableAntiforgery();
         }
 
-        private static void RemoveRunSettingsSideBarFragment(this WebApplication app, RefactorHelperApp myApp)
+        private static void RemoveRunSettingsSideBarFragment(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapDelete($"{Url.Fragment.SideBarSettingsRemoveRun}/{{runId}}", async (HttpContext context, int runId) =>
@@ -299,7 +303,7 @@ namespace ApiDiffChecker
         #endregion
 
         #region Download and Save
-        private static void DownloadSettings(this WebApplication app, RefactorHelperApp myApp)
+        private static void DownloadSettings(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run single request and return html to replace result in page
             app.MapGet(Url.Download.Settings, async (HttpContext context) =>
@@ -310,13 +314,12 @@ namespace ApiDiffChecker
             }).ExcludeFromDescription();
         }
 
-        private static void SaveSettingsToDisk(this WebApplication app, RefactorHelperApp myApp)
+        private static void SaveSettingsToDisk(this WebApplication app, ApiDiffCheckerApp myApp)
         {
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.SaveSettingsToDisk, async (HttpContext context) =>
             {
-                var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
-                File.WriteAllText($"{Environment.CurrentDirectory}/apiDiffChecker.json", result);
+                myApp.Settings.SaveSettingsToDisk();
 
                 await context.Response
                     .SetSidebar(SidebarType.Requests)
@@ -327,7 +330,7 @@ namespace ApiDiffChecker
         #endregion
 
         #region Misc
-        private static void AddStaticFileEndpoint(this WebApplication app, RefactorHelperApp myApp, string fileName)
+        private static void AddStaticFileEndpoint(this WebApplication app, ApiDiffCheckerApp myApp, string fileName)
         {
             // Get css so we don't need to service static files
             app.MapGet($"{Url.Page.Root}/{fileName}", async (HttpContext context) =>
