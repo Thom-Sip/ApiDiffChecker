@@ -1,4 +1,4 @@
-name: merge-main
+name: build
 
 on:
   push:
