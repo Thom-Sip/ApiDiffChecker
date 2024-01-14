@@ -5,7 +5,7 @@ A simple API Testing tool to compare the differences in response between 2 diffe
 * Easily check how your local environment compares to your test server
 * Verify that any refactoring work did not introduce any accidental changes
 
-![Build Status](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/merge-main.yml)
+![Build Status](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/merge-main.yml/badge.svg) 
 
 ## Setup
 
