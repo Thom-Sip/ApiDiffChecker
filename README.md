@@ -10,23 +10,20 @@ A simple API Testing tool to compare the differences in responses between 2 diff
 
 ## Setup
 
-1. Usings
+1. Edit Program.cs
 
 ```csharp
 using ApiDiffChecker;
 ```
 
-2. Setup dependency injection
-
 ```csharp
 
 if (builder.Environment.IsDevelopment())
 {
+    // Setup API Diff Checker Dependency Injection
     builder.Services.AddApiDiffChecker();
 } 
 ```
-
-3. Initialize the App
 
 ```csharp
 if (app.Environment.IsDevelopment())
@@ -34,18 +31,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // ApiDiffChecker Endpoints
-    app.AddApiDiffCheckerEndpoints();
+    // Initialize API Diff Checker
+    app.ApiDiffCheckerInitialize();
 }
 ```
-4. Start your WebApi and browse to **/api-diff-checker**
+2. Start your WebApi and browse to **/api-diff-checker**
 
-5. Open the Settings Page and setup your default parameters and Runs
+3. Open the Settings Page and setup your default parameters and Runs
 
-6. Click: Save Settings to disk
+4. Click: Save Settings to disk
 
-7. Click: Run All
-
+5. Click: Run All
 
 ## Powered by
 
