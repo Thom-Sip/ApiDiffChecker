@@ -315,8 +315,7 @@ namespace ApiDiffChecker
             // Run all request and open static html in browser
             app.MapGet(Url.Fragment.SaveSettingsToDisk, async (HttpContext context) =>
             {
-                var result = JsonConvert.SerializeObject(myApp.Settings, Formatting.Indented);
-                File.WriteAllText(myApp.Settings.SettingsJsonPath, result);
+                myApp.Settings.SaveSettingsToDisk();
 
                 await context.Response
                     .SetSidebar(SidebarType.Requests)
