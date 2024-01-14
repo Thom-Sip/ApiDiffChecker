@@ -17,7 +17,6 @@ using ApiDiffChecker;
 ```
 
 ```csharp
-
 if (builder.Environment.IsDevelopment())
 {
     // Setup API Diff Checker Dependency Injection
