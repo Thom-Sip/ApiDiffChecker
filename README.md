@@ -1,4 +1,4 @@
-## RefactorHelper
+## API Diff Checker
 
 [![Build Status](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/build.yml/badge.svg)](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/build.yml)
 [![Nuget](https://img.shields.io/nuget/v/ApiDiffChecker)](https://www.nuget.org/packages/ApiDiffChecker)
