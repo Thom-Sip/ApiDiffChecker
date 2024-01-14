@@ -6,8 +6,6 @@ namespace ApiDiffChecker.Models.Settings
     {
         public bool RunOnStart { get; set; }
 
-        public string ContentFolder { get; set; } = Path.Combine(GetBinPath(), "contentFiles/any/any/ApiDiffCheckerContent");
-
         public string SwaggerUrl { get; set; } = string.Empty;
 
         public Run DefaultRunSettings { get; set; } = new();
@@ -17,6 +15,8 @@ namespace ApiDiffChecker.Models.Settings
         [JsonIgnore] public HttpClient HttpClient1 { get; set; }
 
         [JsonIgnore] public HttpClient HttpClient2 { get; set; }
+
+        [JsonIgnore] public string ContentFolder { get; } = Path.Combine(GetBinPath(), "contentFiles/any/any/ApiDiffChecker");
 
         [JsonIgnore] public string MainContentFolder { get => $"{ContentFolder}/Components/Main"; }
 
