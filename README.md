@@ -5,6 +5,8 @@ A simple API Testing tool to compare the differences in response between 2 diffe
 * Easily check how your local environment compares to your test server
 * Verify that any refactoring work did not introduce any accidental changes
 
+![Build Status](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/merge-main.yml)
+
 ## Setup
 
 Setup dependency injection
@@ -14,9 +16,9 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddApiDiffChecker(
         ApiDiffCheckerSettings.GetSettingsFromJson(
-        jsonPath: $"{Environment.CurrentDirectory}/apiDiffChecker.json", // <-- your settings will be saved here
-        baseUrl1: "https://localhost:44371",                             // <-- your local url
-        baseUrl2: "https://www.my-test-server.com"));                    // <-- url of your test server
+        jsonPath: $"{Environment.CurrentDirectory}/apiDiffChecker.json",
+        baseUrl1: "https://localhost:44371",
+        baseUrl2: "https://www.my-test-server.com"));
 } 
 ```
 
@@ -50,6 +52,6 @@ Add a new profile to launchSettings.json
 
 ## Powered by
 
-[Swashbuckle](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
-[HTMX](https://htmx.org/)
-[diff-match-patch](https://github.com/google/diff-match-patch)
+* [Swashbuckle](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
+* [HTMX](https://htmx.org/)
+* [diff-match-patch](https://github.com/google/diff-match-patch)
