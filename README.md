@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 
     // ApiDiffChecker Endpoints
-    app.AddApiDiffCheckerEndpoints();
+    app.ApiDiffCheckerInitialize();
 }
 ```
 4. Start your WebApi and browse to **/api-diff-checker**
