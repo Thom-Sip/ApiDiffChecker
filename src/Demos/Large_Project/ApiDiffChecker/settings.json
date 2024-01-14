@@ -1,6 +1,5 @@
 {
   "RunOnStart": false,
-  "ContentFolder": "D:\\git\\RefactorHelper\\src\\Demos\\Large_Project\\bin\\Debug\\net8.0\\Content",
   "SwaggerUrl": "",
   "DefaultRunSettings": {
     "UrlParameters": [

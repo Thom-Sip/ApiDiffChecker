@@ -14,7 +14,7 @@ namespace Basic_Setup_Demo
                 // ApiDiffChecker Dependency Injection
                 builder.Services.AddApiDiffChecker(
                     ApiDiffCheckerSettings.GetSettingsFromJson(
-                    jsonPath: $"{Environment.CurrentDirectory}/ApiDiffCheckerSettings.json",
+                    jsonPath: $"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json",
                     baseUrl1: "https://localhost:44366",
                     baseUrl2: "https://localhost:44366"));
             }

@@ -8,6 +8,8 @@ namespace ApiDiffChecker.Models.Settings
 
         public string SwaggerUrl { get; set; } = string.Empty;
 
+        public string SettingsJsonPath { get; set; } = string.Empty;
+
         public Run DefaultRunSettings { get; set; } = new();
 
         public List<Run> Runs { get; set; } = [];
@@ -24,20 +26,30 @@ namespace ApiDiffChecker.Models.Settings
 
         [JsonIgnore] public string FormsContentFolder { get => $"{ContentFolder}/Components/Forms"; }
 
+        public static ApiDiffCheckerSettings GetSettingsFromJson(string baseUrl1, string baseUrl2) =>
+            GetSettingsFromJson($"{Environment.CurrentDirectory}/apiDiffChecker.json", baseUrl1, baseUrl2);
+
         public static ApiDiffCheckerSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
         {
-            ApiDiffCheckerSettings result = new();
+            ApiDiffCheckerSettings result;
 
             if (File.Exists(jsonPath))
             {
                 var json = File.ReadAllText(jsonPath);
                 result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
             }
+            else
+            {
+                result = new()
+                {
+                    SettingsJsonPath = jsonPath
+                };
+
+                result.SaveSettingsToDisk();
+            }
 
             return result.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
-
-        private ApiDiffCheckerSettings() { }
 
         public ApiDiffCheckerSettings(HttpClient client1, HttpClient client2)
         {
@@ -50,12 +62,20 @@ namespace ApiDiffChecker.Models.Settings
             this.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
 
+        public void SaveSettingsToDisk()
+        {
+            var serialized = JsonConvert.SerializeObject(this, Formatting.Indented);
+            File.WriteAllText(SettingsJsonPath, serialized);
+        }
+
         public string GetSwaggerUrl()
         {
             return string.IsNullOrWhiteSpace(SwaggerUrl)
                 ? $"{HttpClient1?.BaseAddress}swagger/v1/swagger.json"
                 : SwaggerUrl;
         }
+
+        private ApiDiffCheckerSettings() { }
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
