@@ -8,6 +8,7 @@ A simple API Testing tool to compare the differences in response between 2 diffe
 ## Status
 
 [![Build Status](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/merge-main.yml/badge.svg)](https://github.com/Thom-Sip/ApiDiffChecker/actions/workflows/build.yml)
+
 [![Nuget](https://img.shields.io/nuget/v/ApiDiffChecker)](https://www.nuget.org/packages/ApiDiffChecker)
 
 ## Setup
