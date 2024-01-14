@@ -16,7 +16,7 @@ namespace ApiDiffChecker.Models.Settings
 
         [JsonIgnore] public HttpClient HttpClient2 { get; set; }
 
-        [JsonIgnore] public string ContentFolder { get; } = Path.Combine(GetBinPath(), "contentFiles/any/any/ApiDiffChecker");
+        [JsonIgnore] public string ContentFolder { get; } = GetContentPath();
 
         [JsonIgnore] public string MainContentFolder { get => $"{ContentFolder}/Components/Main"; }
 
@@ -59,6 +59,18 @@ namespace ApiDiffChecker.Models.Settings
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
+
+        private static string GetContentPath()
+        {
+            // We have to place the content files in 'contentFiles/any/any/' to prevent the content from being added twice to the nuget package.
+            // As a result the content path is different when testing within this solution compared to when the package was used.
+            // Simple fix to make both scenarios work.
+            var path = Path.Combine(GetBinPath(), "contentFiles/any/any/ApiDiffChecker");
+
+            return Directory.Exists(path)
+                ? path
+                : Path.Combine(GetBinPath(), "ApiDiffChecker");
+        }
     }
 
     public static class RefactorHelperSettingsExtensions
