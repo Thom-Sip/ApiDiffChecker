@@ -10,7 +10,7 @@ A simple API Testing tool to compare the differences in responses between 2 diff
 
 ## Setup
 
-1. Program.cs
+1. Edit Program.cs
 
 ```csharp
 using ApiDiffChecker;
@@ -20,6 +20,7 @@ using ApiDiffChecker;
 
 if (builder.Environment.IsDevelopment())
 {
+    // Setup API Diff Checker Dependency Injection
     builder.Services.AddApiDiffChecker();
 } 
 ```
@@ -30,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    // ApiDiffChecker Endpoints
+    // Initialize API Diff Checker
     app.ApiDiffCheckerInitialize();
 }
 ```
