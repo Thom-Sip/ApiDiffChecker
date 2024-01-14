@@ -4,6 +4,7 @@ using ApiDiffChecker.Models.Settings;
 using ApiDiffChecker.Models.Enums;
 using ApiDiffChecker.Models.State;
 using System.Text;
+using DiffMatchPatch;
 
 namespace ApiDiffChecker.Features.UIGenerator
 {
