@@ -8,7 +8,7 @@ using ApiDiffChecker.Models.State;
 
 namespace ApiDiffChecker
 {
-    public class RefactorHelperApp(
+    public class ApiDiffCheckerApp(
         ApiDiffCheckerSettings settings,
         ApiDiffCheckerState state,
         SwaggerProcessorService swaggerProcessorService,
@@ -43,6 +43,8 @@ namespace ApiDiffChecker
             // State
             State.CurrentRequest = 0;
             State.CurrentRun = null;
+
+
 
             // Process Swagger
             var result = await Settings.HttpClient1.GetAsync(Settings.GetSwaggerUrl());

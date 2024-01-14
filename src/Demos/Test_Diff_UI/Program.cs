@@ -30,7 +30,7 @@ namespace Test_Diff_UI
                 app.MapGet("/static-compare", async (HttpContext context) =>
                 {
                     var result = await app.Services
-                        .GetRequiredService<RefactorHelperApp>()
+                        .GetRequiredService<ApiDiffCheckerApp>()
                         .StaticCompare("example1.json", "example2.json");
 
                     await context.Response
