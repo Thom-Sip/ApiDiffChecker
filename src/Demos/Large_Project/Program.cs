@@ -11,10 +11,10 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // RefactorHelper Dependency Injection
+                // ApiDiffChecker Dependency Injection
                 builder.Services.AddApiDiffChecker(
                     ApiDiffCheckerSettings.GetSettingsFromJson(
-                    jsonPath: $"{Environment.CurrentDirectory}/refactorHelperSettings.json",
+                    jsonPath: $"{Environment.CurrentDirectory}/ApiDiffCheckerSettings.json",
                     baseUrl1: "https://localhost:44366",
                     baseUrl2: "https://localhost:44366"));
             }
@@ -29,7 +29,7 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // RefactorHelper Endpoints
+                // ApiDiffChecker Endpoints
                 app.AddApiDiffCheckerEndpoints();
             }
 
