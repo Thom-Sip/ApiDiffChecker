@@ -12,11 +12,7 @@ namespace Basic_Setup_Demo
             if (builder.Environment.IsDevelopment())
             {
                 // ApiDiffChecker Dependency Injection
-                builder.Services.AddApiDiffChecker(
-                    ApiDiffCheckerSettings.GetSettingsFromJson(
-                    jsonPath: $"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json",
-                    baseUrl1: "https://localhost:44366",
-                    baseUrl2: "https://localhost:44366"));
+                builder.Services.AddApiDiffChecker();
             }
 
             builder.Services.AddControllers();
@@ -30,7 +26,7 @@ namespace Basic_Setup_Demo
                 app.UseSwaggerUI();
 
                 // ApiDiffChecker Endpoints
-                app.AddApiDiffCheckerEndpoints();
+                app.AddApiDiffCheckerEndpoints($"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json");
             }
 
             app.UseHttpsRedirection();

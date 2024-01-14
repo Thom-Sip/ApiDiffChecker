@@ -15,9 +15,9 @@ namespace ApiDiffChecker
 {
     public static class ProgramExtensions
     {
-        public static IServiceCollection AddApiDiffChecker(this IServiceCollection services, ApiDiffCheckerSettings settings)
+        public static IServiceCollection AddApiDiffChecker(this IServiceCollection services, ApiDiffCheckerSettings? settings = null)
         {
-            services.AddSingleton(settings);
+            services.AddSingleton(settings ?? new ApiDiffCheckerSettings());
             services.AddSingleton<ApiDiffCheckerState>();
             services.AddSingleton<ApiDiffCheckerApp>();
             services.AddSingleton<SwaggerProcessorService>();
@@ -30,9 +30,13 @@ namespace ApiDiffChecker
             return services;
         }   
 
-        public static void AddApiDiffCheckerEndpoints(this WebApplication app)
+        public static void AddApiDiffCheckerEndpoints(this WebApplication app, string? settingsJsonPath = null)
         {
             var myApp = app.Services.GetRequiredService<ApiDiffCheckerApp>();
+
+            myApp.Settings.LoadSettingsFromDisk(settingsJsonPath ?? $"{Environment.CurrentDirectory}/apiDiffChecker.json");
+            myApp.Settings.SetUrlDefaults($"https://localhost:{app.Configuration["ASPNETCORE_HTTPS_PORT"]}");
+            myApp.Settings.GenerateClients();
 
             app.DashboardPage(myApp);
             app.ResultPage(myApp);

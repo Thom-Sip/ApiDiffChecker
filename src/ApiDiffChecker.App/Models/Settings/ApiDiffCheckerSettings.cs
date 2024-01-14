@@ -10,6 +10,10 @@ namespace ApiDiffChecker.Models.Settings
 
         public string SettingsJsonPath { get; set; } = string.Empty;
 
+        public string ApiUrl1 { get; set; }
+
+        public string ApiUrl2 { get; set; }
+
         public Run DefaultRunSettings { get; set; } = new();
 
         public List<Run> Runs { get; set; } = [];
@@ -26,8 +30,28 @@ namespace ApiDiffChecker.Models.Settings
 
         [JsonIgnore] public string FormsContentFolder { get => $"{ContentFolder}/Components/Forms"; }
 
-        public static ApiDiffCheckerSettings GetSettingsFromJson(string baseUrl1, string baseUrl2) =>
-            GetSettingsFromJson($"{Environment.CurrentDirectory}/apiDiffChecker.json", baseUrl1, baseUrl2);
+        public void LoadSettingsFromDisk(string jsonPath)
+        {
+            ApiDiffCheckerSettings result;
+            if (File.Exists(jsonPath))
+            {
+                var json = File.ReadAllText(jsonPath);
+                result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
+
+                ApiUrl1 = result.ApiUrl1;
+                ApiUrl2 = result.ApiUrl2;
+                SettingsJsonPath = result.SettingsJsonPath;
+            }
+            else
+            {
+                result = new()
+                {
+                    SettingsJsonPath = jsonPath
+                };
+
+                result.SaveSettingsToDisk();
+            }
+        }
 
         public static ApiDiffCheckerSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
         {
@@ -48,7 +72,34 @@ namespace ApiDiffChecker.Models.Settings
                 result.SaveSettingsToDisk();
             }
 
-            return result.SetClientsFromUrls(baseUrl1, baseUrl2);
+            return result;
+        }
+
+        public void SetUrlDefaults(string localUrl)
+        {
+            if (string.IsNullOrWhiteSpace(ApiUrl1))
+                ApiUrl1 = localUrl;
+
+            if (string.IsNullOrWhiteSpace(ApiUrl2))
+                ApiUrl2 = localUrl;
+        }
+
+        public void GenerateClients()
+        {
+            if(HttpClient1 == null)
+            {
+                HttpClient1 = new HttpClient
+                {
+                    BaseAddress = new Uri(ApiUrl1)
+                };
+            }
+            if (HttpClient2 == null)
+            {
+                HttpClient2 = new HttpClient
+                {
+                    BaseAddress = new Uri(ApiUrl2)
+                };
+            }
         }
 
         public ApiDiffCheckerSettings(HttpClient client1, HttpClient client2)
@@ -59,7 +110,7 @@ namespace ApiDiffChecker.Models.Settings
 
         public ApiDiffCheckerSettings(string baseUrl1, string baseUrl2)
         {
-            this.SetClientsFromUrls(baseUrl1, baseUrl2);
+            //this.SetClientsFromUrls(baseUrl1, baseUrl2);
         }
 
         public void SaveSettingsToDisk()
@@ -75,7 +126,7 @@ namespace ApiDiffChecker.Models.Settings
                 : SwaggerUrl;
         }
 
-        private ApiDiffCheckerSettings() { }
+        public ApiDiffCheckerSettings() { }
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");

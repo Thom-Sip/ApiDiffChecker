@@ -12,10 +12,7 @@ namespace Basic_Setup_Demo
             if (builder.Environment.IsDevelopment())
             {
                 // ApiDiffChecker Dependency Injection
-                builder.Services.AddApiDiffChecker(
-                    ApiDiffCheckerSettings.GetSettingsFromJson(
-                    baseUrl1: "https://localhost:44371",
-                    baseUrl2: "https://localhost:44371"));
+                builder.Services.AddApiDiffChecker();
             } 
 
             builder.Services.AddControllers();
