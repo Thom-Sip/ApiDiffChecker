@@ -10,7 +10,10 @@ namespace ApiDiffChecker.Models.Settings
 
         public string SettingsJsonPath { get; set; } = string.Empty;
 
-        public string ApiUrl1 { get; set; }
+        /// <summary>
+        /// We don't want to serialize ApiUrl1 since this refers to the local api instance, just use the current one.
+        /// </summary>
+        [JsonIgnore] public string ApiUrl1 { get; set; }
 
         public string ApiUrl2 { get; set; }
 
@@ -30,49 +33,35 @@ namespace ApiDiffChecker.Models.Settings
 
         [JsonIgnore] public string FormsContentFolder { get => $"{ContentFolder}/Components/Forms"; }
 
-        public void LoadSettingsFromDisk(string jsonPath)
+        public ApiDiffCheckerSettings() { }
+
+        public ApiDiffCheckerSettings(HttpClient client1, HttpClient client2)
         {
-            ApiDiffCheckerSettings result;
-            if (File.Exists(jsonPath))
-            {
-                var json = File.ReadAllText(jsonPath);
-                result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
-
-                ApiUrl1 = result.ApiUrl1;
-                ApiUrl2 = result.ApiUrl2;
-                SettingsJsonPath = result.SettingsJsonPath;
-            }
-            else
-            {
-                result = new()
-                {
-                    SettingsJsonPath = jsonPath
-                };
-
-                result.SaveSettingsToDisk();
-            }
+            HttpClient1 = client1;
+            HttpClient2 = client2;
         }
 
-        public static ApiDiffCheckerSettings GetSettingsFromJson(string jsonPath, string baseUrl1, string baseUrl2)
+        public ApiDiffCheckerSettings(string baseUrl1, string baseUrl2)
         {
-            ApiDiffCheckerSettings result;
+            ApiUrl1 = baseUrl1;
+            ApiUrl2 = baseUrl2;
+        }
 
+        public void LoadSettingsFromDisk(string jsonPath)
+        {
+            SettingsJsonPath = jsonPath;
             if (File.Exists(jsonPath))
             {
                 var json = File.ReadAllText(jsonPath);
-                result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
-            }
-            else
-            {
-                result = new()
-                {
-                    SettingsJsonPath = jsonPath
-                };
+                var result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
 
-                result.SaveSettingsToDisk();
+                SwaggerUrl = result.SwaggerUrl;
+                SettingsJsonPath = result.SettingsJsonPath;
+                ApiUrl1 = result.ApiUrl1;
+                ApiUrl2 = result.ApiUrl2;
+                DefaultRunSettings = result.DefaultRunSettings;
+                Runs = result.Runs;
             }
-
-            return result;
         }
 
         public void SetUrlDefaults(string localUrl)
@@ -86,31 +75,15 @@ namespace ApiDiffChecker.Models.Settings
 
         public void GenerateClients()
         {
-            if(HttpClient1 == null)
+            HttpClient1 ??= new HttpClient
             {
-                HttpClient1 = new HttpClient
-                {
-                    BaseAddress = new Uri(ApiUrl1)
-                };
-            }
-            if (HttpClient2 == null)
+                BaseAddress = new Uri(ApiUrl1)
+            };
+
+            HttpClient2 ??= new HttpClient
             {
-                HttpClient2 = new HttpClient
-                {
-                    BaseAddress = new Uri(ApiUrl2)
-                };
-            }
-        }
-
-        public ApiDiffCheckerSettings(HttpClient client1, HttpClient client2)
-        {
-            HttpClient1 = client1;
-            HttpClient2 = client2;
-        }
-
-        public ApiDiffCheckerSettings(string baseUrl1, string baseUrl2)
-        {
-            //this.SetClientsFromUrls(baseUrl1, baseUrl2);
+                BaseAddress = new Uri(ApiUrl2)
+            };
         }
 
         public void SaveSettingsToDisk()
@@ -125,8 +98,6 @@ namespace ApiDiffChecker.Models.Settings
                 ? $"{HttpClient1?.BaseAddress}swagger/v1/swagger.json"
                 : SwaggerUrl;
         }
-
-        public ApiDiffCheckerSettings() { }
 
         private static string GetBinPath() =>
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, AppDomain.CurrentDomain.RelativeSearchPath ?? "");
@@ -146,7 +117,7 @@ namespace ApiDiffChecker.Models.Settings
 
     public static class RefactorHelperSettingsExtensions
     {
-        public static ApiDiffCheckerSettings SetClientsFromUrls(this ApiDiffCheckerSettings settings, string baseUrl1, string baseUrl2)
+        public static void SetClientsFromUrls(this ApiDiffCheckerSettings settings, string baseUrl1, string baseUrl2)
         {
             settings.HttpClient1 = new HttpClient
             {
@@ -157,8 +128,6 @@ namespace ApiDiffChecker.Models.Settings
             {
                 BaseAddress = new Uri(baseUrl2)
             };
-
-            return settings;
         }
     }
 }

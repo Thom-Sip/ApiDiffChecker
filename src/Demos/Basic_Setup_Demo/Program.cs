@@ -1,5 +1,4 @@
 using ApiDiffChecker;
-using ApiDiffChecker.Models.Settings;
 
 namespace Basic_Setup_Demo
 {
@@ -11,7 +10,7 @@ namespace Basic_Setup_Demo
 
             if (builder.Environment.IsDevelopment())
             {
-                // ApiDiffChecker Dependency Injection
+                // Dependency Injection
                 builder.Services.AddApiDiffChecker();
             } 
 
@@ -25,8 +24,8 @@ namespace Basic_Setup_Demo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // ApiDiffChecker Endpoints
-                app.AddApiDiffCheckerEndpoints();
+                // Initialize
+                app.ApiDiffCheckerInitialize();
             }
 
             app.UseHttpsRedirection();

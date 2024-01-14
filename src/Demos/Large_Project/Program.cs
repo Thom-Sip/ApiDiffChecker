@@ -1,5 +1,4 @@
 using ApiDiffChecker;
-using ApiDiffChecker.Models.Settings;
 
 namespace Basic_Setup_Demo
 {
@@ -26,7 +25,7 @@ namespace Basic_Setup_Demo
                 app.UseSwaggerUI();
 
                 // ApiDiffChecker Endpoints
-                app.AddApiDiffCheckerEndpoints($"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json");
+                app.ApiDiffCheckerInitialize($"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json");
             }
 
             app.UseHttpsRedirection();

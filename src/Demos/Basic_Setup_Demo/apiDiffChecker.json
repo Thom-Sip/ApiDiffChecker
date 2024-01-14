@@ -2,7 +2,6 @@
   "RunOnStart": false,
   "SwaggerUrl": "",
   "SettingsJsonPath": "D:\\git\\ApiDiffChecker\\src\\demos\\Basic_Setup_Demo/apiDiffChecker.json",
-  "ApiUrl1": "https://localhost:44371",
   "ApiUrl2": "https://localhost:44371",
   "DefaultRunSettings": {
     "UrlParameters": [

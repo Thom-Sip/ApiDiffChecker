@@ -24,7 +24,7 @@ namespace Test_Diff_UI
             if (app.Environment.IsDevelopment())
             {
                 // Setup all endpoints required for RefactorHelper to work
-                app.AddApiDiffCheckerEndpoints();
+                app.ApiDiffCheckerInitialize();
 
                 // Run all request and open static html in browser
                 app.MapGet("/static-compare", async (HttpContext context) =>

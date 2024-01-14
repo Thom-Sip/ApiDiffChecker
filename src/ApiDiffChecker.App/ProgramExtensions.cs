@@ -28,9 +28,9 @@ namespace ApiDiffChecker
             services.AddSingleton<SidebarGeneratorService>();
 
             return services;
-        }   
+        }
 
-        public static void AddApiDiffCheckerEndpoints(this WebApplication app, string? settingsJsonPath = null)
+        public static void ApiDiffCheckerInitialize(this WebApplication app, string? settingsJsonPath = null)
         {
             var myApp = app.Services.GetRequiredService<ApiDiffCheckerApp>();
 
