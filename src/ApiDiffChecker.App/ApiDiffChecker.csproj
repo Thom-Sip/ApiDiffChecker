@@ -36,6 +36,7 @@
 
 	<!-- Dependencies -->
 	<ItemGroup>
+		<PackageReference Include="DiffMatchPatch" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Swashbuckle" Version="5" />

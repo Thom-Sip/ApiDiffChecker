@@ -1,4 +1,5 @@
 ﻿using ApiDiffChecker.Models.State;
+using DiffMatchPatch;
 
 namespace ApiDiffChecker.Features.Comparer
 {

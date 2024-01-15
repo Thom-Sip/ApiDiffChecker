@@ -1,4 +1,6 @@
-﻿namespace ApiDiffChecker.Features.Comparer
+﻿using DiffMatchPatch;
+
+namespace ApiDiffChecker.Features.Comparer
 {
     public class CompareResultPair
     {
