@@ -8,7 +8,10 @@ namespace ApiDiffChecker.Models.Settings
 
         public string SwaggerUrl { get; set; } = string.Empty;
 
-        public string SettingsJsonPath { get; set; } = string.Empty;
+        /// <summary>
+        /// We want access to the path for writing to, but reading from won't work. So no need to include it in the .json
+        /// </summary>
+        [JsonIgnore] public string SettingsJsonPath { get; set; } = string.Empty;
 
         /// <summary>
         /// We don't want to serialize ApiUrl1 since this refers to the local api instance, just use the current one.
@@ -50,13 +53,13 @@ namespace ApiDiffChecker.Models.Settings
         public void LoadSettingsFromDisk(string jsonPath)
         {
             SettingsJsonPath = jsonPath;
+
             if (File.Exists(jsonPath))
             {
                 var json = File.ReadAllText(jsonPath);
                 var result = JsonConvert.DeserializeObject<ApiDiffCheckerSettings>(json) ?? new ApiDiffCheckerSettings();
 
                 SwaggerUrl = result.SwaggerUrl;
-                SettingsJsonPath = result.SettingsJsonPath;
                 ApiUrl1 = result.ApiUrl1;
                 ApiUrl2 = result.ApiUrl2;
                 DefaultRunSettings = result.DefaultRunSettings;

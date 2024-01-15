@@ -1,7 +1,6 @@
 {
   "RunOnStart": false,
   "SwaggerUrl": "",
-  "SettingsJsonPath": "D:\\git\\ApiDiffChecker\\src\\demos\\Large_Project/apiDiffChecker/settings.json",
   "ApiUrl2": "https://localhost:44366",
   "DefaultRunSettings": {
     "UrlParameters": [
@@ -118,7 +117,7 @@
         },
         {
           "Key": "accountId",
-          "Value": "2"
+          "Value": "21"
         },
         {
           "Key": "orderId",
