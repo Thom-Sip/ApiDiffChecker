@@ -25,7 +25,7 @@ namespace Basic_Setup_Demo
                 app.UseSwaggerUI();
 
                 // ApiDiffChecker Endpoints
-                app.ApiDiffCheckerInitialize($"{Environment.CurrentDirectory}/ApiDiffChecker/settings.json");
+                app.ApiDiffCheckerInitialize("./ApiDiffChecker/settings.json");
             }
 
             app.UseHttpsRedirection();

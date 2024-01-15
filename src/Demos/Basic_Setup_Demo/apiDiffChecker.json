@@ -1,7 +1,6 @@
 {
   "RunOnStart": false,
   "SwaggerUrl": "",
-  "SettingsJsonPath": "D:\\git\\ApiDiffChecker\\src\\demos\\Basic_Setup_Demo/apiDiffChecker.json",
   "ApiUrl2": "https://localhost:44371",
   "DefaultRunSettings": {
     "UrlParameters": [
@@ -42,7 +41,11 @@
       "UrlParameters": [
         {
           "Key": "customerId",
-          "Value": "1001"
+          "Value": "10012"
+        },
+        {
+          "Key": "accountId",
+          "Value": ""
         }
       ],
       "QueryParameters": [
@@ -73,6 +76,10 @@
         {
           "Key": "customerId",
           "Value": "1003"
+        },
+        {
+          "Key": "accountId",
+          "Value": "4"
         }
       ],
       "QueryParameters": [

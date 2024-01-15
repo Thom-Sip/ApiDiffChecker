@@ -34,7 +34,7 @@ namespace ApiDiffChecker
         {
             var myApp = app.Services.GetRequiredService<ApiDiffCheckerApp>();
 
-            myApp.Settings.LoadSettingsFromDisk(settingsJsonPath ?? $"{Environment.CurrentDirectory}/apiDiffChecker.json");
+            myApp.Settings.LoadSettingsFromDisk(settingsJsonPath ?? $"./apiDiffChecker.json");
             myApp.Settings.SetUrlDefaults($"https://localhost:{app.Configuration["ASPNETCORE_HTTPS_PORT"]}");
             myApp.Settings.GenerateClients();
 
